@@ -1,7 +1,8 @@
-package edu.up.cs301.game.GameFramework;
+package com.example.game.GameFramework.GameFramework;
 
 import java.util.ArrayList;
-
+import edu.up.cs301.game.GameFramework.Game;
+import edu.up.cs301.game.GameFramework.LocalGame
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,7 +35,7 @@ import edu.up.cs301.game.GameFramework.utilities.IPCoder;
 import edu.up.cs301.game.GameFramework.utilities.Logger;
 import edu.up.cs301.game.GameFramework.utilities.MessageBox;
 import edu.up.cs301.game.GameFramework.utilities.Saving;
-import edu.up.cs301.game.R;
+import com.example.gameframework.R;
 
 /**
  * class GameMainActivity

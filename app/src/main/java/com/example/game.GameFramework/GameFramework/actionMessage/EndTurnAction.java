@@ -1,7 +1,6 @@
 package edu.up.cs301.game.GameFramework.actionMessage;
 
 import java.io.Serializable;
-
 import edu.up.cs301.game.GameFramework.players.GamePlayer;
 
 //Let's the Game know the player is done with the turn

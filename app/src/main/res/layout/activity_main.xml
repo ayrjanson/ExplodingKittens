@@ -150,6 +150,14 @@
                 android:padding="30dp"
                 android:text="Tab Left" />
 
+            <Button
+                android:id="@+id/handRight"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#314723"
+                android:padding="30dp"
+                android:text="Tab Right" />
+
             <Spinner
                 android:id="@+id/spinner"
                 android:layout_width="wrap_content"
@@ -159,13 +167,6 @@
                 android:backgroundTintMode="src_atop"
                 android:gravity="right" />
 
-            <Button
-                android:id="@+id/handRight"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#314723"
-                android:padding="30dp"
-                android:text="Tab Right" />
         </LinearLayout>
 
     </LinearLayout>
