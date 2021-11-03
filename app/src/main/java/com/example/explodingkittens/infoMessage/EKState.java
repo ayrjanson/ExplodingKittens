@@ -1,6 +1,9 @@
 package com.example.explodingkittens.infoMessage;
 
 import android.widget.Button;
+
+import com.example.gameframework.infoMessage.GameState;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,7 +19,7 @@ import java.util.HashMap;
  * @author Alex Nastase
  */
 
-public class EKState {
+public class EKState extends GameState {
 
 
     //TODO button linker

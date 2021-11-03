@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.widget.EditText;
 
-import com.example.R;
+import com.example.gameframework.R;
 //TODO: Find how to implement R
 import com.example.gameframework.GameMainActivity;
 
