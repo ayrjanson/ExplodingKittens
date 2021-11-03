@@ -4,15 +4,169 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="horizontal"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:id="@+id/verticalLL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#314723"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="16dp">
 
+        <LinearLayout
+            android:id="@+id/topLL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#314723"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/player1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:background="#9E0909"
+                android:scaleType="fitCenter"
+                android:src="@drawable/cat_player1" />
+
+            <ImageButton
+                android:id="@+id/player2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:background="#9E0909"
+                android:scaleType="fitCenter"
+                android:src="@drawable/cat_player2" />
+
+            <ImageButton
+                android:id="@+id/player3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:background="#9E0909"
+                android:scaleType="fitCenter"
+                android:src="@drawable/cat_player3" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/topLowerLL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#314723"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/discardPile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#314723"
+                android:scaleType="centerInside"
+                android:src="@drawable/exploading_kitten_back" />
+
+
+            <ImageButton
+                android:id="@+id/drawPile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#314723"
+                android:scaleType="centerInside"
+                android:src="@drawable/exploading_kitten_back" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/middleLL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#314723"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/playerCard1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#314723"
+                android:scaleType="fitStart"
+                android:src="@drawable/skip" />
+
+            <ImageButton
+                android:id="@+id/playerCard2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#314723"
+                android:scaleType="fitStart"
+                android:src="@drawable/defuse" />
+
+            <ImageButton
+                android:id="@+id/playerCard3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#314723"
+                android:scaleType="fitStart"
+                android:src="@drawable/skip" />
+
+            <ImageButton
+                android:id="@+id/playerCard4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#314723"
+                android:scaleType="fitStart"
+                android:src="@drawable/attack" />
+
+            <ImageButton
+                android:id="@+id/playerCard5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#314723"
+                android:scaleType="fitStart"
+                android:src="@drawable/nope" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1.4">
+
+            <Button
+                android:id="@+id/handLeft"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#314723"
+                android:padding="30dp"
+                android:text="Tab Left" />
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:background="@drawable/gear"
+                android:backgroundTintMode="src_atop"
+                android:gravity="right" />
+
+            <Button
+                android:id="@+id/handRight"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#314723"
+                android:padding="30dp"
+                android:text="Tab Right" />
+        </LinearLayout>
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
