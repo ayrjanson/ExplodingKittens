@@ -1,16 +1,15 @@
 package com.example.gameframework;
 
-import androidx.appcompat.app.AppCompatActivity;
+import com.example.gameframework.gameConfiguration.GameConfig;
+import com.example.gameframework.infoMessage.GameState;
 
-import android.os.Bundle;
-import android.widget.Button;
+public class MainActivity extends com.example.gameframework.GameMainActivity {
 
-import java.util.HashMap;
+    public LocalGame createLocalGame(GameState gameState) {
+        return null;
+    }
 
-public class MainActivity extends edu.up.cs301.game.GameFramework.GameMainActivity {
-
-
-    public edu.up.cs301.game.GameFramework.LocalGame createLocalGame(edu.up.cs301.game.GameFramework.infoMessage.GameState gameState);
-
-    public edu.up.cs301.game.GameFramework.gameConfiguration.GameConfig createDefaultConfig();
+    public GameConfig createDefaultConfig() {
+        return null;
+    }
 }
