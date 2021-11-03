@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    tools:context="MainActivity">
+    tools:context=".MainActivity">
 
     <LinearLayout
         android:id="@+id/verticalLL"
@@ -40,7 +40,7 @@
                 android:layout_weight="4"
                 android:background="#9E0909"
                 android:scaleType="fitCenter"
-                android:src="" />
+                android:src="@drawable/cat_player2" />
 
             <ImageButton
                 android:id="@+id/player3"
@@ -49,7 +49,7 @@
                 android:layout_weight="4"
                 android:background="#9E0909"
                 android:scaleType="fitCenter"
-                android:src="" />
+                android:src="@drawable/cat_player3" />
 
         </LinearLayout>
 
@@ -68,7 +68,7 @@
                 android:layout_weight="1"
                 android:background="#314723"
                 android:scaleType="centerInside"
-                android:src="" />
+                android:src="@drawable/exploading_kitten_back" />
 
 
             <ImageButton
@@ -78,7 +78,7 @@
                 android:layout_weight="1"
                 android:background="#314723"
                 android:scaleType="centerInside"
-                android:src="" />
+                android:src="@drawable/exploading_kitten_back" />
 
         </LinearLayout>
 
@@ -97,7 +97,7 @@
                 android:layout_weight="1"
                 android:background="#314723"
                 android:scaleType="fitStart"
-                android:src="" />
+                android:src="@drawable/skip" />
 
             <ImageButton
                 android:id="@+id/playerCard2"
@@ -106,7 +106,7 @@
                 android:layout_weight="1"
                 android:background="#314723"
                 android:scaleType="fitStart"
-                android:src="" />
+                android:src="@drawable/defuse" />
 
             <ImageButton
                 android:id="@+id/playerCard3"
@@ -115,7 +115,7 @@
                 android:layout_weight="1"
                 android:background="#314723"
                 android:scaleType="fitStart"
-                android:src="" />
+                android:src="@drawable/skip" />
 
             <ImageButton
                 android:id="@+id/playerCard4"
@@ -124,7 +124,7 @@
                 android:layout_weight="1"
                 android:background="#314723"
                 android:scaleType="fitStart"
-                android:src="" />
+                android:src="@drawable/attack" />
 
             <ImageButton
                 android:id="@+id/playerCard5"
@@ -133,7 +133,7 @@
                 android:layout_weight="1"
                 android:background="#314723"
                 android:scaleType="fitStart"
-                android:src="" />
+                android:src="@drawable/nope" />
 
         </LinearLayout>
 
@@ -155,7 +155,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:background=""
+                android:background="@drawable/gear"
                 android:backgroundTintMode="src_atop"
                 android:gravity="right" />
 
