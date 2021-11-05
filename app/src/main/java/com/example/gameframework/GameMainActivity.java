@@ -1,5 +1,8 @@
 package com.example.gameframework;
 
+import java.util.ArrayList;
+import com.example.gameframework.Game;
+import com.example.gameframework.LocalGame;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -61,6 +64,8 @@ public abstract class GameMainActivity extends Activity implements
     // object that knows the rules of the game. This variable is initialized in
     // launchGame.
     private Game game = null;
+
+
 
     // an array containing references to all the players that are playing the game
     private GamePlayer[] players = null;
