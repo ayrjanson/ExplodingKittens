@@ -54,7 +54,7 @@ public class Card {
         put(CARDTYPE.MELON, R.drawable.melon);
         put(CARDTYPE.BEARD,R.drawable.beard);
         put(CARDTYPE.POTATO,R.drawable.potato);
-        put(CARDTYPE.TACO,R.drawable.taco);
+        //put(CARDTYPE.TACO,R.drawable.taco);
         put(CARDTYPE.ATTACK,R.drawable.attack);
         put(CARDTYPE.SHUFFLE,R.drawable.shuffle);
         put(CARDTYPE.FAVOR,R.drawable.favor);

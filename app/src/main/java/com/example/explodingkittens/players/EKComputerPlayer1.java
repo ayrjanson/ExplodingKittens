@@ -1,6 +1,13 @@
 package com.example.explodingkittens.players;
 
+import com.example.explodingkittens.ekActionMessage.EKAttackAction;
+import com.example.explodingkittens.ekActionMessage.EKBeardAction;
+import com.example.explodingkittens.ekActionMessage.EKFavorAction;
+import com.example.explodingkittens.ekActionMessage.EKMelonAction;
 import com.example.explodingkittens.ekActionMessage.EKMoveAction;
+import com.example.explodingkittens.ekActionMessage.EKNopeAction;
+import com.example.explodingkittens.ekActionMessage.EKShuffleAction;
+import com.example.explodingkittens.ekActionMessage.EKSkipAction;
 import com.example.explodingkittens.infoMessage.CARDTYPE;
 import com.example.explodingkittens.infoMessage.EKState;
 import com.example.gameframework.infoMessage.GameInfo;
@@ -35,14 +42,14 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
         }
         //if 1 is draw, and we can play BEARD
         if((ran == 1) && receive.playCard(turn, CARDTYPE.BEARD, receive.deck.get(turn), receive.discard)){
-            EKBeardAction = new EKBeardAction(this);
+            EKBeardAction beard = new EKBeardAction(this);
             game.sendAction(beard);
         }
         else{
             receive.endTurn(EKState.DRAWCARD, turn);
         }
         // if 2 is drawn and we can play POTATO
-        if((ran == 2) && receive.playCard(turn, CARDTYPE.POTATO, receive.deck.get(turn), receive.discard)){
+       /* if((ran == 2) && receive.playCard(turn, CARDTYPE.POTATO, receive.deck.get(turn), receive.discard)){
             EKPotatoAction potato = new EKPotatoAction(this);
             game.sendAction(potato);
         }
@@ -56,7 +63,7 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
         }
         else{
             receive.endTurn(EKState.DRAWCARD, turn);
-        }
+        }*/
         //if 4 is drawn and we can play ATTACK
         if((ran == 4) && receive.playCard(turn, CARDTYPE.ATTACK, receive.deck.get(turn), receive.discard)){
             EKAttackAction attack = new EKAttackAction(this);

@@ -158,7 +158,6 @@ public class EKState extends GameState {
      */
     //TODO test each playcard
     public boolean playCard(int playerTurn, CARDTYPE card, ArrayList<Card> src, ArrayList<Card> dest){
-
         switch(card){
             case MELON:
                 int moveMelon = getCardIndex(CARDTYPE.MELON, deck.get(playerTurn));
@@ -356,6 +355,8 @@ public class EKState extends GameState {
         else return false;
     }
 
+
+
     /**
      * returns the state of the game, NOT THE EKGAMESTATE object
      * @return - a string message indicating what point the game is in
@@ -490,6 +491,12 @@ public class EKState extends GameState {
         }
         return false;
     }
+
+    public boolean gameOver(){
+        return endGame(playerStatus);
+    }
+
+
     //TODO card equals overload
     public boolean equals(EKState state){
         if(this.playerStatus.equals(state.playerStatus) && this.gameState.equals(state.gameState)){

@@ -1,9 +1,8 @@
 package com.example.gameframework;
-package com.example.game.GameFramework.GameFramework;
 
 import java.util.ArrayList;
-import edu.up.cs301.game.GameFramework.Game;
-import edu.up.cs301.game.GameFramework.LocalGame;
+import com.example.gameframework.Game;
+import com.example.gameframework.LocalGame;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,19 +23,18 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TabHost;
+import android.widget.TabHost.TabSpec;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.TabHost.TabSpec;
-import edu.up.cs301.game.GameFramework.gameConfiguration.GameConfig;
-import edu.up.cs301.game.GameFramework.gameConfiguration.GamePlayerType;
-import edu.up.cs301.game.GameFramework.infoMessage.GameState;
-import edu.up.cs301.game.GameFramework.players.GamePlayer;
-import edu.up.cs301.game.GameFramework.utilities.IPCoder;
-import edu.up.cs301.game.GameFramework.utilities.Logger;
-import edu.up.cs301.game.GameFramework.utilities.MessageBox;
-import edu.up.cs301.game.GameFramework.utilities.Saving;
-import edu.up.cs301.game.R;
+import com.example.gameframework.gameConfiguration.GameConfig;
+import com.example.gameframework.gameConfiguration.GamePlayerType;
+import com.example.gameframework.infoMessage.GameState;
+import com.example.gameframework.players.GamePlayer;
+import com.example.gameframework.utilities.IPCoder;
+import com.example.gameframework.utilities.Logger;
+import com.example.gameframework.utilities.MessageBox;
+import com.example.gameframework.utilities.Saving;
 
 /**
  * class GameMainActivity
