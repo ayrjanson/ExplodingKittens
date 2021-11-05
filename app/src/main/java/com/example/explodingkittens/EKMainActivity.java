@@ -2,7 +2,10 @@
 
 package com.example.explodingkittens;
 
+import android.widget.ImageButton;
+
 import com.example.explodingkittens.EKLocalGame;
+import com.example.explodingkittens.infoMessage.Card;
 import com.example.explodingkittens.infoMessage.EKState;
 import com.example.explodingkittens.players.EKComputerPlayer1;
 import com.example.explodingkittens.players.EKHumanPlayer1;
@@ -17,11 +20,27 @@ import com.example.gameframework.utilities.Logger;
 import com.example.gameframework.utilities.Saving;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class EKMainActivity extends GameMainActivity {
 
     private static final String TAG = "EKMainActivity";
     public static final int PORT_NUMBER = 5213;
+
+    //TODO make hashmap for opponents with arraylist card
+    HashMap<ImageButton, Card> bc = new HashMap() {{
+        put(findViewById(R.id.drawPile),null);
+        put(findViewById(R.id.discardPile),null);
+        put(findViewById(R.id.playerCard1),null);
+        put(findViewById(R.id.playerCard2),null);
+        put(findViewById(R.id.playerCard3),null);
+        put(findViewById(R.id.playerCard4),null);
+        put(findViewById(R.id.playerCard5),null);
+
+    }};
+
+
+
 
     /**
      * createLocalGame
@@ -32,7 +51,7 @@ public class EKMainActivity extends GameMainActivity {
 
     public LocalGame createLocalGame(GameState gameState) {
         if(gameState == null) return new EKLocalGame((EKState) gameState);
-        return new EKLocalGame((EKState) gameState);
+        return new EKLocalGame((LocalGame) gameState);
     }
 
     /**
