@@ -1,10 +1,9 @@
 package com.example.gameframework;
-
 package com.example.game.GameFramework.GameFramework;
 
 import java.util.ArrayList;
 import edu.up.cs301.game.GameFramework.Game;
-import edu.up.cs301.game.GameFramework.LocalGame
+import edu.up.cs301.game.GameFramework.LocalGame;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;

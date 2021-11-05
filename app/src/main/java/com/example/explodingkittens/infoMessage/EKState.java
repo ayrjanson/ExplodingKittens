@@ -324,6 +324,10 @@ public class EKState extends GameState {
         return null;
     }
 
+    public int getPlayerTurn() {
+        return playerTurn;
+    }
+
     /**
      * computes the integer number of the next player in a turn sequence (loops around through NUM PLAYERS
      * @param currentPlayer - current player index whose turn it is
