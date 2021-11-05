@@ -486,6 +486,11 @@ public class EKState extends GameState {
         }
         return false;
     }
+
+    public boolean gameOver() {
+        return endGame(playerStatus);
+    }
+
     //TODO card equals overload
     public boolean equals(EKState state){
         if(this.playerStatus.equals(state.playerStatus) && this.gameState.equals(state.gameState)){
