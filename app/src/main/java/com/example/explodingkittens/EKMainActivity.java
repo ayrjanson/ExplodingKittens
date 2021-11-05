@@ -1,5 +1,3 @@
-//TODO: For Anna to work on
-
 package com.example.explodingkittens;
 
 import com.example.explodingkittens.EKLocalGame;
