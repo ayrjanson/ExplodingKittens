@@ -62,6 +62,8 @@ public abstract class GameMainActivity extends Activity implements
     // launchGame.
     private Game game = null;
 
+
+
     // an array containing references to all the players that are playing the game
     private GamePlayer[] players = null;
 

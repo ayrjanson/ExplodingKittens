@@ -5,6 +5,7 @@ import com.example.gameframework.infoMessage.GameState;
 
 public class MainActivity extends com.example.gameframework.GameMainActivity {
 
+
     public LocalGame createLocalGame(GameState gameState) {
         return null;
     }

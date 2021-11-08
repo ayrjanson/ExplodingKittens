@@ -63,9 +63,8 @@
 
             <ImageButton
                 android:id="@+id/discardPile"
-                android:layout_width="253dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="right"
                 android:layout_weight="1"
                 android:background="#314723"
                 android:scaleType="centerInside"
@@ -74,7 +73,7 @@
 
             <ImageButton
                 android:id="@+id/drawPile"
-                android:layout_width="194dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#314723"
@@ -93,48 +92,48 @@
 
             <ImageButton
                 android:id="@+id/playerCard1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#314723"
                 android:scaleType="fitStart"
-                android:src="@drawable/skip" />
+                android:src="@drawable/exploading_kitten_back" />
 
             <ImageButton
                 android:id="@+id/playerCard2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#314723"
                 android:scaleType="fitStart"
-                android:src="@drawable/defuse" />
+                android:src="@drawable/exploading_kitten_back" />
 
             <ImageButton
                 android:id="@+id/playerCard3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#314723"
                 android:scaleType="fitStart"
-                android:src="@drawable/skip" />
+                android:src="@drawable/exploading_kitten_back" />
 
             <ImageButton
                 android:id="@+id/playerCard4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#314723"
                 android:scaleType="fitStart"
-                android:src="@drawable/attack" />
+                android:src="@drawable/exploading_kitten_back" />
 
             <ImageButton
                 android:id="@+id/playerCard5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#314723"
                 android:scaleType="fitStart"
-                android:src="@drawable/nope" />
+                android:src="@drawable/exploading_kitten_back" />
 
         </LinearLayout>
 
@@ -142,20 +141,20 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1.4"
-            android:gravity="left">
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/handLeft"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:background="#314723"
                 android:padding="30dp"
                 android:text="Tab Left" />
 
             <Button
                 android:id="@+id/handRight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:background="#314723"
                 android:padding="30dp"
                 android:text="Tab Right" />
@@ -167,7 +166,7 @@
                 android:layout_gravity="right"
                 android:background="@drawable/gear"
                 android:backgroundTintMode="src_atop"
-                android:gravity="left" />
+                android:gravity="right" />
 
         </LinearLayout>
 

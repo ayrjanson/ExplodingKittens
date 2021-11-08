@@ -1,14 +1,12 @@
 package com.example.explodingkittens.infoMessage;
 
-import android.widget.Button;
-
 import com.example.gameframework.infoMessage.GameState;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 //TODO link old gui and humanplayerclass
 //TODO: override equals method it is dogwater
+//TODO: ask to write iterate through arryaylist fucntion - recursive
 
 /**
  * ExplodingKittensGameState: Creates the decks and assigns and moves cards according to player
@@ -32,7 +30,6 @@ public class EKState extends GameState {
     public ArrayList<Card> draw;
     public boolean[] playerStatus;
     public STATE gameState;
-    public HashMap<Button, Card> buttonMap;
     public static final int NUM_PLAYERS = 4;
     public int playerTurn;
     public static final int DRAWCARD = 4000;
@@ -45,6 +42,7 @@ public class EKState extends GameState {
      * @param size: the number of players to declare hands for
      */
     public EKState(int size) {
+        super();
         this.deck = new ArrayList<>(NUM_PLAYERS);
         this.draw = new ArrayList<>(52);
         this.discard = new ArrayList<>(52);
@@ -54,6 +52,8 @@ public class EKState extends GameState {
             this.deck.add(new ArrayList<>(7));
         }
         gameState = STATE.INIT_ARRAYS;
+        this.prepareGame();
+
     }
 
     /**
@@ -61,7 +61,10 @@ public class EKState extends GameState {
      * @param state: the target instance of EKGS to deep copy
      */
     public EKState(EKState state){
-        playerTurn = 0;
+        if(state == null){
+            return;
+        }
+        this.playerTurn = state.playerTurn;
         draw = new ArrayList<>();
         for (int i = 0; i < state.draw.size(); i++) {
             draw.add(state.draw.get(i));
@@ -96,6 +99,7 @@ public class EKState extends GameState {
                 CARDTYPE temp = draw.get(0).getType();
                 ArrayList<Card> destination = deck.get(playerTurn);
                 destination.add(takeFromDraw());
+                draw.remove(0);
 
                 if(temp == CARDTYPE.EXPLODE){
                     playCard(playerTurn, CARDTYPE.DEFUSE, deck.get(playerTurn) ,discard);
@@ -112,12 +116,29 @@ public class EKState extends GameState {
             case ATTACKPLAYER:
                 break;
             case LOST:
+                // Can have assistance moving the individual cards
                 if(deck.get(playerTurn)!=null) {
-                    deck.get(playerTurn).addAll(discard);
-                    deck.get(playerTurn).clear();
+                    //deck.get(playerTurn).addAll(discard); //Not moving the individual card
+                    //deck.get(playerTurn).clear();
+                    moveToDiscard(deck.get(playerTurn), discard);
                 }
                 playerStatus[this.playerTurn] = false;
                 break;
+        }
+    }
+
+    /**
+     * moveToDiscard
+     * @param src
+     * @param dest
+     */
+    public void moveToDiscard(ArrayList<Card> src, ArrayList<Card> dest) {
+        // Easy Case: Already done
+        if (src.size() == 0) return;
+        else {
+            dest.add(src.get(0));
+            src.remove(0);
+            moveToDiscard(src, dest);
         }
     }
 
@@ -143,7 +164,7 @@ public class EKState extends GameState {
      */
     public Card takeFromDraw() {
         Card fromDraw = draw.get(0);
-        draw.remove(0);
+        //draw.remove(0);
         return fromDraw;
     }
 
@@ -160,94 +181,186 @@ public class EKState extends GameState {
     public boolean playCard(int playerTurn, CARDTYPE card, ArrayList<Card> src, ArrayList<Card> dest){
         switch(card){
             case MELON:
-                int moveMelon = getCardIndex(CARDTYPE.MELON, deck.get(playerTurn));
-                Card moveCardMelon = getCard(CARDTYPE.MELON, deck.get(playerTurn));
-                if(moveMelon != -1) {
-                    discard.add(moveCardMelon);
-                    deck.get(playerTurn).remove(moveMelon);
+                if (src.equals(draw)) {
+                    Card moveCardMelon = getCard(CARDTYPE.MELON, src);
+                    //dest.add(moveCardMelon);
+                    //src.remove(moveCardMelon);
+                    endTurn(playerTurn, DRAWCARD);
                     return true;
+                }
+                else if (src.equals(deck.get(playerTurn))) {
+                    int moveMelon = getCardIndex(CARDTYPE.MELON, deck.get(playerTurn));
+                    Card moveCardMelon = getCard(CARDTYPE.MELON, deck.get(playerTurn));
+                    if (moveMelon != -1) {
+                        discard.add(moveCardMelon);
+                        deck.get(playerTurn).remove(moveMelon);
+                        return true;
+                    }
                 }
                 break;
             case BEARD:
-                int moveBeard = getCardIndex(CARDTYPE.BEARD, deck.get(playerTurn));
-                Card moveCardBeard = getCard(CARDTYPE.BEARD, deck.get(playerTurn));
-                if(moveBeard != -1) {
-                    discard.add(moveCardBeard);
-                    deck.get(playerTurn).remove(moveBeard);
+                if (src.equals(draw)) {
+                    Card moveCardAttack = getCard(CARDTYPE.BEARD, src);
+                    //est.add(moveCardAttack);
+                    //src.remove(moveCardAttack);
+                    endTurn(playerTurn, DRAWCARD);
                     return true;
+                }
+                else if (src.equals(deck.get(playerTurn))) {
+                    int moveBeard = getCardIndex(CARDTYPE.BEARD, deck.get(playerTurn));
+                    Card moveCardBeard = getCard(CARDTYPE.BEARD, deck.get(playerTurn));
+                    if (moveBeard != -1) {
+                        discard.add(moveCardBeard);
+                        deck.get(playerTurn).remove(moveBeard);
+                        return true;
+                    }
                 }
                 break;
             case POTATO:
-                int movePotato = getCardIndex(CARDTYPE.POTATO, deck.get(playerTurn));
-                Card moveCardPotato = getCard(CARDTYPE.POTATO, deck.get(playerTurn));
-                if(movePotato != -1) {
-                    discard.add(moveCardPotato);
-                    deck.get(playerTurn).remove(movePotato);
+                if (src.equals(draw)) {
+                    Card moveCardAttack = getCard(CARDTYPE.POTATO, src);
+                    //dest.add(moveCardAttack);
+                    //src.remove(moveCardAttack);
+                    endTurn(playerTurn, DRAWCARD);
                     return true;
+                }
+                else if (src.equals(deck.get(playerTurn))) {
+                    int movePotato = getCardIndex(CARDTYPE.POTATO, deck.get(playerTurn));
+                    Card moveCardPotato = getCard(CARDTYPE.POTATO, deck.get(playerTurn));
+                    if (movePotato != -1) {
+                        discard.add(moveCardPotato);
+                        deck.get(playerTurn).remove(movePotato);
+                        return true;
+                    }
                 }
                 break;
             case TACO:
-                int moveTaco = getCardIndex(CARDTYPE.TACO, deck.get(playerTurn));
-                Card moveCardTaco = getCard(CARDTYPE.TACO, deck.get(playerTurn));
-                if(moveTaco != -1) {
-                    discard.add(moveCardTaco);
-                    deck.get(playerTurn).remove(moveTaco);
+                if (src.equals(draw)) {
+                    Card moveCardAttack = getCard(CARDTYPE.ATTACK, src);
+                    //dest.add(moveCardAttack);
+                    //src.remove(moveCardAttack);
+                    endTurn(playerTurn, DRAWCARD);
                     return true;
+                }
+                else if (src.equals(deck.get(playerTurn))) {
+                    int moveTaco = getCardIndex(CARDTYPE.TACO, deck.get(playerTurn));
+                    Card moveCardTaco = getCard(CARDTYPE.TACO, deck.get(playerTurn));
+                    if (moveTaco != -1) {
+                        discard.add(moveCardTaco);
+                        deck.get(playerTurn).remove(moveTaco);
+                        return true;
+                    }
                 }
                 break;
             case ATTACK:
-                int moveAttack = getCardIndex(CARDTYPE.ATTACK, deck.get(playerTurn));
-                Card moveCardAttack = getCard(CARDTYPE.ATTACK, deck.get(playerTurn));
-                if(moveAttack != -1) {
-                    discard.add(moveCardAttack);
-                    deck.get(playerTurn).remove(moveAttack);
+                if (src.equals(draw)) {
+                    Card moveCardAttack = getCard(CARDTYPE.ATTACK, src);
+                    //dest.add(moveCardAttack);
+                    //src.remove(moveCardAttack);
+                    endTurn(playerTurn, DRAWCARD);
                     return true;
+                }
+                else if (src.equals(deck.get(playerTurn))) {
+                    int moveAttack = getCardIndex(CARDTYPE.ATTACK, deck.get(playerTurn));
+                    Card moveCardAttack = getCard(CARDTYPE.ATTACK, deck.get(playerTurn));
+                    if (moveAttack != -1) {
+                        discard.add(moveCardAttack);
+                        deck.get(playerTurn).remove(moveAttack);
+                        endTurn(playerTurn, ATTACKPLAYER);
+                        return true;
+                    }
                 }
                 break;
             case SHUFFLE:
-                int moveShuffle = getCardIndex(CARDTYPE.SHUFFLE, deck.get(playerTurn));
-                Card moveCardShuffle = getCard(CARDTYPE.SHUFFLE, deck.get(playerTurn));
-                if(moveShuffle != -1) {
-                    discard.add(moveCardShuffle);
-                    deck.get(playerTurn).remove(moveShuffle);
+                if (src.equals(draw)) {
+                    Card moveCardAttack = getCard(CARDTYPE.SHUFFLE, src);
+                    //dest.add(moveCardAttack);
+                    //src.remove(moveCardAttack);
+                    endTurn(playerTurn, DRAWCARD);
                     return true;
+                }
+                else if(src.equals(deck.get(playerTurn))) {
+                    int moveShuffle = getCardIndex(CARDTYPE.SHUFFLE, deck.get(playerTurn));
+                    Card moveCardShuffle = getCard(CARDTYPE.SHUFFLE, deck.get(playerTurn));
+                    if (moveShuffle != -1) {
+                        discard.add(moveCardShuffle);
+                        deck.get(playerTurn).remove(moveShuffle);
+                        Collections.shuffle(draw);
+                        return true;
+                    }
                 }
                 break;
             case FAVOR:
-                int moveFavor = getCardIndex(CARDTYPE.FAVOR, deck.get(playerTurn));
-                Card moveCardFavor = getCard(CARDTYPE.FAVOR, deck.get(playerTurn));
-                if (moveFavor != -1) {
-                    //TODO: Make so able to take another player's card
-                    discard.add(moveCardFavor);
-                    deck.get(playerTurn).remove(moveFavor);
+                if (src.equals(draw)) {
+                    Card moveCardAttack = getCard(CARDTYPE.FAVOR, src);
+                    //dest.add(moveCardAttack);
+                    //src.remove(moveCardAttack);
+                    endTurn(playerTurn, DRAWCARD);
                     return true;
+                }
+                else if(src.equals(deck.get(playerTurn))) {
+                    int moveFavor = getCardIndex(CARDTYPE.FAVOR, deck.get(playerTurn));
+                    Card moveCardFavor = getCard(CARDTYPE.FAVOR, deck.get(playerTurn));
+                    if (moveFavor != -1) {
+                        //TODO: Make so able to take another player's card
+                        discard.add(moveCardFavor);
+                        deck.get(playerTurn).remove(moveFavor);
+                        return true;
+                    }
                 }
                 break;
             case SKIP:
-                int moveSkip = getCardIndex(CARDTYPE.SKIP, deck.get(playerTurn));
-                Card moveCardSkip = getCard(CARDTYPE.SKIP, deck.get(playerTurn));
-                if(moveSkip != -1) {
-                    discard.add(moveCardSkip);
-                    deck.get(playerTurn).remove(moveSkip);
+                if (src.equals(draw)) {
+                    Card moveCardAttack = getCard(CARDTYPE.SKIP, src);
+                    //dest.add(moveCardAttack);
+                    //src.remove(moveCardAttack);
+                    endTurn(playerTurn, DRAWCARD);
                     return true;
+                }
+                else if(src.equals(deck.get(playerTurn))) {
+                    int moveSkip = getCardIndex(CARDTYPE.SKIP, deck.get(playerTurn));
+                    Card moveCardSkip = getCard(CARDTYPE.SKIP, deck.get(playerTurn));
+                    if (moveSkip != -1) {
+                        discard.add(moveCardSkip);
+                        deck.get(playerTurn).remove(moveSkip);
+                        return true;
+                    }
                 }
                 break;
             case SEEFUTURE:
-                int moveSeeFuture = getCardIndex(CARDTYPE.SEEFUTURE, deck.get(playerTurn));
-                Card moveCardSeeFuture = getCard(CARDTYPE.SEEFUTURE, deck.get(playerTurn));
-                if (moveSeeFuture != -1) {
-                    discard.add(moveCardSeeFuture);
-                    deck.get(playerTurn).remove(moveSeeFuture);
+                if (src.equals(draw)) {
+                    Card moveCardAttack = getCard(CARDTYPE.SEEFUTURE, src);
+                    //dest.add(moveCardAttack);
+                    //src.remove(moveCardAttack);
+                    endTurn(playerTurn, DRAWCARD);
                     return true;
+                }
+                else if(src.equals(deck.get(playerTurn))) {
+                    int moveSeeFuture = getCardIndex(CARDTYPE.SEEFUTURE, deck.get(playerTurn));
+                    Card moveCardSeeFuture = getCard(CARDTYPE.SEEFUTURE, deck.get(playerTurn));
+                    if (moveSeeFuture != -1) {
+                        discard.add(moveCardSeeFuture);
+                        deck.get(playerTurn).remove(moveSeeFuture);
+                        return true;
+                    }
                 }
                 break;
             case NOPE:
-                int moveNope = getCardIndex(CARDTYPE.NOPE, deck.get(playerTurn));
-                Card moveCardNope = getCard(CARDTYPE.NOPE, deck.get(playerTurn));
-                if (moveNope != -1) {
-                    discard.add(moveCardNope);
-                    deck.get(playerTurn).remove(moveNope);
+                if (src.equals(draw)) {
+                    Card moveCardAttack = getCard(CARDTYPE.ATTACK, src);
+                    //dest.add(moveCardAttack);
+                    //src.remove(moveCardAttack);
+                    endTurn(playerTurn, DRAWCARD);
                     return true;
+                }
+                else if(src.equals(deck.get(playerTurn))) {
+                    int moveNope = getCardIndex(CARDTYPE.NOPE, deck.get(playerTurn));
+                    Card moveCardNope = getCard(CARDTYPE.NOPE, deck.get(playerTurn));
+                    if (moveNope != -1) {
+                        discard.add(moveCardNope);
+                        deck.get(playerTurn).remove(moveNope);
+                        return true;
+                    }
                 }
                 break;
             case DEFUSE:
@@ -263,6 +376,11 @@ public class EKState extends GameState {
                     ArrayList<Card> reference = deck.get(playerTurn);
                     return true;
                 }
+                else if(card.equals(CARDTYPE.DEFUSE) && src.equals(draw) && !hasExplode(deck.get(playerTurn))) {
+                   endTurn(playerTurn, DRAWCARD);
+                   return true;
+                }
+
                 else if(deck.get(playerTurn).contains(card) && !hasExplode(deck.get(playerTurn))) {
                     return false;
                 }
@@ -271,6 +389,18 @@ public class EKState extends GameState {
                     return false;
                 }
             case EXPLODE:
+                moveExplode = getCardIndex(CARDTYPE.EXPLODE, deck.get(playerTurn));
+                moveDefuse = getCardIndex(CARDTYPE.DEFUSE, deck.get(playerTurn));
+                moveCardExplode = getCard(CARDTYPE.EXPLODE, deck.get(playerTurn));
+                moveCardDefuse = getCard(CARDTYPE.DEFUSE, deck.get(playerTurn));
+                if(moveExplode != -1 && moveDefuse != -1) {
+                    discard.add(moveCardExplode);
+                    discard.add(moveCardDefuse);
+                    deck.get(playerTurn).remove(moveExplode);
+                    deck.get(playerTurn).remove(moveDefuse);
+                    ArrayList<Card> reference = deck.get(playerTurn);
+                    return true;
+                }
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + card);
@@ -322,10 +452,6 @@ public class EKState extends GameState {
         return null;
     }
 
-    public int getPlayerTurn() {
-        return playerTurn;
-    }
-
     /**
      * computes the integer number of the next player in a turn sequence (loops around through NUM PLAYERS
      * @param currentPlayer - current player index whose turn it is
@@ -353,8 +479,6 @@ public class EKState extends GameState {
         if (deck.get(currentPlayer) != null) return true;
         else return false;
     }
-
-
 
     /**
      * returns the state of the game, NOT THE EKGAMESTATE object
@@ -409,7 +533,6 @@ public class EKState extends GameState {
         }
         return false;
     }
-
 
     /**
      * createCards: creates a hashtable with the card types and their enum values, creates card
@@ -486,8 +609,8 @@ public class EKState extends GameState {
             }
         }
         if(out == 3){
-            for(int i = 0; i < playerStatus.length; i++){
-                if(playerStatus[i] == true){
+            for (int i = 0; i < playerStatus.length; i++) {
+                if (playerStatus[i] == true) {
                     gameState = STATE.GAME_END;
                     return i;
                 }
@@ -496,21 +619,11 @@ public class EKState extends GameState {
         return -1;
     }
 
-    public int gameOver(){
+    public int getPlayerTurn() { return playerTurn; }
+
+    public int gameOver() {
         return endGame(playerStatus);
     }
-
-    //TODO make attack card method that forces a player to take an endturn action twice
-   /* public boolean attacked(boolean[] playerStatus, int playerTurn){
-        for(int i = playerTurn; i < playerStatus.length; i++){
-            if(playerStatus[i] == true){
-                int turnCount = 0;
-                while(turnCount < 2){
-                    if()
-                }
-            }
-        }
-    }*/
 
     //TODO card equals overload
     public boolean equals(EKState state){

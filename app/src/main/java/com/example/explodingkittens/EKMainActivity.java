@@ -1,4 +1,3 @@
-//TODO: For Anna to work on
 package com.example.explodingkittens;
 
 import com.example.explodingkittens.players.EKComputerPlayer1;
@@ -36,7 +35,6 @@ public class EKMainActivity extends GameMainActivity {
         return new EKLocalGame();
     }
 
-
     /**
      * createDefaultConfig
      * @return GameConfig
@@ -70,6 +68,7 @@ public class EKMainActivity extends GameMainActivity {
     /*
     @Override
     public GameState saveGame(String gameName) { return super.saveGame(getGameString(gameName));}
+
     @Override
     public GameState loadGame(String gameName) {
         String appName = getGameString(gameName);
