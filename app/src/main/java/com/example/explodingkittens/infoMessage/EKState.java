@@ -55,6 +55,7 @@ public class EKState extends GameState {
         for(int i = 0; i< size; i++){
             this.deck.add(new ArrayList<>(7));
         }
+        prepareGame();
         gameState = STATE.INIT_ARRAYS;
     }
 
@@ -63,7 +64,7 @@ public class EKState extends GameState {
      * @param state: the target instance of EKGS to deep copy
      */
     public EKState(EKState state){
-        super();
+        //super();
         this.playerTurn = state.playerTurn;
         draw = new ArrayList<>();
         for (int i = 0; i < state.draw.size(); i++) {
