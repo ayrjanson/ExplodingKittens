@@ -12,7 +12,6 @@ import java.util.Hashtable;
  * @author Alex Nastase
  */
 
-
 public class Card {
 
     //enum to track the card type of each obj

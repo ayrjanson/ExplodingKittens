@@ -3,6 +3,8 @@ package com.example.explodingkittens;
 import android.util.Log;
 
 import com.example.explodingkittens.ekActionMessage.EKAttackAction;
+import com.example.explodingkittens.ekActionMessage.EKCatCardAction;
+import com.example.explodingkittens.ekActionMessage.EKEndTurnAction;
 import com.example.explodingkittens.ekActionMessage.EKFavorAction;
 import com.example.explodingkittens.ekActionMessage.EKNopeAction;
 import com.example.explodingkittens.ekActionMessage.EKSeeFutureAction;
@@ -15,6 +17,7 @@ import com.example.gameframework.LocalGame;
 import com.example.gameframework.actionMessage.GameAction;
 import com.example.gameframework.players.GamePlayer;
 
+import java.util.Collections;
 
 
 public class EKLocalGame extends LocalGame {
@@ -22,14 +25,14 @@ public class EKLocalGame extends LocalGame {
     public EKState currentState;
     //private EKState previousState;
     //private GameAction action;
-    //private int turn = currentState.playerTurn;
+
 
     // BASIC CONSTRUCTOR
 
     public EKLocalGame() {
         super();
         super.state = new EKState(4); //game with 4 players
-
+        currentState = (EKState) super.state;
         //this.previousState = null;
     }
 
@@ -37,6 +40,7 @@ public class EKLocalGame extends LocalGame {
     public EKLocalGame(EKState ekgamestate) {
         super();
         super.state = new EKState(ekgamestate);
+        currentState = (EKState) super.state;
     }
 
     //send updated state to player
@@ -49,7 +53,7 @@ public class EKLocalGame extends LocalGame {
     //checks if player can play card
     @Override
     protected boolean canMove(int playerIdx) {
-        if (currentState.playerTurn == playerIdx) return true;
+        if (currentState.getPlayerTurn() == playerIdx) return true;
         return false;
     }
 
@@ -75,6 +79,7 @@ public class EKLocalGame extends LocalGame {
 
     @Override
     protected boolean makeMove(GameAction action) {
+        int turn = currentState.playerTurn;
         if (action instanceof EKNopeAction) {
             if(currentState.playCard(currentState.playerTurn, CARDTYPE.NOPE, currentState.deck.get(currentState.playerTurn), currentState.discard)){
                 //go do the stuff :)
@@ -83,7 +88,7 @@ public class EKLocalGame extends LocalGame {
         }
 
         else if (action instanceof EKFavorAction) {
-            if(currentState.playCard(currentState.playerTurn, CARDTYPE.FAVOR, currentState.deck.get(currentState.playerTurn), currentState.discard)){
+            if(currentState.playCard(currentState.getPlayerTurn(), CARDTYPE.FAVOR, currentState.deck.get(currentState.playerTurn), currentState.discard)){
                 //Prompt the user to choose which player to steal a card from
                 //Ask the user to choose which type of card they would like to steal a card from by
                 //displaying cards in their deck
@@ -100,6 +105,7 @@ public class EKLocalGame extends LocalGame {
 
         else if (action instanceof EKSkipAction) {
             if(currentState.playCard(currentState.playerTurn, CARDTYPE.SKIP, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                currentState.endTurn(turn, currentState.SKIPTURN);
                 return true;
             }
         }
@@ -115,6 +121,7 @@ public class EKLocalGame extends LocalGame {
         else if (action instanceof EKShuffleAction) {
             if(currentState.playCard(currentState.playerTurn, CARDTYPE.SHUFFLE, currentState.deck.get(currentState.playerTurn), currentState.discard)){
                 //Shuffle the draw deck
+                Collections.shuffle(currentState.draw);
                 return true;
             }
         }
@@ -128,9 +135,20 @@ public class EKLocalGame extends LocalGame {
             }
         }
 
+        else if (action instanceof EKEndTurnAction) {
+            if(currentState.playCard(turn, CARDTYPE.SEEFUTURE, currentState.deck.get(turn), currentState.discard)) {
+                currentState.endTurn(turn, currentState.DRAWCARD);
+                return true;
+            }
+        }
+
+        else if (action instanceof EKCatCardAction) {
+            return true;
+        }
+
         else {
             Card drawn = currentState.takeFromDraw();
-            if(currentState.playCard(currentState.playerTurn, drawn.getType(), currentState.draw, currentState.deck.get(currentState.playerTurn))) {
+            if(currentState.playCard(currentState.playerTurn, drawn.getType(), currentState.draw, currentState.deck.get(currentState.getPlayerTurn()))) {
                 //This turn is a draw card turn
                 //End turn using the draw card excuse - resume play as normal
                 return true;
