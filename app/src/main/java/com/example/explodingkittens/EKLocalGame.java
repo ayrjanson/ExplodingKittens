@@ -29,7 +29,7 @@ public class EKLocalGame extends LocalGame {
     public EKLocalGame() {
         super();
         super.state = new EKState(4); //game with 4 players
-        //currentState.prepareGame();
+
         //this.previousState = null;
     }
 
