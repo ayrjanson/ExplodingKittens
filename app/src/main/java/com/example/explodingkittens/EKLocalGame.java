@@ -28,21 +28,21 @@ public class EKLocalGame extends LocalGame {
 
     public EKLocalGame() {
         super();
-        currentState = new EKState(4); //game with 4 players
-        currentState.prepareGame();
+        super.state = new EKState(4); //game with 4 players
+        //currentState.prepareGame();
         //this.previousState = null;
     }
 
     // CONSTRUCTOR WITH LOADED EK GAME STATE
     public EKLocalGame(EKState ekgamestate) {
         super();
-        currentState = new EKState(ekgamestate);
+        super.state = new EKState(ekgamestate);
     }
 
     //send updated state to player
     @Override
     protected void sendUpdatedStateTo(GamePlayer p) {
-        EKState gameCopy = new EKState(currentState);
+        EKState gameCopy = new EKState((EKState) state);
         p.sendInfo(gameCopy);
     }
 
