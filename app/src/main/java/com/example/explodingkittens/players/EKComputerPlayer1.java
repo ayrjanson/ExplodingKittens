@@ -5,10 +5,8 @@ import com.example.explodingkittens.ekActionMessage.EKBeardAction;
 import com.example.explodingkittens.ekActionMessage.EKFavorAction;
 import com.example.explodingkittens.ekActionMessage.EKMelonAction;
 import com.example.explodingkittens.ekActionMessage.EKNopeAction;
-import com.example.explodingkittens.ekActionMessage.EKPotatoAction;
 import com.example.explodingkittens.ekActionMessage.EKShuffleAction;
 import com.example.explodingkittens.ekActionMessage.EKSkipAction;
-import com.example.explodingkittens.ekActionMessage.EKTacoAction;
 import com.example.explodingkittens.infoMessage.CARDTYPE;
 import com.example.explodingkittens.infoMessage.EKState;
 import com.example.gameframework.infoMessage.GameInfo;
@@ -78,7 +76,7 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
                 EKFavorAction favor = new EKFavorAction(this);
                 game.sendAction(favor);
             } else {
-                receive.endTurn(EKState.DRAWCARD, turn);
+                receive.endTurn(EKState.DRAWCARD, turn); //TODO: Create EKEndTurnAction, send said action
             }
             //if 7 is drawn and we can play SKIP
             if ((choice == 7) && receive.playCard(turn, CARDTYPE.SKIP, receive.deck.get(turn), receive.discard)) {

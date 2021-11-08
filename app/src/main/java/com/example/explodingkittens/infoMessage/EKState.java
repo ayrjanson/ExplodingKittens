@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 //TODO link old gui and humanplayerclass
 //TODO: override equals method it is dogwater
+//TODO: ask to write iterate through arryaylist fucntion - recursive
 
 /**
  * ExplodingKittensGameState: Creates the decks and assigns and moves cards according to player
@@ -112,12 +113,29 @@ public class EKState extends GameState {
             case ATTACKPLAYER:
                 break;
             case LOST:
+                // Can have assistance moving the individual cards
                 if(deck.get(playerTurn)!=null) {
-                    deck.get(playerTurn).addAll(discard);
-                    deck.get(playerTurn).clear();
+                    //deck.get(playerTurn).addAll(discard); //Not moving the individual card
+                    //deck.get(playerTurn).clear();
+                    moveToDiscard(deck.get(playerTurn), discard);
                 }
                 playerStatus[this.playerTurn] = false;
                 break;
+        }
+    }
+
+    /**
+     * moveToDiscard
+     * @param src
+     * @param dest
+     */
+    public void moveToDiscard(ArrayList<Card> src, ArrayList<Card> dest) {
+        // Easy Case: Already done
+        if (src.size() == 0) return;
+        else {
+            dest.add(src.get(0));
+            src.remove(0);
+            moveToDiscard(src, dest);
         }
     }
 
@@ -202,6 +220,7 @@ public class EKState extends GameState {
                 if(moveAttack != -1) {
                     discard.add(moveCardAttack);
                     deck.get(playerTurn).remove(moveAttack);
+                    endTurn(playerTurn, ATTACKPLAYER);
                     return true;
                 }
                 break;
@@ -232,6 +251,8 @@ public class EKState extends GameState {
                     discard.add(moveCardSkip);
                     deck.get(playerTurn).remove(moveSkip);
                     endTurn(playerTurn, SKIPTURN);
+                    return true;
+
                 }
                 break;
             case SEEFUTURE:

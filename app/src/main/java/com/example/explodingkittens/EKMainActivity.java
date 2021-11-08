@@ -1,7 +1,5 @@
 package com.example.explodingkittens;
 
-import com.example.explodingkittens.EKLocalGame;
-import com.example.explodingkittens.infoMessage.EKState;
 import com.example.explodingkittens.players.EKComputerPlayer1;
 import com.example.explodingkittens.players.EKHumanPlayer1;
 import com.example.gameframework.GameMainActivity;
@@ -11,8 +9,6 @@ import com.example.gameframework.gameConfiguration.GameConfig;
 import com.example.gameframework.gameConfiguration.GamePlayerType;
 import com.example.gameframework.infoMessage.GameState;
 import com.example.gameframework.players.GamePlayer;
-import com.example.gameframework.utilities.Logger;
-import com.example.gameframework.utilities.Saving;
 
 import java.util.ArrayList;
 
@@ -27,11 +23,18 @@ public class EKMainActivity extends GameMainActivity {
      *              The desired gameState to start at or null for new game
      * @return EKLocalGame
      */
-
+    /*
     public LocalGame createLocalGame(GameState gameState) {
         if(gameState == null) return new EKLocalGame((EKState) gameState);
         return new EKLocalGame((EKState) gameState);
     }
+    */
+
+    @Override
+    public LocalGame createLocalGame(GameState gameState) {
+        return new EKLocalGame();
+    }
+
 
     /**
      * createDefaultConfig
@@ -43,8 +46,8 @@ public class EKMainActivity extends GameMainActivity {
         playerTypes.add(new GamePlayerType("Local Human Player") {
             public GamePlayer createPlayer(String name) {
                 return new EKHumanPlayer1(name, R.layout.activity_main);
-                //TODO: Find how to do the layouts for the players
             }
+            //TODO: Find how to do the layouts for the players
         });
 
         playerTypes.add(new GamePlayerType("Dumb Computer Player") {
@@ -54,15 +57,16 @@ public class EKMainActivity extends GameMainActivity {
         });
 
         GameConfig defaultConfig = new GameConfig(playerTypes, 4, 4, "Exploding Kittens", PORT_NUMBER);
-
         defaultConfig.addPlayer("Human", 0);
-        defaultConfig.addPlayer("Computer", 3);
-
-        defaultConfig.setRemoteData("Remote Player", "", 1);
+        defaultConfig.addPlayer("Computer", 1);
+        defaultConfig.setRemoteData("Remote Player", "", 0);
 
         return defaultConfig;
     }
 
+    //SAVE AND LOAD GAME
+
+    /*
     @Override
     public GameState saveGame(String gameName) { return super.saveGame(getGameString(gameName));}
 
@@ -73,4 +77,5 @@ public class EKMainActivity extends GameMainActivity {
         Logger.log(TAG, "Loading: "+ gameName);
         return (GameState) new EKState((EKState) Saving.readFromFile(appName, this.getApplicationContext()));
     }
+     */
 }
