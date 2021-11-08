@@ -46,6 +46,7 @@ public class EKState extends GameState {
      * @param size: the number of players to declare hands for
      */
     public EKState(int size) {
+        super();
         this.deck = new ArrayList<>(NUM_PLAYERS);
         this.draw = new ArrayList<>(52);
         this.discard = new ArrayList<>(52);
@@ -62,6 +63,7 @@ public class EKState extends GameState {
      * @param state: the target instance of EKGS to deep copy
      */
     public EKState(EKState state){
+        super();
         this.playerTurn = state.playerTurn;
         draw = new ArrayList<>();
         for (int i = 0; i < state.draw.size(); i++) {

@@ -39,6 +39,8 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
 
     private ArrayList<ImageButton> cards = new ArrayList<>(5);
 
+    private EKState state;
+
     /**
      * constructor
      *consistent with TTT
@@ -66,7 +68,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
 
         else {
             //Update every image button to match what is in the gamestate
-            EKState state = (EKState) info;
+            this.state = new EKState((EKState) info);
             // TODO: THIS IS WHERE WE UPDATE THE GUI
             //Set the player's cards
 
