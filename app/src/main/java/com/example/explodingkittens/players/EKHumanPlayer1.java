@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.example.explodingkittens.infoMessage.Card;
 import com.example.explodingkittens.infoMessage.EKState;
 import com.example.gameframework.GameMainActivity;
 import com.example.gameframework.R;
@@ -72,7 +73,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             //Set the player's cards
 
             //Get the IDs of the first five cards in the hand
-            /*
+
             Card firstCard = state.deck.get(state.getPlayerTurn()).get(0);
             Card secondCard = state.deck.get(state.getPlayerTurn()).get(1);
             Card thirdCard = state.deck.get(state.getPlayerTurn()).get(2);
@@ -84,7 +85,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             playerCard3.setImageResource(thirdCard.image);
             playerCard4.setImageResource(fourthCard.image);
             playerCard5.setImageResource(fifthCard.image);
-             */
+
             Logger.log(TAG, "receiving");
         }
     }

@@ -55,8 +55,8 @@ public class EKState extends GameState {
         for(int i = 0; i< size; i++){
             this.deck.add(new ArrayList<>(7));
         }
-        prepareGame();
         gameState = STATE.INIT_ARRAYS;
+        prepareGame();
     }
 
     /**
@@ -438,7 +438,7 @@ public class EKState extends GameState {
      */
     public boolean createCards() {
         //sets the hash table keys and strings to the card description, and the card ID.
-        if (gameState == STATE.INIT_ARRAYS){
+        if (gameState == STATE.INIT_ARRAYS) {
             for (int i = 0; i < 4; i++) {
                 this.draw.add(new Card(CARDTYPE.ATTACK));
                 this.draw.add(new Card(CARDTYPE.FAVOR));
