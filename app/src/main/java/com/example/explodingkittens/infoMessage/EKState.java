@@ -62,7 +62,7 @@ public class EKState extends GameState {
      * @param state: the target instance of EKGS to deep copy
      */
     public EKState(EKState state){
-        playerTurn = 0;
+        this.playerTurn = state.playerTurn;
         draw = new ArrayList<>();
         for (int i = 0; i < state.draw.size(); i++) {
             draw.add(state.draw.get(i));
@@ -494,7 +494,7 @@ public class EKState extends GameState {
      * @return - true if there is only one in (true) player in playerStatus, false if there are more
      * than one players still playing
      */
-    public boolean endGame(boolean[] playerStatus){
+    public int endGame(boolean[] playerStatus){
         int out = 0;
         for(int i = 0; i < playerStatus.length; i++){
             if(playerStatus[i] == false) {
@@ -502,13 +502,19 @@ public class EKState extends GameState {
             }
         }
         if(out == 3){
-            gameState = STATE.GAME_END;
-            return true;
+            for (int i = 0; i < playerStatus.length; i++) {
+                if (playerStatus[i] == true) {
+                    gameState = STATE.GAME_END;
+                    return i;
+                }
+            }
         }
-        return false;
+        return -1;
     }
 
-    public boolean gameOver() {
+    public int getPlayerTurn() { return playerTurn; }
+
+    public int gameOver() {
         return endGame(playerStatus);
     }
 

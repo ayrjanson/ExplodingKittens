@@ -29,6 +29,7 @@ public class EKLocalGame extends LocalGame {
     public EKLocalGame() {
         super();
         currentState = new EKState(4); //game with 4 players
+        currentState.prepareGame();
         //this.previousState = null;
     }
 
@@ -64,10 +65,9 @@ public class EKLocalGame extends LocalGame {
         //Change 3: Print out the specific player name that won
         int outPlayers = 0;
         for (int i = 0; i < players.length; i++) {
-            if (currentState.gameOver() == true) {
-                return "Congrats! You've Won";
+            if (currentState.gameOver() != -1) {
+                return "Player " + currentState.gameOver() + " wins!";
             }
-
         }
         return null; // Game not over
     }

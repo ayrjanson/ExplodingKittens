@@ -35,7 +35,6 @@ public class EKMainActivity extends GameMainActivity {
         return new EKLocalGame();
     }
 
-
     /**
      * createDefaultConfig
      * @return GameConfig

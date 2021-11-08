@@ -4,8 +4,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.example.explodingkittens.infoMessage.Card;
 import com.example.explodingkittens.infoMessage.EKState;
-import com.example.explodingkittens.views.EKSurfaceView;
 import com.example.gameframework.GameMainActivity;
 import com.example.gameframework.R;
 import com.example.gameframework.infoMessage.GameInfo;
@@ -13,6 +13,8 @@ import com.example.gameframework.infoMessage.IllegalMoveInfo;
 import com.example.gameframework.infoMessage.NotYourTurnInfo;
 import com.example.gameframework.players.GameHumanPlayer;
 import com.example.gameframework.utilities.Logger;
+
+import java.util.ArrayList;
 
 public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListener {
     private static final String TAG = "EKHumanPlayer1";
@@ -35,7 +37,8 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
 
     private GameMainActivity myActivity;
 
-    private EKSurfaceView surfaceView;
+    private ArrayList<ImageButton> cards = new ArrayList<>(5);
+
     /**
      * constructor
      *consistent with TTT
@@ -65,6 +68,20 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             //Update every image button to match what is in the gamestate
             EKState state = (EKState) info;
             // TODO: THIS IS WHERE WE UPDATE THE GUI
+            //Set the player's cards
+
+            //Get the IDs of the first five cards in the hand
+            Card firstCard = state.deck.get(state.getPlayerTurn()).get(0);
+            Card secondCard = state.deck.get(state.getPlayerTurn()).get(1);
+            Card thirdCard = state.deck.get(state.getPlayerTurn()).get(2);
+            Card fourthCard = state.deck.get(state.getPlayerTurn()).get(3);
+            Card fifthCard = state.deck.get(state.getPlayerTurn()).get(4);
+
+            playerCard1.setImageResource(firstCard.image);
+            playerCard2.setImageResource(secondCard.image);
+            playerCard3.setImageResource(thirdCard.image);
+            playerCard4.setImageResource(fourthCard.image);
+            playerCard5.setImageResource(fifthCard.image);
             Logger.log(TAG, "receiving");
         }
     }
@@ -104,6 +121,12 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
         handLeft.setOnClickListener(this);
         handRight.setOnClickListener(this);
 
+        //Create card deck array
+        cards.add(playerCard1);
+        cards.add(playerCard2);
+        cards.add(playerCard3);
+        cards.add(playerCard4);
+        cards.add(playerCard5);
     }
 
     @Override
@@ -111,30 +134,44 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
         // Checks if the id matches the object
         // TODO: Move to this way if others don't work
         if (v.getId() == R.id.player1) {
+            // Determine if an action was selected that allows that user to be included
         }
-        else if (player2.equals(v)) {
+        else if (v.getId() == R.id.player2) {
+            // Determine if an action was selected that allows that user to be included
         }
-        else if (player3.equals(v)) {
+        else if (v.getId() == R.id.player3) {
+            // Determine if an action was selected that allows that user to be included
         }
-        else if (discardPile.equals(v)) {
+        else if (v.getId() == R.id.discardPile) {
+            // Add the selected card to the discard pile
         }
-        else if (drawPile.equals(v)) {
+        else if (v.getId() == R.id.drawPile) {
             // Create EKDrawAction
             // Send to localGame
         }
-        else if (playerCard1.equals(v)) {
+        else if (v.getId() == R.id.playerCard1) {
+            // Determine which action was called
         }
-        else if (playerCard2.equals(v)) {
+        else if (v.getId() == R.id.playerCard2) {
+            // Determine which action was called
         }
-        else if (playerCard3.equals(v)) {
+        else if (v.getId() == R.id.playerCard3) {
+            // Determine which action was called
         }
-        else if (playerCard4.equals(v)) {
+        else if (v.getId() == R.id.playerCard4) {
+            // Determine which action was called
         }
-        else if (playerCard5.equals(v)) {
+        else if (v.getId() == R.id.playerCard5) {
+            // Determine which action was called
         }
-        else if (handLeft.equals(v)) {
+        else if (v.getId() == R.id.handLeft) {
+            // Shift all the cards -1 in the array
+
         }
-        else if (handRight.equals(v)) {
+        else if (v.getId() == R.id.handRight) {
+            // Shift all the cards +1 in the array
+            for (int i = 0; i < cards.size(); i++) {
+            }
         }
         else {}
     }
