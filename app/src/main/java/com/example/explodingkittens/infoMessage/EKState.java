@@ -210,7 +210,6 @@ public class EKState extends GameState {
                 if(moveShuffle != -1) {
                     discard.add(moveCardShuffle);
                     deck.get(playerTurn).remove(moveShuffle);
-                    Collections.shuffle(draw);
                     return true;
                 }
                 break;
@@ -230,7 +229,7 @@ public class EKState extends GameState {
                 if(moveSkip != -1) {
                     discard.add(moveCardSkip);
                     deck.get(playerTurn).remove(moveSkip);
-                    endTurn(playerTurn, SKIPTURN);
+                    return true;
                 }
                 break;
             case SEEFUTURE:
@@ -411,6 +410,7 @@ public class EKState extends GameState {
         return false;
     }
 
+
     /**
      * createCards: creates a hashtable with the card types and their enum values, creates card
      * objects for the number of that type of card in the deck for a four-player game
@@ -500,6 +500,17 @@ public class EKState extends GameState {
         return endGame(playerStatus);
     }
 
+    //TODO make attack card method that forces a player to take an endturn action twice
+   /* public boolean attacked(boolean[] playerStatus, int playerTurn){
+        for(int i = playerTurn; i < playerStatus.length; i++){
+            if(playerStatus[i] == true){
+                int turnCount = 0;
+                while(turnCount < 2){
+                    if()
+                }
+            }
+        }
+    }*/
 
     //TODO card equals overload
     public boolean equals(EKState state){

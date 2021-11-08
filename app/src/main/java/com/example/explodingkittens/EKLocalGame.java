@@ -3,17 +3,22 @@ package com.example.explodingkittens;
 import android.util.Log;
 
 import com.example.explodingkittens.ekActionMessage.EKAttackAction;
+import com.example.explodingkittens.ekActionMessage.EKCatCardAction;
+import com.example.explodingkittens.ekActionMessage.EKEndTurnAction;
 import com.example.explodingkittens.ekActionMessage.EKFavorAction;
 import com.example.explodingkittens.ekActionMessage.EKMoveAction;
 import com.example.explodingkittens.ekActionMessage.EKNopeAction;
 import com.example.explodingkittens.ekActionMessage.EKSeeFutureAction;
 import com.example.explodingkittens.ekActionMessage.EKShuffleAction;
+import com.example.explodingkittens.ekActionMessage.EKSkipAction;
 import com.example.explodingkittens.infoMessage.CARDTYPE;
 import com.example.explodingkittens.infoMessage.EKState;
 import com.example.gameframework.LocalGame;
 import com.example.gameframework.actionMessage.GameAction;
 import com.example.gameframework.infoMessage.GameInfo;
 import com.example.gameframework.players.GameComputerPlayer;
+
+import java.util.Collections;
 import java.util.Random;
 import com.example.gameframework.players.GamePlayer;
 
@@ -22,7 +27,6 @@ import com.example.gameframework.players.GamePlayer;
 public class EKLocalGame extends LocalGame {
     // instance vars for current and previous states
     private EKState currentState;
-    private EKState previousState;
     private GameAction action;
     private int turn = currentState.getPlayerTurn();
 
@@ -31,7 +35,6 @@ public class EKLocalGame extends LocalGame {
 
     public EKLocalGame() {
         this.currentState = new EKState(4); //game with 4 players
-        this.previousState = null;
     }
 
     //send updated state to player
@@ -80,20 +83,43 @@ public class EKLocalGame extends LocalGame {
 
         if (action instanceof EKAttackAction) {
             if(currentState.playCard(turn, CARDTYPE.ATTACK, currentState.deck.get(turn), currentState.discard)){
+                currentState.endTurn(turn, currentState.SKIPTURN);
+                // TODO ben questions :P
                 return true;
             }
         }
 
         if (action instanceof EKShuffleAction) {
             if(currentState.playCard(turn, CARDTYPE.SHUFFLE, currentState.deck.get(turn), currentState.discard)){
+                Collections.shuffle(currentState.draw);
                 return true;
             }
         }
 
-        else if (action instanceof EKSeeFutureAction) {
+        if (action instanceof EKSeeFutureAction) {
             if(currentState.playCard(turn, CARDTYPE.SEEFUTURE, currentState.deck.get(turn), currentState.discard)){
                 return true;
             }
+        }
+
+        if (action instanceof EKSkipAction) {
+            if(currentState.playCard(turn, CARDTYPE.SKIP, currentState.deck.get(turn), currentState.discard)){
+                currentState.endTurn(turn, currentState.SKIPTURN);
+                return true;
+            }
+        }
+
+        if (action instanceof EKEndTurnAction) {
+            if(currentState.playCard(turn, CARDTYPE.SEEFUTURE, currentState.deck.get(turn), currentState.discard)){
+                currentState.endTurn(turn, currentState.DRAWCARD);
+                return true;
+            }
+        }
+
+        if (action instanceof EKCatCardAction) {
+            /*if(currentState.playCard(turn, CARDTYPE.SEEFUTURE, currentState.deck.get(turn), currentState.discard)){
+                return true;
+            }*/
         }
 
         Log.d("Invalid Action",

@@ -15,7 +15,7 @@ import com.example.gameframework.utilities.Logger;
 
 public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListener {
     private static final String TAG = "EKHumanPlayer1";
-    //DO WE NEED EKSURFACEVIEW?
+    //DO WE NEED EKSURFACEVIEW? no
     private int layoutId;
 
     //Variables will reference widgets that will be modified during play
