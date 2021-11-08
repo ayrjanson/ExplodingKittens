@@ -1,7 +1,7 @@
 package com.example.explodingkittens.infoMessage;
 
 import android.widget.Button;
-
+import com.example.explodingkittens.infoMessage.STATE;
 import com.example.gameframework.infoMessage.GameState;
 
 import java.util.ArrayList;
@@ -33,7 +33,6 @@ public class EKState extends GameState {
     public ArrayList<Card> draw;
     public boolean[] playerStatus;
     public STATE gameState;
-    public HashMap<Button, Card> buttonMap;
     public static final int NUM_PLAYERS = 4;
     public int playerTurn;
     public static final int DRAWCARD = 4000;
@@ -55,8 +54,9 @@ public class EKState extends GameState {
         for(int i = 0; i< size; i++){
             this.deck.add(new ArrayList<>(7));
         }
-        prepareGame();
         gameState = STATE.INIT_ARRAYS;
+        this.prepareGame();
+
     }
 
     /**
@@ -64,7 +64,9 @@ public class EKState extends GameState {
      * @param state: the target instance of EKGS to deep copy
      */
     public EKState(EKState state){
-        //super();
+        if(state == null){
+            return;
+        }
         this.playerTurn = state.playerTurn;
         draw = new ArrayList<>();
         for (int i = 0; i < state.draw.size(); i++) {

@@ -19,7 +19,7 @@ import com.example.gameframework.players.GamePlayer;
 
 public class EKLocalGame extends LocalGame {
     // instance vars for current and previous states
-    private EKState currentState;
+    public EKState currentState;
     //private EKState previousState;
     //private GameAction action;
     //private int turn = currentState.playerTurn;

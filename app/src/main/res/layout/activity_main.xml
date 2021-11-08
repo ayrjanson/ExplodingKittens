@@ -97,7 +97,7 @@
                 android:layout_weight="1"
                 android:background="#314723"
                 android:scaleType="fitStart"
-                android:src="@drawable/skip" />
+                android:src="@drawable/exploading_kitten_back" />
 
             <ImageButton
                 android:id="@+id/playerCard2"
@@ -106,7 +106,7 @@
                 android:layout_weight="1"
                 android:background="#314723"
                 android:scaleType="fitStart"
-                android:src="@drawable/defuse" />
+                android:src="@drawable/exploading_kitten_back" />
 
             <ImageButton
                 android:id="@+id/playerCard3"
@@ -115,7 +115,7 @@
                 android:layout_weight="1"
                 android:background="#314723"
                 android:scaleType="fitStart"
-                android:src="@drawable/skip" />
+                android:src="@drawable/exploading_kitten_back" />
 
             <ImageButton
                 android:id="@+id/playerCard4"
@@ -124,7 +124,7 @@
                 android:layout_weight="1"
                 android:background="#314723"
                 android:scaleType="fitStart"
-                android:src="@drawable/attack" />
+                android:src="@drawable/exploading_kitten_back" />
 
             <ImageButton
                 android:id="@+id/playerCard5"
@@ -133,7 +133,7 @@
                 android:layout_weight="1"
                 android:background="#314723"
                 android:scaleType="fitStart"
-                android:src="@drawable/nope" />
+                android:src="@drawable/exploading_kitten_back" />
 
         </LinearLayout>
 

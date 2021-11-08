@@ -1,9 +1,12 @@
 package com.example.explodingkittens.players;
 
+import android.media.Image;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.example.explodingkittens.EKLocalGame;
+import com.example.explodingkittens.infoMessage.Card;
 import com.example.explodingkittens.infoMessage.EKState;
 import com.example.gameframework.GameMainActivity;
 import com.example.gameframework.R;
@@ -14,11 +17,14 @@ import com.example.gameframework.players.GameHumanPlayer;
 import com.example.gameframework.utilities.Logger;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListener {
     private static final String TAG = "EKHumanPlayer1";
     //DO WE NEED EKSURFACEVIEW?
     private int layoutId;
+
+    public HashMap<ImageButton, Card> buttonMap = new HashMap();
 
     //Variables will reference widgets that will be modified during play
     private ImageButton player1 = null;
@@ -58,7 +64,9 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
 
     @Override
     public void receiveInfo(GameInfo info) {
-        if (info instanceof IllegalMoveInfo || info instanceof NotYourTurnInfo) {
+    if(info == null){
+        return;
+    }else if (info instanceof IllegalMoveInfo || info instanceof NotYourTurnInfo) {
             // if the move was out of turn or otherwise illegal, flash the screen
         }
         else if (!(info instanceof EKState))
@@ -67,7 +75,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
 
         else {
             //Update every image button to match what is in the gamestate
-            this.state = new EKState((EKState) info);
+            EKState state = new EKState((EKState) info);
             // TODO: THIS IS WHERE WE UPDATE THE GUI
             //Set the player's cards
 
@@ -93,23 +101,39 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
     public void setAsGui(GameMainActivity activity) {
 
         myActivity = activity;
+//TODO how to access EKState from here
 
         activity.setContentView(R.layout.activity_main); //May cause issue with layoutId above
 
         //Create the buttons that are in the GUI
-        this.player1 = (ImageButton)activity.findViewById(R.id.player1);
-        this.player2 = (ImageButton)activity.findViewById(R.id.player2);
-        this.player3 = (ImageButton)activity.findViewById(R.id.player3);
-        this.discardPile = (ImageButton)activity.findViewById(R.id.discardPile);
-        this.drawPile = (ImageButton)activity.findViewById(R.id.drawPile);
-        this.playerCard1 = (ImageButton)activity.findViewById(R.id.playerCard1);
-        this.playerCard2 = (ImageButton)activity.findViewById(R.id.playerCard2);
-        this.playerCard3 = (ImageButton)activity.findViewById(R.id.playerCard3);
-        this.playerCard4 = (ImageButton)activity.findViewById(R.id.playerCard4);
-        this.playerCard5 = (ImageButton)activity.findViewById(R.id.playerCard5);
-        this.handLeft = (Button)activity.findViewById(R.id.handLeft);
-        this.handRight = (Button)activity.findViewById(R.id.handRight);
+        ImageButton player1 = activity.findViewById(R.id.player1);
+        ImageButton player2 = activity.findViewById(R.id.player2);
+        ImageButton player3 = activity.findViewById(R.id.player3);
+        ImageButton discardPile = activity.findViewById(R.id.discardPile);
+        ImageButton drawPile = activity.findViewById(R.id.drawPile);
+        ImageButton playerCard1 = activity.findViewById(R.id.playerCard1);
+        ImageButton playerCard2 = activity.findViewById(R.id.playerCard2);
+        ImageButton playerCard3 = activity.findViewById(R.id.playerCard3);
+        ImageButton playerCard4 = activity.findViewById(R.id.playerCard4);
+        ImageButton playerCard5 = activity.findViewById(R.id.playerCard5);
+        Button handLeft = activity.findViewById(R.id.handLeft);
+        Button handRight = activity.findViewById(R.id.handRight);
 
+/*
+        buttonMap.put(playerCard1,state.deck.get(0).get(0));
+        buttonMap.put(playerCard2,state.deck.get(0).get(1));
+        buttonMap.put(playerCard3,state.deck.get(0).get(2));
+        buttonMap.put(playerCard4,state.deck.get(0).get(3));
+        buttonMap.put(playerCard5,state.deck.get(0).get(4));
+
+
+
+        setGuiImage(playerCard1,buttonMap);
+        setGuiImage(playerCard2,buttonMap);
+        setGuiImage(playerCard3,buttonMap);
+        setGuiImage(playerCard4,buttonMap);
+        setGuiImage(playerCard5,buttonMap);
+*/
         //Create Button Listeners
         player1.setOnClickListener(this);
         player2.setOnClickListener(this);
@@ -176,4 +200,9 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
         }
         else {}
     }
+
+    public void setGuiImage(ImageButton button, HashMap<ImageButton,Card> map){
+        button.setImageResource(map.get(button).image);
+    }
+
 }
