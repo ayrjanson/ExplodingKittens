@@ -1,4 +1,4 @@
-package com.example.explodingkittens.views;
+package com.example.explodingkittens;
 
 import android.util.Log;
 
@@ -52,12 +52,11 @@ public class EKLocalGame extends LocalGame {
     protected String checkIfGameOver() {
         int outPlayers = 0;
         for (int i = 0; i < players.length; i++) {
-            if (currentState.gameOver() == true) {
-                return "Congrats! You've Won";
+            if (currentState.gameOver() != -1) {
+                return "Player" + currentState.gameOver() + "wins!";
             }
-
         }
-        return "boo";
+        return null ;
     }
 
 
