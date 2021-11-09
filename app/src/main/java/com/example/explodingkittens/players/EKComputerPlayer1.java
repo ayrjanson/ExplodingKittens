@@ -40,7 +40,7 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
                 for(int i = 0; i < receive.deck.get(receive.getPlayerTurn()).size(); i++) {
                     //if 0 is drawn and we can play ATTACK
                     if (playedCard == false && receive.deck.get(playerNum).get(i).getType().equals(CARDTYPE.ATTACK)) {
-                        receive.playCard(turn, CARDTYPE.ATTACK, receive.deck.get(turn), receive.discard);
+                        //receive.playCard(turn, CARDTYPE.ATTACK, receive.deck.get(turn), receive.discard);
                         EKAttackAction attack = new EKAttackAction(this);
                         playedCard = true;
                         game.sendAction(attack);
@@ -49,7 +49,7 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
 
                     //if 1 is drawn and we can play SHUFFLE
                     else if (playedCard == false && receive.deck.get(playerNum).get(i).getType().equals(CARDTYPE.SHUFFLE)) {
-                        receive.playCard(turn, CARDTYPE.SHUFFLE, receive.deck.get(turn), receive.discard);
+                        //receive.playCard(turn, CARDTYPE.SHUFFLE, receive.deck.get(turn), receive.discard);
                         EKShuffleAction shuffle = new EKShuffleAction(this);
                         playedCard = true;
                         game.sendAction(shuffle);
@@ -58,7 +58,7 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
 
                     //if 2 is drawn and we can play FAVOR
                     else if (playedCard == false && receive.deck.get(playerNum).get(i).getType().equals(CARDTYPE.FAVOR)) {
-                        receive.playCard(turn, CARDTYPE.FAVOR, receive.deck.get(turn), receive.discard);
+                        //receive.playCard(turn, CARDTYPE.FAVOR, receive.deck.get(turn), receive.discard);
                         EKFavorAction favor = new EKFavorAction(this);
                         playedCard = true;
                         game.sendAction(favor);
@@ -67,7 +67,7 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
 
                     //if 3 is drawn and we can play SKIP
                     else if (playedCard == false && receive.deck.get(playerNum).get(i).getType().equals(CARDTYPE.SKIP)) {
-                        receive.playCard(turn, CARDTYPE.SKIP, receive.deck.get(turn), receive.discard);
+                        //receive.playCard(turn, CARDTYPE.SKIP, receive.deck.get(turn), receive.discard);
                         EKSkipAction skip = new EKSkipAction(this);
                         //don't set played card becaese we dont need to end turn
                         game.sendAction(skip);
@@ -76,7 +76,7 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
 
                     //if 4 is drawn and we can play NOPE
                     else if (playedCard == false && receive.deck.get(playerNum).get(i).getType().equals(CARDTYPE.NOPE)) {
-                        receive.playCard(turn, CARDTYPE.NOPE, receive.deck.get(turn), receive.discard);
+                        //receive.playCard(turn, CARDTYPE.NOPE, receive.deck.get(turn), receive.discard);
                         EKNopeAction nope = new EKNopeAction(this);
                         playedCard = true;
                         game.sendAction(nope);
@@ -85,7 +85,7 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
 
                     //IF 5 is drawn and we can play SEETHEFUTURE
                     else if (playedCard == false && receive.deck.get(playerNum).get(i).getType().equals(CARDTYPE.SEEFUTURE)) {
-                        receive.playCard(turn, CARDTYPE.SEEFUTURE, receive.deck.get(turn), receive.discard);
+                        //receive.playCard(turn, CARDTYPE.SEEFUTURE, receive.deck.get(turn), receive.discard);
                         EKSeeFutureAction see = new EKSeeFutureAction(this);
                         game.sendAction(see);
                         playedCard = true;
