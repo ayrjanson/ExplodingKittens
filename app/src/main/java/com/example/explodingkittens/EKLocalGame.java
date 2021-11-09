@@ -138,6 +138,7 @@ public class EKLocalGame extends LocalGame {
         else if (action instanceof EKEndTurnAction) {
             if(currentState.playCard(turn, CARDTYPE.SEEFUTURE, currentState.deck.get(turn), currentState.discard)) {
                 currentState.endTurn(turn, currentState.DRAWCARD);
+                currentState.nextPlayer(currentState.getPlayerTurn());
                 return true;
             }
         }
@@ -151,6 +152,7 @@ public class EKLocalGame extends LocalGame {
             if(currentState.playCard(currentState.playerTurn, drawn.getType(), currentState.draw, currentState.deck.get(currentState.getPlayerTurn()))) {
                 //This turn is a draw card turn
                 //End turn using the draw card excuse - resume play as normal
+                currentState.nextPlayer(currentState.getPlayerTurn());
                 return true;
             }
         }
