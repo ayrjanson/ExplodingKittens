@@ -12,8 +12,6 @@ import com.example.explodingkittens.infoMessage.EKState;
 import com.example.gameframework.infoMessage.GameInfo;
 import com.example.gameframework.players.GameComputerPlayer;
 
-import java.util.Random;
-
 public class EKComputerPlayer1 extends GameComputerPlayer {
 
     private boolean playedCard = false;
@@ -27,15 +25,18 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
      */
     @Override
     protected void receiveInfo(GameInfo info) {
+        if(!(info instanceof EKState)) return;
+
+
         EKState receive = new EKState((EKState) info);
-        int ran = new Random().nextInt(6);
         int turn = receive.getPlayerTurn();
-        if (turn == playerNum) {
+        if (receive.getPlayerTurn() == playerNum) {
             //if played card, then just send end turn action
             //for
             // pick ith card in hand, try to play
             // if it works, set played & send
             if(playedCard != true) {
+                sleep(1);
                 for(int i = 0; i < receive.deck.get(receive.getPlayerTurn()).size(); i++) {
                     //if 0 is drawn and we can play ATTACK
                     if (playedCard == false && receive.deck.get(playerNum).get(i).getType().equals(CARDTYPE.ATTACK)) {
@@ -43,6 +44,7 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
                         EKAttackAction attack = new EKAttackAction(this);
                         playedCard = true;
                         game.sendAction(attack);
+                        return;
                     }
 
                     //if 1 is drawn and we can play SHUFFLE
@@ -51,6 +53,7 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
                         EKShuffleAction shuffle = new EKShuffleAction(this);
                         playedCard = true;
                         game.sendAction(shuffle);
+                        return;
                     }
 
                     //if 2 is drawn and we can play FAVOR
@@ -59,14 +62,16 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
                         EKFavorAction favor = new EKFavorAction(this);
                         playedCard = true;
                         game.sendAction(favor);
+                        return;
                     }
 
                     //if 3 is drawn and we can play SKIP
                     else if (playedCard == false && receive.deck.get(playerNum).get(i).getType().equals(CARDTYPE.SKIP)) {
                         receive.playCard(turn, CARDTYPE.SKIP, receive.deck.get(turn), receive.discard);
                         EKSkipAction skip = new EKSkipAction(this);
-                        playedCard = true;
+                        //don't set played card becaese we dont need to end turn
                         game.sendAction(skip);
+                        return;
                     }
 
                     //if 4 is drawn and we can play NOPE
@@ -75,6 +80,7 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
                         EKNopeAction nope = new EKNopeAction(this);
                         playedCard = true;
                         game.sendAction(nope);
+                        return;
                     }
 
                     //IF 5 is drawn and we can play SEETHEFUTURE
@@ -84,17 +90,22 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
                         game.sendAction(see);
                         playedCard = true;
                         game.sendAction(see);
+                        return;
                     }
 
                     else {
                         EKEndTurnAction end = new EKEndTurnAction(this);
+                        playedCard = false;
                         game.sendAction(end);
+                        return;
                     }
                 }
             }
             else {
                 EKEndTurnAction end = new EKEndTurnAction(this);
+                playedCard = false;
                 game.sendAction(end);
+                return;
             }
             playedCard = false;
         }

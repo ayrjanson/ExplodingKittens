@@ -15,6 +15,7 @@
         android:theme="@style/Theme.GameFramework">
         <activity
             android:name="com.example.explodingkittens.EKMainActivity"
+            android:screenOrientation="landscape"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

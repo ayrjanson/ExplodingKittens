@@ -83,7 +83,10 @@ public class EKState extends GameState {
             }
         }
         this.gameState = state.gameState;
-        this.playerStatus = state.playerStatus;
+        this.playerStatus = new boolean[state.playerStatus.length];
+        for (int i = 0; i < state.playerStatus.length; i++) {
+            playerStatus[i] = state.playerStatus[i];
+        }
     }
 
     /**

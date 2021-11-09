@@ -9,6 +9,7 @@ import com.example.explodingkittens.infoMessage.CARDTYPE;
 import com.example.explodingkittens.infoMessage.Card;
 import com.example.explodingkittens.infoMessage.EKState;
 import com.example.gameframework.GameMainActivity;
+import com.example.gameframework.LocalGame;
 import com.example.gameframework.R;
 import com.example.gameframework.infoMessage.GameInfo;
 import com.example.gameframework.infoMessage.IllegalMoveInfo;
@@ -31,6 +32,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
     private ImageButton playerCard3 = null;
     private ImageButton playerCard4 = null;
     private ImageButton playerCard5 = null;
+    private ArrayList<ImageButton> playerCards;
     private Button handLeft = null;
     private Button handRight = null;
 
@@ -91,17 +93,39 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             //Update every image button to match what is in the gamestate
             this.state = new EKState((EKState) info);
 
-            Card firstCard = state.deck.get(state.getPlayerTurn()).get(0);
+            int myPlayerNum = ((LocalGame) game).getPlayerIdx(this);
+
+            /*Card firstCard = state.deck.get(state.getPlayerTurn()).get(0);
             Card secondCard = state.deck.get(state.getPlayerTurn()).get(1);
             Card thirdCard = state.deck.get(state.getPlayerTurn()).get(2);
             Card fourthCard = state.deck.get(state.getPlayerTurn()).get(3);
             Card fifthCard = state.deck.get(state.getPlayerTurn()).get(4);
+*/
+            int lastDiscard = state.discard.size();
 
-            playerCard1.setImageResource(imageTable.get(firstCard.getType()));
-            playerCard2.setImageResource(imageTable.get(secondCard.getType()));
-            playerCard3.setImageResource(imageTable.get(thirdCard.getType()));
-            playerCard4.setImageResource(imageTable.get(fourthCard.getType()));
-            playerCard5.setImageResource(imageTable.get(fifthCard.getType()));
+            Card discardCard = null;
+            if (lastDiscard > 0) {
+                discardCard = state.discard.get(lastDiscard - 1);
+                discardPile.setImageResource(imageTable.get(discardCard.getType()));
+            } else {
+                discardPile.setImageResource(R.drawable.exploading_kitten_back);
+            }
+
+            int numCardsDisplay;
+            if (state.deck.get(myPlayerNum).size() < playerCards.size()) {
+                numCardsDisplay = state.deck.get(myPlayerNum).size();
+            }
+            else numCardsDisplay = playerCards.size();
+
+            for (int i = 0; i < numCardsDisplay; i++) {
+                playerCards.get(i).setImageResource(imageTable.get(state.deck.get(
+                                            myPlayerNum).get(i).getType()));
+            }
+
+            for (int i = state.deck.get(myPlayerNum).size(); i < playerCards.size(); i++) {
+                playerCards.get(i).setImageResource(R.drawable.exploading_kitten_back);
+            }
+
 
             /*
             buttonMap.put(playerCard1,state.deck.get(0).get(0));
@@ -144,17 +168,24 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
         this.handLeft = (Button)activity.findViewById(R.id.handLeft);
         this.handRight = (Button)activity.findViewById(R.id.handRight);
 
+        playerCards = new ArrayList<>();
+        playerCards.add(playerCard1);
+        playerCards.add(playerCard2);
+        playerCards.add(playerCard3);
+        playerCards.add(playerCard4);
+        playerCards.add(playerCard5);
+
         //Create Button Listeners
         player1.setOnClickListener(this);
         player2.setOnClickListener(this);
         player3.setOnClickListener(this);
         discardPile.setOnClickListener(this);
         drawPile.setOnClickListener(this);
-        playerCard1.setOnClickListener(this);
-        playerCard2.setOnClickListener(this);
-        playerCard3.setOnClickListener(this);
-        playerCard4.setOnClickListener(this);
-        playerCard5.setOnClickListener(this);
+
+        for (ImageButton playerCard : playerCards) {
+            playerCard.setOnClickListener(this);
+        }
+
         handLeft.setOnClickListener(this);
         handRight.setOnClickListener(this);
     }

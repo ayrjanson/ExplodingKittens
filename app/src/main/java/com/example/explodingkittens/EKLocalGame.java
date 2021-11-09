@@ -16,13 +16,14 @@ import com.example.explodingkittens.infoMessage.EKState;
 import com.example.gameframework.LocalGame;
 import com.example.gameframework.actionMessage.GameAction;
 import com.example.gameframework.players.GamePlayer;
+import com.example.gameframework.utilities.Logger;
 
 import java.util.Collections;
 
 
 public class EKLocalGame extends LocalGame {
     // instance vars for current and previous states
-    public EKState currentState;
+    //public EKState state;
     //private EKState previousState;
     //private GameAction action;
 
@@ -32,7 +33,7 @@ public class EKLocalGame extends LocalGame {
     public EKLocalGame() {
         super();
         super.state = new EKState(4); //game with 4 players
-        currentState = (EKState) super.state;
+        //state = (EKState) super.state;
         //this.previousState = null;
     }
 
@@ -40,7 +41,7 @@ public class EKLocalGame extends LocalGame {
     public EKLocalGame(EKState ekgamestate) {
         super();
         super.state = new EKState(ekgamestate);
-        currentState = (EKState) super.state;
+        //state = (EKState) super.state;
     }
 
     //send updated state to player
@@ -53,7 +54,7 @@ public class EKLocalGame extends LocalGame {
     //checks if player can play card
     @Override
     protected boolean canMove(int playerIdx) {
-        if (currentState.getPlayerTurn() == playerIdx) return true;
+        if (((EKState) state).getPlayerTurn() == playerIdx) return true;
         return false;
     }
 
@@ -69,8 +70,8 @@ public class EKLocalGame extends LocalGame {
         //Change 3: Print out the specific player name that won
         int outPlayers = 0;
         for (int i = 0; i < players.length; i++) {
-            if (currentState.gameOver() != -1) {
-                return "Player " + currentState.gameOver() + " wins!";
+            if (((EKState) state).gameOver() != -1) {
+                return "Player " + ((EKState) state).gameOver() + " wins!";
             }
         }
         return null; // Game not over
@@ -79,16 +80,19 @@ public class EKLocalGame extends LocalGame {
 
     @Override
     protected boolean makeMove(GameAction action) {
-        int turn = currentState.playerTurn;
+        int turn = ((EKState) state).playerTurn;
+
+
+
         if (action instanceof EKNopeAction) {
-            if(currentState.playCard(currentState.playerTurn, CARDTYPE.NOPE, currentState.deck.get(currentState.playerTurn), currentState.discard)){
+            if(((EKState) state).playCard(((EKState) state).playerTurn, CARDTYPE.NOPE, ((EKState) state).deck.get(((EKState) state).playerTurn), ((EKState) state).discard)){
                 //go do the stuff :)
                 return true;
             }
         }
 
         else if (action instanceof EKFavorAction) {
-            if(currentState.playCard(currentState.getPlayerTurn(), CARDTYPE.FAVOR, currentState.deck.get(currentState.playerTurn), currentState.discard)){
+            if(((EKState) state).playCard(((EKState) state).getPlayerTurn(), CARDTYPE.FAVOR, ((EKState) state).deck.get(((EKState) state).playerTurn), ((EKState) state).discard)){
                 //Prompt the user to choose which player to steal a card from
                 //Ask the user to choose which type of card they would like to steal a card from by
                 //displaying cards in their deck
@@ -104,14 +108,15 @@ public class EKLocalGame extends LocalGame {
         }
 
         else if (action instanceof EKSkipAction) {
-            if(currentState.playCard(currentState.playerTurn, CARDTYPE.SKIP, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
-                currentState.endTurn(turn, currentState.SKIPTURN);
+            if(((EKState) state).playCard(((EKState) state).playerTurn, CARDTYPE.SKIP, ((EKState) state).deck.get(((EKState) state).playerTurn), ((EKState) state).discard)) {
+                ((EKState) state).endTurn(turn, ((EKState) state).SKIPTURN);
+                ((EKState) state).nextPlayer(((EKState) state).getPlayerTurn());
                 return true;
             }
         }
 
         else if (action instanceof EKAttackAction) {
-            if(currentState.playCard(currentState.playerTurn, CARDTYPE.ATTACK, currentState.deck.get(currentState.playerTurn), currentState.discard)){
+            if(((EKState) state).playCard(((EKState) state).playerTurn, CARDTYPE.ATTACK, ((EKState) state).deck.get(((EKState) state).playerTurn), ((EKState) state).discard)){
                 //Send message that next player need to take two turns
                 //End the current player's turn - attack end turn excuse
                 return true;
@@ -119,15 +124,15 @@ public class EKLocalGame extends LocalGame {
         }
 
         else if (action instanceof EKShuffleAction) {
-            if(currentState.playCard(currentState.playerTurn, CARDTYPE.SHUFFLE, currentState.deck.get(currentState.playerTurn), currentState.discard)){
+            if(((EKState) state).playCard(((EKState) state).playerTurn, CARDTYPE.SHUFFLE, ((EKState) state).deck.get(((EKState) state).playerTurn), ((EKState) state).discard)){
                 //Shuffle the draw deck
-                Collections.shuffle(currentState.draw);
+                Collections.shuffle(((EKState) state).draw);
                 return true;
             }
         }
 
         else if (action instanceof EKSeeFutureAction) {
-            if(currentState.playCard(currentState.playerTurn, CARDTYPE.SEEFUTURE, currentState.deck.get(currentState.playerTurn), currentState.discard)){
+            if(((EKState) state).playCard(((EKState) state).playerTurn, CARDTYPE.SEEFUTURE, ((EKState) state).deck.get(((EKState) state).playerTurn), ((EKState) state).discard)){
                 //Display the first three cards in the draw pile in the player's deck
                 //All other cards have no display on them
                 //Once ok, turn the player's deck back to normal
@@ -136,11 +141,12 @@ public class EKLocalGame extends LocalGame {
         }
 
         else if (action instanceof EKEndTurnAction) {
-            if(currentState.playCard(turn, CARDTYPE.SEEFUTURE, currentState.deck.get(turn), currentState.discard)) {
-                currentState.endTurn(turn, currentState.DRAWCARD);
-                currentState.nextPlayer(currentState.getPlayerTurn());
+            //if(((EKState) state).playCard(turn, CARDTYPE.SEEFUTURE, ((EKState) state).deck.get(turn), ((EKState) state).discard)) {
+                ((EKState) state).endTurn(turn, ((EKState) state).DRAWCARD);
+                ((EKState) state).nextPlayer(((EKState) state).getPlayerTurn());
+                Logger.log("makeMove","Ended Turn, current player now is" + ((EKState) state).playerTurn);
                 return true;
-            }
+            //}
         }
 
         else if (action instanceof EKCatCardAction) {
@@ -148,11 +154,11 @@ public class EKLocalGame extends LocalGame {
         }
 
         else {
-            Card drawn = currentState.takeFromDraw();
-            if(currentState.playCard(currentState.playerTurn, drawn.getType(), currentState.draw, currentState.deck.get(currentState.getPlayerTurn()))) {
+            Card drawn = ((EKState) state).takeFromDraw();
+            if(((EKState) state).playCard(((EKState) state).playerTurn, drawn.getType(), ((EKState) state).draw, ((EKState) state).deck.get(((EKState) state).getPlayerTurn()))) {
                 //This turn is a draw card turn
                 //End turn using the draw card excuse - resume play as normal
-                currentState.nextPlayer(currentState.getPlayerTurn());
+                ((EKState) state).nextPlayer(((EKState) state).getPlayerTurn());
                 return true;
             }
         }
