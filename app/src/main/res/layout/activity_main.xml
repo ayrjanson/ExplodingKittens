@@ -2,16 +2,18 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:background="#9E0909"
     tools:context=".MainActivity">
+
 
     <LinearLayout
         android:id="@+id/verticalLL"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#314723"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#9E0909"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="16dp">
@@ -20,8 +22,8 @@
             android:id="@+id/topLL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#314723"
+            android:layout_weight="5"
+            android:background="#9E0909"
             android:orientation="horizontal">
 
             <ImageButton
@@ -29,7 +31,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
-                android:background="#9E0909"
                 android:scaleType="fitCenter"
                 android:src="@drawable/cat_player1" />
 
@@ -38,7 +39,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
-                android:background="#9E0909"
                 android:scaleType="fitCenter"
                 android:src="@drawable/cat_player2" />
 
@@ -47,7 +47,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
-                android:background="#9E0909"
                 android:scaleType="fitCenter"
                 android:src="@drawable/cat_player3" />
 
@@ -57,7 +56,7 @@
             android:id="@+id/topLowerLL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="15"
             android:background="#314723"
             android:orientation="horizontal">
 
@@ -65,8 +64,7 @@
                 android:id="@+id/discardPile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#314723"
+                android:layout_weight="2"
                 android:scaleType="centerInside"
                 android:src="@drawable/exploading_kitten_back" />
 
@@ -75,8 +73,7 @@
                 android:id="@+id/drawPile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#314723"
+                android:layout_weight="2"
                 android:scaleType="centerInside"
                 android:src="@drawable/exploading_kitten_back" />
 
@@ -86,88 +83,69 @@
             android:id="@+id/middleLL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="5"
             android:background="#314723"
             android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/playerCard1"
+            <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#314723"
-                android:scaleType="fitStart"
-                android:src="@drawable/exploading_kitten_back" />
+                android:layout_height="match_parent">
 
-            <ImageButton
-                android:id="@+id/playerCard2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#314723"
-                android:scaleType="fitStart"
-                android:src="@drawable/exploading_kitten_back" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-            <ImageButton
-                android:id="@+id/playerCard3"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#314723"
-                android:scaleType="fitStart"
-                android:src="@drawable/exploading_kitten_back" />
+                    <ImageButton
+                        android:id="@+id/playerCard5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitStart"
+                        android:src="@drawable/exploading_kitten_back" />
 
-            <ImageButton
-                android:id="@+id/playerCard4"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#314723"
-                android:scaleType="fitStart"
-                android:src="@drawable/exploading_kitten_back" />
+                    <ImageButton
+                        android:id="@+id/playerCard4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitStart"
+                        android:src="@drawable/exploading_kitten_back" />
 
-            <ImageButton
-                android:id="@+id/playerCard5"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#314723"
-                android:scaleType="fitStart"
-                android:src="@drawable/exploading_kitten_back" />
+                    <ImageButton
+                        android:id="@+id/playerCard3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitStart"
+                        android:src="@drawable/exploading_kitten_back" />
+
+                    <ImageButton
+                        android:id="@+id/playerCard2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitStart"
+                        android:src="@drawable/exploading_kitten_back" />
+
+                    <ImageButton
+                        android:id="@+id/playerCard1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/exploading_kitten_back" />
+                </LinearLayout>
+            </HorizontalScrollView>
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1.4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/handLeft"
+            <ImageButton
+                android:id="@+id/imageButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#314723"
-                android:padding="30dp"
-                android:text="Tab Left" />
-
-            <Button
-                android:id="@+id/handRight"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#314723"
-                android:padding="30dp"
-                android:text="Tab Right" />
-
-            <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:background="@drawable/gear"
-                android:backgroundTintMode="src_atop"
-                android:gravity="right" />
-
+                android:layout_weight="1"
+                android:scaleType="fitEnd"
+                android:src="@android:drawable/ic_menu_manage" />
         </LinearLayout>
 
     </LinearLayout>
