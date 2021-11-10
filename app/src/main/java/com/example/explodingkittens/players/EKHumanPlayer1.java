@@ -5,6 +5,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.example.explodingkittens.ekActionMessage.EKDrawAction;
+import com.example.explodingkittens.ekActionMessage.EKPlayCardAction;
 import com.example.explodingkittens.infoMessage.CARDTYPE;
 import com.example.explodingkittens.infoMessage.Card;
 import com.example.explodingkittens.infoMessage.EKState;
@@ -40,9 +41,13 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
 
     private int layoutId;
     private GameMainActivity myActivity;
-    public HashMap<ImageButton, Card> buttonMap = new HashMap();
     private ArrayList<ImageButton> cards = new ArrayList<>(5);
     private EKState state;
+    private int currIdx = 0;
+    int myPlayerNum;
+    int numCardsDisplay;
+
+
 
     static Hashtable<CARDTYPE, Integer> imageTable = new Hashtable()
     {{
@@ -61,6 +66,15 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
 
     }};
 
+    HashMap<Integer,CARDTYPE> buttonCardMap = new HashMap()
+    {{
+       put(R.id.playerCard1,null);
+       put(R.id.playerCard2,null);
+       put(R.id.playerCard3,null);
+       put(R.id.playerCard4,null);
+       put(R.id.playerCard5,null);
+
+    }};
     /**
      * constructor
      *consistent with TTT
@@ -93,14 +107,9 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             //Update every image button to match what is in the gamestate
             this.state = new EKState((EKState) info);
 
-            int myPlayerNum = ((LocalGame) game).getPlayerIdx(this);
+            myPlayerNum = ((LocalGame) game).getPlayerIdx(this);
 
-            /*Card firstCard = state.deck.get(state.getPlayerTurn()).get(0);
-            Card secondCard = state.deck.get(state.getPlayerTurn()).get(1);
-            Card thirdCard = state.deck.get(state.getPlayerTurn()).get(2);
-            Card fourthCard = state.deck.get(state.getPlayerTurn()).get(3);
-            Card fifthCard = state.deck.get(state.getPlayerTurn()).get(4);
-*/
+
             int lastDiscard = state.discard.size();
 
             Card discardCard = null;
@@ -111,39 +120,25 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
                 discardPile.setImageResource(R.drawable.exploading_kitten_back);
             }
 
-            int numCardsDisplay;
             if (state.deck.get(myPlayerNum).size() < playerCards.size()) {
                 numCardsDisplay = state.deck.get(myPlayerNum).size();
             }
             else numCardsDisplay = playerCards.size();
 
-            for (int i = 0; i < numCardsDisplay; i++) {
-                playerCards.get(i).setImageResource(imageTable.get(state.deck.get(
-                                            myPlayerNum).get(i).getType()));
-            }
+            if(currIdx >= 0 && (currIdx+numCardsDisplay) <= state.deck.get(myPlayerNum).size())
+                for (int i = 0; i < numCardsDisplay; i++) {
+                    playerCards.get(i).setImageResource(imageTable.get(state.deck.get(
+                            myPlayerNum).get(i+currIdx).getType()));
+                    buttonCardMap.put(playerCards.get(i).getId(),state.deck.get(
+                            myPlayerNum).get(i+currIdx).getType());
+                }
 
             for (int i = state.deck.get(myPlayerNum).size(); i < playerCards.size(); i++) {
                 playerCards.get(i).setImageResource(R.drawable.exploading_kitten_back);
             }
 
 
-            /*
-            buttonMap.put(playerCard1,state.deck.get(0).get(0));
-            buttonMap.put(playerCard2,state.deck.get(0).get(1));
-            buttonMap.put(playerCard3,state.deck.get(0).get(2));
-            buttonMap.put(playerCard4,state.deck.get(0).get(3));
-            buttonMap.put(playerCard5,state.deck.get(0).get(4));
-             */
-
-            /*
-            setGuiImage(playerCard1,buttonMap);
-            setGuiImage(playerCard2,buttonMap);
-            setGuiImage(playerCard3,buttonMap);
-            setGuiImage(playerCard4,buttonMap);
-            setGuiImage(playerCard5,buttonMap);
-            */
-
-            Logger.log(TAG, "receiving");
+           Logger.log(TAG, "receiving");
         }
     }
 
@@ -221,32 +216,50 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             // Send to localGame
         }
         else if (v.getId() == R.id.playerCard1) {
-            // Determine which action was called
+            CARDTYPE type = buttonCardMap.get(R.id.playerCard1);
+            EKPlayCardAction action = new EKPlayCardAction(this,type);
+            game.sendAction(action);
         }
         else if (v.getId() == R.id.playerCard2) {
+            CARDTYPE type = buttonCardMap.get(R.id.playerCard2);
+            EKPlayCardAction action = new EKPlayCardAction(this,type);
+            game.sendAction(action);
             // Determine which action was called
         }
         else if (v.getId() == R.id.playerCard3) {
+            CARDTYPE type = buttonCardMap.get(R.id.playerCard3);
+            EKPlayCardAction action = new EKPlayCardAction(this,type);
+            game.sendAction(action);
             // Determine which action was called
         }
         else if (v.getId() == R.id.playerCard4) {
+            CARDTYPE type = buttonCardMap.get(R.id.playerCard5);
+            EKPlayCardAction action = new EKPlayCardAction(this,type);
+            game.sendAction(action);
             // Determine which action was called
         }
         else if (v.getId() == R.id.playerCard5) {
+            CARDTYPE type = buttonCardMap.get(R.id.playerCard5);
+            EKPlayCardAction action = new EKPlayCardAction(this,type);
+            game.sendAction(action);
             // Determine which action was called
         }
-        else if (v.getId() == R.id.handLeft) {
-            // Shift all the cards -1 in the array
 
+        else if (v.getId() == R.id.handLeft) {
+            //bounds checking, increments currIdx, calls recieve info to redraw
+            if(currIdx-1 >= 0 && ((currIdx-1)+numCardsDisplay) <= state.deck.get(myPlayerNum).size()){
+                currIdx--;
+            }
+            receiveInfo(state);
         }
         else if (v.getId() == R.id.handRight) {
-            // Shift all the cards +1 in the array
+            if(currIdx >= 0 && (currIdx+numCardsDisplay) <= state.deck.get(myPlayerNum).size()){
+                currIdx++;
+            }
+            receiveInfo(state);
         }
         else {}
     }
 
-    public void setGuiImage(ImageButton button, HashMap<ImageButton,Card> map){
-        button.setImageResource(map.get(button).image);
-    }
 
 }

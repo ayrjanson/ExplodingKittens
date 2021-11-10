@@ -7,6 +7,7 @@ import com.example.explodingkittens.ekActionMessage.EKCatCardAction;
 import com.example.explodingkittens.ekActionMessage.EKEndTurnAction;
 import com.example.explodingkittens.ekActionMessage.EKFavorAction;
 import com.example.explodingkittens.ekActionMessage.EKNopeAction;
+import com.example.explodingkittens.ekActionMessage.EKPlayCardAction;
 import com.example.explodingkittens.ekActionMessage.EKSeeFutureAction;
 import com.example.explodingkittens.ekActionMessage.EKShuffleAction;
 import com.example.explodingkittens.ekActionMessage.EKSkipAction;
@@ -81,90 +82,97 @@ public class EKLocalGame extends LocalGame {
     @Override
     protected boolean makeMove(GameAction action) {
         int turn = ((EKState) state).playerTurn;
-
-
-
-        if (action instanceof EKNopeAction) {
-            if(((EKState) state).playCard(((EKState) state).playerTurn, CARDTYPE.NOPE, ((EKState) state).deck.get(((EKState) state).playerTurn), ((EKState) state).discard)){
-                //go do the stuff :)
-                return true;
+        if (action instanceof EKPlayCardAction) {
+            EKPlayCardAction at = (EKPlayCardAction) action;
+            CARDTYPE type = at.type;
+            EKState currentState = (EKState) state;
+            switch (type) {
+                case MELON:
+                    if (currentState.playCard(currentState.playerTurn, CARDTYPE.MELON, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                        return true;
+                    }
+                    break;
+                case BEARD:
+                    if (currentState.playCard(currentState.playerTurn, CARDTYPE.BEARD, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                        return true;
+                    }
+                    break;
+                case POTATO:
+                    if (currentState.playCard(currentState.playerTurn, CARDTYPE.POTATO, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                        return true;
+                    }
+                    break;
+                case TACO:
+                    if (currentState.playCard(currentState.playerTurn, CARDTYPE.TACO, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                        return true;
+                    }
+                    break;
+                case ATTACK:
+                    if (currentState.playCard(currentState.playerTurn, CARDTYPE.ATTACK, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                        return true;
+                    }
+                    break;
+                case SHUFFLE:
+                    if (currentState.playCard(currentState.playerTurn, CARDTYPE.SHUFFLE, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                        return true;
+                    }
+                    break;
+                case FAVOR:
+                    if (currentState.playCard(currentState.playerTurn, CARDTYPE.FAVOR, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                        return true;
+                    }
+                    break;
+                case SKIP:
+                    if (currentState.playCard(currentState.playerTurn, CARDTYPE.SKIP, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                        return true;
+                    }
+                    break;
+                case SEEFUTURE:
+                    if (currentState.playCard(currentState.playerTurn, CARDTYPE.SEEFUTURE, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                        return true;
+                    }
+                    break;
+                case NOPE:
+                    if (currentState.playCard(currentState.playerTurn, CARDTYPE.NOPE, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                        return true;
+                    }
+                    break;
+                case DEFUSE:
+                    if (currentState.playCard(currentState.playerTurn, CARDTYPE.DEFUSE, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                        return true;
+                    }
+                    break;
+                case EXPLODE:
+                    if (currentState.playCard(currentState.playerTurn, CARDTYPE.EXPLODE, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                        return true;
+                    }
+                    break;
+                case ENDTURN:
+                    ((EKState) state).endTurn(turn, ((EKState) state).DRAWCARD);
+                    ((EKState) state).nextPlayer(((EKState) state).getPlayerTurn());
+                    Logger.log("makeMove", "Ended Turn, current player now is" + ((EKState) state).playerTurn);
+                    return true;
+                case DRAW:
+                    //TODO implement
+                    Card drawn = ((EKState) state).takeFromDraw();
+                    if (((EKState) state).playCard(((EKState) state).playerTurn, drawn.getType(), ((EKState) state).draw, ((EKState) state).deck.get(((EKState) state).getPlayerTurn()))) {
+                        //This turn is a draw card turn
+                        //End turn using the draw card excuse - resume play as normal
+                        ((EKState) state).nextPlayer(((EKState) state).getPlayerTurn());
+                        return true;
+                    }
+                    break;
+                default:
+                    Log.d("Invalid Action",
+                            "Action provided was an invalid action");
+                    return false;
             }
-        }
 
-        else if (action instanceof EKFavorAction) {
-            if(((EKState) state).playCard(((EKState) state).getPlayerTurn(), CARDTYPE.FAVOR, ((EKState) state).deck.get(((EKState) state).playerTurn), ((EKState) state).discard)){
-                //Prompt the user to choose which player to steal a card from
-                //Ask the user to choose which type of card they would like to steal a card from by
-                //displaying cards in their deck
-                //If the card type selected matches what the user has
-                    // Delete the card from the selected user's deck
-                    // Add the card to the asker's deck
-                    // Resume play - end turn by asker drawing card
-                // If the card isn't in the selected user's deck
-                    // Change nothing; resume play
-                    // Resume play - asker draws card
-                return true;
-            }
-        }
 
-        else if (action instanceof EKSkipAction) {
-            if(((EKState) state).playCard(((EKState) state).playerTurn, CARDTYPE.SKIP, ((EKState) state).deck.get(((EKState) state).playerTurn), ((EKState) state).discard)) {
-                ((EKState) state).endTurn(turn, ((EKState) state).SKIPTURN);
-                ((EKState) state).nextPlayer(((EKState) state).getPlayerTurn());
-                return true;
-            }
         }
-
-        else if (action instanceof EKAttackAction) {
-            if(((EKState) state).playCard(((EKState) state).playerTurn, CARDTYPE.ATTACK, ((EKState) state).deck.get(((EKState) state).playerTurn), ((EKState) state).discard)){
-                //Send message that next player need to take two turns
-                //End the current player's turn - attack end turn excuse
-                return true;
-            }
-        }
-
-        else if (action instanceof EKShuffleAction) {
-            if(((EKState) state).playCard(((EKState) state).playerTurn, CARDTYPE.SHUFFLE, ((EKState) state).deck.get(((EKState) state).playerTurn), ((EKState) state).discard)){
-                //Shuffle the draw deck
-                Collections.shuffle(((EKState) state).draw);
-                return true;
-            }
-        }
-
-        else if (action instanceof EKSeeFutureAction) {
-            if(((EKState) state).playCard(((EKState) state).playerTurn, CARDTYPE.SEEFUTURE, ((EKState) state).deck.get(((EKState) state).playerTurn), ((EKState) state).discard)){
-                //Display the first three cards in the draw pile in the player's deck
-                //All other cards have no display on them
-                //Once ok, turn the player's deck back to normal
-                return true;
-            }
-        }
-
-        else if (action instanceof EKEndTurnAction) {
-            //if(((EKState) state).playCard(turn, CARDTYPE.SEEFUTURE, ((EKState) state).deck.get(turn), ((EKState) state).discard)) {
-                ((EKState) state).endTurn(turn, ((EKState) state).DRAWCARD);
-                ((EKState) state).nextPlayer(((EKState) state).getPlayerTurn());
-                Logger.log("makeMove","Ended Turn, current player now is" + ((EKState) state).playerTurn);
-                return true;
-            //}
-        }
-
-        else if (action instanceof EKCatCardAction) {
-            return true;
-        }
-
-        else {
-            Card drawn = ((EKState) state).takeFromDraw();
-            if(((EKState) state).playCard(((EKState) state).playerTurn, drawn.getType(), ((EKState) state).draw, ((EKState) state).deck.get(((EKState) state).getPlayerTurn()))) {
-                //This turn is a draw card turn
-                //End turn using the draw card excuse - resume play as normal
-                ((EKState) state).nextPlayer(((EKState) state).getPlayerTurn());
-                return true;
-            }
-        }
-
-        Log.d("Invalid Action",
-                "Action provided was an invalid action");
         return false;
     }
 }
+
+
+

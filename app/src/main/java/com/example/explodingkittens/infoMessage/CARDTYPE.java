@@ -23,5 +23,7 @@ public enum CARDTYPE{
     SEEFUTURE,
     NOPE,
     DEFUSE,
-    EXPLODE
+    EXPLODE,
+    ENDTURN,
+    DRAW
 }
