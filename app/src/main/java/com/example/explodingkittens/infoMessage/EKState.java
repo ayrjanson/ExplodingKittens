@@ -601,7 +601,7 @@ public class EKState extends GameState {
      * Tests if the game is over
      * @param playerStatus - an array indicated which players are in the game (true) and which are
      *                     out (false)
-     * @return - true if there is only one in (true) player in playerStatus, false if there are more
+     * @return - index # of winner if there is only one in (true) player in playerStatus, -1 if there are more
      * than one players still playing
      */
     public int endGame(boolean[] playerStatus){
@@ -627,6 +627,8 @@ public class EKState extends GameState {
     public int gameOver() {
         return endGame(playerStatus);
     }
+
+    public boolean[] getPlayerStatus() { return playerStatus; }
 
     //TODO card equals overload
     public boolean equals(EKState state){

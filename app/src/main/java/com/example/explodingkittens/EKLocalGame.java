@@ -2,7 +2,7 @@ package com.example.explodingkittens;
 
 import android.util.Log;
 
-import com.example.explodingkittens.ekActionMessage.EKAttackAction;
+//import com.example.explodingkittens.ekActionMessage.EKAttackAction;
 import com.example.explodingkittens.ekActionMessage.EKCatCardAction;
 import com.example.explodingkittens.ekActionMessage.EKEndTurnAction;
 import com.example.explodingkittens.ekActionMessage.EKFavorAction;
@@ -89,61 +89,73 @@ public class EKLocalGame extends LocalGame {
             switch (type) {
                 case MELON:
                     if (currentState.playCard(currentState.playerTurn, CARDTYPE.MELON, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                        Logger.log("LocalGame", "Playing a Melon Card");
                         return true;
                     }
                     break;
                 case BEARD:
                     if (currentState.playCard(currentState.playerTurn, CARDTYPE.BEARD, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                        Logger.log("LocalGame", "Playing a Beard Card");
                         return true;
                     }
                     break;
                 case POTATO:
                     if (currentState.playCard(currentState.playerTurn, CARDTYPE.POTATO, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                        Logger.log("LocalGame", "Playing a Potato Card");
                         return true;
                     }
                     break;
                 case TACO:
                     if (currentState.playCard(currentState.playerTurn, CARDTYPE.TACO, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                        Logger.log("LocalGame", "Playing a Taco Card");
                         return true;
                     }
                     break;
                 case ATTACK:
                     if (currentState.playCard(currentState.playerTurn, CARDTYPE.ATTACK, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                        Logger.log("LocalGame", "Playing a Attack Card");
                         return true;
                     }
                     break;
                 case SHUFFLE:
                     if (currentState.playCard(currentState.playerTurn, CARDTYPE.SHUFFLE, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                        Logger.log("LocalGame", "Playing a Shuffle Card");
                         return true;
                     }
                     break;
                 case FAVOR:
                     if (currentState.playCard(currentState.playerTurn, CARDTYPE.FAVOR, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                        Logger.log("LocalGame", "Playing a Favor Card");
                         return true;
                     }
                     break;
                 case SKIP:
                     if (currentState.playCard(currentState.playerTurn, CARDTYPE.SKIP, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                        Logger.log("LocalGame", "Playing a Skip Card");
                         return true;
                     }
                     break;
                 case SEEFUTURE:
                     if (currentState.playCard(currentState.playerTurn, CARDTYPE.SEEFUTURE, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                        Logger.log("LocalGame", "Playing a SeeFuture Card");
                         return true;
                     }
                     break;
                 case NOPE:
                     if (currentState.playCard(currentState.playerTurn, CARDTYPE.NOPE, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                        Logger.log("LocalGame", "Playing a Nope Card");
                         return true;
                     }
                     break;
                 case DEFUSE:
                     if (currentState.playCard(currentState.playerTurn, CARDTYPE.DEFUSE, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                        Logger.log("LocalGame", "Playing a Defuse Card - this shouldn't be a thing");
                         return true;
                     }
                     break;
                 case EXPLODE:
                     if (currentState.playCard(currentState.playerTurn, CARDTYPE.EXPLODE, currentState.deck.get(currentState.playerTurn), currentState.discard)) {
+                        Logger.log("LocalGame", "Playing a Explode Card - this shouldn't be a thing");
                         return true;
                     }
                     break;
@@ -155,6 +167,7 @@ public class EKLocalGame extends LocalGame {
                 case DRAW:
                     //TODO implement
                     Card drawn = ((EKState) state).takeFromDraw();
+                    Logger.log("LocalGame", "Drawing a Card");
                     if (((EKState) state).playCard(((EKState) state).playerTurn, drawn.getType(), ((EKState) state).draw, ((EKState) state).deck.get(((EKState) state).getPlayerTurn()))) {
                         //This turn is a draw card turn
                         //End turn using the draw card excuse - resume play as normal

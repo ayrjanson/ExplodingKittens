@@ -202,18 +202,10 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             // Add the selected card to the discard pile
         }
         else if (v.getId() == R.id.drawPile) {
-            EKDrawAction draw = new EKDrawAction(this);
+            //EKDrawAction draw = new EKDrawAction(this);
+            //game.sendAction(draw);
+            EKPlayCardAction draw = new EKPlayCardAction(this, CARDTYPE.DRAW);
             game.sendAction(draw);
-
-            //Probably need end turn action
-
-            //EKEndTurnAction end = new EKEndTurnAction(this);
-            //game.sendAction(end);
-
-            //Don't care about it right now
-
-            // Create EKDrawAction
-            // Send to localGame
         }
         else if (v.getId() == R.id.playerCard1) {
             CARDTYPE type = buttonCardMap.get(R.id.playerCard1);

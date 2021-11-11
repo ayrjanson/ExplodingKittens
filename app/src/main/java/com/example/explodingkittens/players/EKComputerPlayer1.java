@@ -1,6 +1,6 @@
 package com.example.explodingkittens.players;
 
-import com.example.explodingkittens.ekActionMessage.EKAttackAction;
+//import com.example.explodingkittens.ekActionMessage.EKAttackAction;
 import com.example.explodingkittens.ekActionMessage.EKEndTurnAction;
 import com.example.explodingkittens.ekActionMessage.EKFavorAction;
 import com.example.explodingkittens.ekActionMessage.EKNopeAction;
@@ -12,6 +12,7 @@ import com.example.explodingkittens.infoMessage.CARDTYPE;
 import com.example.explodingkittens.infoMessage.EKState;
 import com.example.gameframework.infoMessage.GameInfo;
 import com.example.gameframework.players.GameComputerPlayer;
+import com.example.gameframework.utilities.Logger;
 
 public class EKComputerPlayer1 extends GameComputerPlayer {
 
@@ -32,6 +33,7 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
         EKState receive = new EKState((EKState) info);
         int turn = receive.getPlayerTurn();
         if (receive.getPlayerTurn() == playerNum) {
+            Logger.log("CP", "Turn: " + playerNum);
             //if played card, then just send end turn action
             //for
             // pick ith card in hand, try to play
