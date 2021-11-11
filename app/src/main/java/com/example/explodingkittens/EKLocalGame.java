@@ -2,15 +2,8 @@ package com.example.explodingkittens;
 
 import android.util.Log;
 
-//import com.example.explodingkittens.ekActionMessage.EKAttackAction;
-import com.example.explodingkittens.ekActionMessage.EKCatCardAction;
-import com.example.explodingkittens.ekActionMessage.EKEndTurnAction;
-import com.example.explodingkittens.ekActionMessage.EKFavorAction;
-import com.example.explodingkittens.ekActionMessage.EKNopeAction;
+
 import com.example.explodingkittens.ekActionMessage.EKPlayCardAction;
-import com.example.explodingkittens.ekActionMessage.EKSeeFutureAction;
-import com.example.explodingkittens.ekActionMessage.EKShuffleAction;
-import com.example.explodingkittens.ekActionMessage.EKSkipAction;
 import com.example.explodingkittens.infoMessage.CARDTYPE;
 import com.example.explodingkittens.infoMessage.Card;
 import com.example.explodingkittens.infoMessage.EKState;
@@ -18,8 +11,6 @@ import com.example.gameframework.LocalGame;
 import com.example.gameframework.actionMessage.GameAction;
 import com.example.gameframework.players.GamePlayer;
 import com.example.gameframework.utilities.Logger;
-
-import java.util.Collections;
 
 
 public class EKLocalGame extends LocalGame {
@@ -165,7 +156,6 @@ public class EKLocalGame extends LocalGame {
                     Logger.log("makeMove", "Ended Turn, current player now is" + ((EKState) state).playerTurn);
                     return true;
                 case DRAW:
-                    //TODO implement
                     Card drawn = ((EKState) state).takeFromDraw();
                     Logger.log("LocalGame", "Drawing a Card");
                     if (((EKState) state).playCard(((EKState) state).playerTurn, drawn.getType(), ((EKState) state).draw, ((EKState) state).deck.get(((EKState) state).getPlayerTurn()))) {

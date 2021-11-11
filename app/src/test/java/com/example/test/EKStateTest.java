@@ -12,9 +12,32 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 public class EKStateTest {
-
+//WRITTEN BY ALEX
+//TODO ADD IN TEST FOR ATTACK
     @Test
     public void endTurn() {
+        //THE DRAW CARD PART
+        EKState test = new EKState(4);
+        int drawSize = test.draw.size();
+        int handSize = test.deck.get(test.playerTurn).size();
+        test.endTurn(test.playerTurn,EKState.DRAWCARD);
+        assertEquals(1,test.playerTurn);
+        assertEquals(drawSize-1,test.draw.size());
+        assertEquals(handSize+1,test.deck.get(0).size());
+
+        //THE LOST PART
+        test.endTurn(test.playerTurn,EKState.LOST);
+        assertEquals(true,(test.deck.get(test.playerTurn-1).isEmpty()));
+        assertEquals(false,test.playerStatus[test.playerTurn-1]);
+
+        //THE SKIP PART
+        if(!test.deck.get(test.playerTurn).contains(new Card(CARDTYPE.SKIP))) {
+            test.deck.get(test.playerTurn).add(new Card(CARDTYPE.SKIP));
+        }
+        test.playCard(test.playerTurn,CARDTYPE.SKIP,test.deck.get(test.playerTurn),test.discard);
+        assertEquals(false,test.deck.get(test.playerTurn).contains(new Card(CARDTYPE.SKIP)));
+
+
     }
 
     @Test
@@ -42,6 +65,7 @@ public class EKStateTest {
 
     @Test
     public void hasExplode() {
+
     }
 
     @Test
@@ -152,5 +176,12 @@ public class EKStateTest {
 
     @Test
     public void testEquals() {
+    }
+//WRITTEN BY ALEX
+    @Test
+    public void equals(){
+        EKState firstInstance = new EKState(4);
+        EKState secondInstance = new EKState(firstInstance);
+        assertEquals(true,firstInstance.equals(secondInstance));
     }
 }

@@ -225,7 +225,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             // Determine which action was called
         }
         else if (v.getId() == R.id.playerCard4) {
-            CARDTYPE type = buttonCardMap.get(R.id.playerCard5);
+            CARDTYPE type = buttonCardMap.get(R.id.playerCard4);
             EKPlayCardAction action = new EKPlayCardAction(this,type);
             game.sendAction(action);
             // Determine which action was called

@@ -87,6 +87,7 @@ public class EKState extends GameState {
         for (int i = 0; i < state.playerStatus.length; i++) {
             playerStatus[i] = state.playerStatus[i];
         }
+
     }
 
     /**
@@ -96,12 +97,12 @@ public class EKState extends GameState {
      * @param reason - calls in static variables to represent all the manners in which a player can
      *               end their turn, such as drawing a card, playing a skip, attack, or losing
      */
+    //TODO finish attack player button
     public void endTurn(int playerTurn, int reason){
         switch(reason){
             case DRAWCARD:
                 CARDTYPE temp = draw.get(0).getType();
-                ArrayList<Card> destination = deck.get(playerTurn);
-                destination.add(takeFromDraw());
+                this.deck.get(this.getPlayerTurn()).add(takeFromDraw());
                 draw.remove(0);
 
                 if(temp == CARDTYPE.EXPLODE){
@@ -110,11 +111,13 @@ public class EKState extends GameState {
                 for(Card card: deck.get(playerTurn)) {
                     card.isPlayable = false;
                 }
+                this.nextPlayer(playerTurn);
                 break;
             case SKIPTURN:
                 for( Card card: deck.get(playerTurn)){
                     card.isPlayable = false;
                 }
+                this.nextPlayer(this.playerTurn);
                 break;
             case ATTACKPLAYER:
                 break;
@@ -124,8 +127,10 @@ public class EKState extends GameState {
                     //deck.get(playerTurn).addAll(discard); //Not moving the individual card
                     //deck.get(playerTurn).clear();
                     moveToDiscard(deck.get(playerTurn), discard);
+
                 }
                 playerStatus[this.playerTurn] = false;
+                this.nextPlayer(this.playerTurn);
                 break;
         }
     }
@@ -313,32 +318,19 @@ public class EKState extends GameState {
                 }
                 break;
             case SKIP:
-                if (src.equals(draw)) {
-                    Card moveCardAttack = getCard(CARDTYPE.SKIP, src);
-                    //dest.add(moveCardAttack);
-                    //src.remove(moveCardAttack);
-                    endTurn(playerTurn, DRAWCARD);
-                    return true;
-                }
-                else if(src.equals(deck.get(playerTurn))) {
+                if(src.equals(deck.get(playerTurn))) {
                     int moveSkip = getCardIndex(CARDTYPE.SKIP, deck.get(playerTurn));
                     Card moveCardSkip = getCard(CARDTYPE.SKIP, deck.get(playerTurn));
                     if (moveSkip != -1) {
                         discard.add(moveCardSkip);
                         deck.get(playerTurn).remove(moveSkip);
+                        endTurn(playerTurn,SKIPTURN);
                         return true;
                     }
                 }
-                break;
+                return false;
             case SEEFUTURE:
-                if (src.equals(draw)) {
-                    Card moveCardAttack = getCard(CARDTYPE.SEEFUTURE, src);
-                    //dest.add(moveCardAttack);
-                    //src.remove(moveCardAttack);
-                    endTurn(playerTurn, DRAWCARD);
-                    return true;
-                }
-                else if(src.equals(deck.get(playerTurn))) {
+                if(src.equals(deck.get(playerTurn))) {
                     int moveSeeFuture = getCardIndex(CARDTYPE.SEEFUTURE, deck.get(playerTurn));
                     Card moveCardSeeFuture = getCard(CARDTYPE.SEEFUTURE, deck.get(playerTurn));
                     if (moveSeeFuture != -1) {
@@ -349,14 +341,7 @@ public class EKState extends GameState {
                 }
                 break;
             case NOPE:
-                if (src.equals(draw)) {
-                    Card moveCardAttack = getCard(CARDTYPE.ATTACK, src);
-                    //dest.add(moveCardAttack);
-                    //src.remove(moveCardAttack);
-                    endTurn(playerTurn, DRAWCARD);
-                    return true;
-                }
-                else if(src.equals(deck.get(playerTurn))) {
+                if(src.equals(deck.get(playerTurn))) {
                     int moveNope = getCardIndex(CARDTYPE.NOPE, deck.get(playerTurn));
                     Card moveCardNope = getCard(CARDTYPE.NOPE, deck.get(playerTurn));
                     if (moveNope != -1) {
@@ -387,6 +372,7 @@ public class EKState extends GameState {
                 else if(deck.get(playerTurn).contains(card) && !hasExplode(deck.get(playerTurn))) {
                     return false;
                 }
+                //FIXME playing a defuse makes this else look execute????
                 else{
                     endTurn(playerTurn, LOST);
                     return false;
@@ -632,10 +618,23 @@ public class EKState extends GameState {
 
     //TODO card equals overload
     public boolean equals(EKState state){
-        if(this.playerStatus.equals(state.playerStatus) && this.gameState.equals(state.gameState)){
-            return true;
-        }
+        if(this.playerStatus.equals(state.playerStatus)){
+            if(this.gameState == state.gameState){
+                if(this.playerTurn == state.playerTurn){
+                    /*
+                    if(this.draw.equals(state.draw)){
+                        if(this.discard.equals(state.discard)){
+                            if(this.deck.equals(state.deck)){
+                                return true;
+                            }
+                        }
+                    }
 
+                     */
+                    return true;
+                }
+            }
+        }
         return false;
     }
 }

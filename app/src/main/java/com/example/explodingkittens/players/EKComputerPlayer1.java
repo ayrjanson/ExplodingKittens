@@ -1,13 +1,7 @@
 package com.example.explodingkittens.players;
 
-//import com.example.explodingkittens.ekActionMessage.EKAttackAction;
-import com.example.explodingkittens.ekActionMessage.EKEndTurnAction;
-import com.example.explodingkittens.ekActionMessage.EKFavorAction;
-import com.example.explodingkittens.ekActionMessage.EKNopeAction;
+
 import com.example.explodingkittens.ekActionMessage.EKPlayCardAction;
-import com.example.explodingkittens.ekActionMessage.EKSeeFutureAction;
-import com.example.explodingkittens.ekActionMessage.EKShuffleAction;
-import com.example.explodingkittens.ekActionMessage.EKSkipAction;
 import com.example.explodingkittens.infoMessage.CARDTYPE;
 import com.example.explodingkittens.infoMessage.EKState;
 import com.example.gameframework.infoMessage.GameInfo;
@@ -28,7 +22,6 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
     @Override
     protected void receiveInfo(GameInfo info) {
         if(!(info instanceof EKState)) return;
-
 
         EKState receive = new EKState((EKState) info);
         int turn = receive.getPlayerTurn();

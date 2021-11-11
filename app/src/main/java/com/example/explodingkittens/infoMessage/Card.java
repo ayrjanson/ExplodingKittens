@@ -136,4 +136,23 @@ public class Card {
      * @return - CARDTYPE - type of card the obj was assigned
      */
     public CARDTYPE getType(){ return this.cardType; }
+
+    public boolean equals(Card card){
+        if(this.cardType == card.cardType){
+            if(this.isCatCard == card.isCatCard){
+                if(this.canPlayIfNope == card.canPlayIfNope){
+                    if(this.description.equals(card.description)){
+                        if(this.isPlayable == card.isPlayable){
+                            if(this.isOnScreen == card.isOnScreen){
+                                if(this.isSelected == card.isSelected){
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }
