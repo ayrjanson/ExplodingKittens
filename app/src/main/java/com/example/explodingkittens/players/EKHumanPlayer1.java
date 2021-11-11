@@ -3,6 +3,7 @@ package com.example.explodingkittens.players;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.explodingkittens.ekActionMessage.EKDrawAction;
 import com.example.explodingkittens.ekActionMessage.EKPlayCardAction;
@@ -36,6 +37,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
     private ArrayList<ImageButton> playerCards;
     private Button handLeft = null;
     private Button handRight = null;
+    TextView logView = null;
 
     private static final String TAG = "EKHumanPlayer1";
 
@@ -117,7 +119,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
                 discardCard = state.discard.get(lastDiscard - 1);
                 discardPile.setImageResource(imageTable.get(discardCard.getType()));
             } else {
-                discardPile.setImageResource(R.drawable.exploading_kitten_back);
+                discardPile.setImageResource(R.drawable.back);
             }
 
             if (state.deck.get(myPlayerNum).size() < playerCards.size()) {
@@ -134,7 +136,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
                 }
 
             for (int i = state.deck.get(myPlayerNum).size(); i < playerCards.size(); i++) {
-                playerCards.get(i).setImageResource(R.drawable.exploading_kitten_back);
+                playerCards.get(i).setImageResource(R.drawable.back);
             }
 
 
@@ -162,6 +164,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
         this.playerCard5 = (ImageButton)activity.findViewById(R.id.playerCard5);
         this.handLeft = (Button)activity.findViewById(R.id.handLeft);
         this.handRight = (Button)activity.findViewById(R.id.handRight);
+        this.logView = (TextView)activity.findViewById(R.id.logView);
 
         playerCards = new ArrayList<>();
         playerCards.add(playerCard1);
@@ -205,35 +208,41 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             //EKDrawAction draw = new EKDrawAction(this);
             //game.sendAction(draw);
             EKPlayCardAction draw = new EKPlayCardAction(this, CARDTYPE.DRAW);
+            logView.setText("Player " + state.playerTurn + " drew a card to end their turn.");
             game.sendAction(draw);
         }
         else if (v.getId() == R.id.playerCard1) {
             CARDTYPE type = buttonCardMap.get(R.id.playerCard1);
             EKPlayCardAction action = new EKPlayCardAction(this,type);
             game.sendAction(action);
+            logView.setText("Player " +state.playerTurn + " played a " + type.name() + " card." );
         }
         else if (v.getId() == R.id.playerCard2) {
             CARDTYPE type = buttonCardMap.get(R.id.playerCard2);
             EKPlayCardAction action = new EKPlayCardAction(this,type);
             game.sendAction(action);
+            logView.setText("Player " +state.playerTurn + " played a " + type.name() + " card." );
             // Determine which action was called
         }
         else if (v.getId() == R.id.playerCard3) {
             CARDTYPE type = buttonCardMap.get(R.id.playerCard3);
             EKPlayCardAction action = new EKPlayCardAction(this,type);
             game.sendAction(action);
+            logView.setText("Player " +state.playerTurn + " played a " + type.name() + " card." );
             // Determine which action was called
         }
         else if (v.getId() == R.id.playerCard4) {
             CARDTYPE type = buttonCardMap.get(R.id.playerCard4);
             EKPlayCardAction action = new EKPlayCardAction(this,type);
             game.sendAction(action);
+            logView.setText("Player " +state.playerTurn + " played a " + type.name() + " card." );
             // Determine which action was called
         }
         else if (v.getId() == R.id.playerCard5) {
             CARDTYPE type = buttonCardMap.get(R.id.playerCard5);
             EKPlayCardAction action = new EKPlayCardAction(this,type);
             game.sendAction(action);
+            logView.setText("Player " +state.playerTurn + " played a " + type.name() + " card." );
             // Determine which action was called
         }
 
@@ -241,12 +250,18 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             //bounds checking, increments currIdx, calls recieve info to redraw
             if(currIdx-1 >= 0 && ((currIdx-1)+numCardsDisplay) <= state.deck.get(myPlayerNum).size()){
                 currIdx--;
+                logView.setText("Tab Left.");
+            }else{
+                logView.setText("Cannot tab left, already at beginning.");
             }
             receiveInfo(state);
         }
         else if (v.getId() == R.id.handRight) {
             if(currIdx >= 0 && (currIdx+numCardsDisplay) <= state.deck.get(myPlayerNum).size()){
                 currIdx++;
+                logView.setText("Tab Right");
+            }else{
+                logView.setText("Cannot tab right, already at beginning.");
             }
             receiveInfo(state);
         }

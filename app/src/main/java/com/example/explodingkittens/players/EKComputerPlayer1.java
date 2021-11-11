@@ -1,9 +1,12 @@
 package com.example.explodingkittens.players;
 
 
+import android.widget.TextView;
+
 import com.example.explodingkittens.ekActionMessage.EKPlayCardAction;
 import com.example.explodingkittens.infoMessage.CARDTYPE;
 import com.example.explodingkittens.infoMessage.EKState;
+import com.example.gameframework.R;
 import com.example.gameframework.infoMessage.GameInfo;
 import com.example.gameframework.players.GameComputerPlayer;
 import com.example.gameframework.utilities.Logger;
@@ -11,6 +14,7 @@ import com.example.gameframework.utilities.Logger;
 public class EKComputerPlayer1 extends GameComputerPlayer {
 
     private boolean playedCard = false;
+    public TextView logView;
     // constructor
     public EKComputerPlayer1(String name) { super(name); }
 
@@ -22,7 +26,7 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
     @Override
     protected void receiveInfo(GameInfo info) {
         if(!(info instanceof EKState)) return;
-
+        //logView = myActivity.findViewById(R.id.logView);
         EKState receive = new EKState((EKState) info);
         int turn = receive.getPlayerTurn();
         if (receive.getPlayerTurn() == playerNum) {
@@ -81,6 +85,7 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
                         }
                         playedCard = true;
                         game.sendAction(action);
+                        //logView.setText("Player " + playerNum + " played a " + type.name() + " card." );
                         return;
                 }
             }
@@ -88,6 +93,7 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
                 EKPlayCardAction end = new EKPlayCardAction(this,CARDTYPE.ENDTURN);
                 playedCard = false;
                 game.sendAction(end);
+                //logView.setText("Player " + playerNum + " ended their turn by drawing a card.");
                 return;
             }
             playedCard = false;

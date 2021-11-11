@@ -212,6 +212,7 @@ public class EKState extends GameState {
                     //est.add(moveCardAttack);
                     //src.remove(moveCardAttack);
                     endTurn(playerTurn, DRAWCARD);
+
                     return true;
                 }
                 else if (src.equals(deck.get(playerTurn))) {
