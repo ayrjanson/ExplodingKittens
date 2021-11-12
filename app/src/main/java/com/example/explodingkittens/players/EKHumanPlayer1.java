@@ -137,13 +137,17 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
                         CARDTYPE type = state.deck.get(myPlayerNum).get(i+currIdx).getType();
                         switch(type){
                             case TACO:
-                                state.deck.get(myPlayerNum).get(i+currIdx).cardType = CARDTYPE.TACO_SELECTED;
+                                playerCards.get(i).setImageResource(imageTable.get(CARDTYPE.TACO_SELECTED));
+                                break;
                             case BEARD:
-                                state.deck.get(myPlayerNum).get(i+currIdx).cardType = CARDTYPE.BEARD_SELECTED;
+                                playerCards.get(i).setImageResource(imageTable.get(CARDTYPE.BEARD_SELECTED));
+                                break;
                             case MELON:
-                                state.deck.get(myPlayerNum).get(i+currIdx).cardType = CARDTYPE.MELON_SELECTED;
+                                playerCards.get(i).setImageResource(imageTable.get(CARDTYPE.MELON_SELECTED));
+                                break;
                             case POTATO:
-                                state.deck.get(myPlayerNum).get(i+currIdx).cardType = CARDTYPE.POTATO_SELECTED;
+                                playerCards.get(i).setImageResource(imageTable.get(CARDTYPE.POTATO_SELECTED));
+                                break;
                         }
                     }else {
                         playerCards.get(i).setImageResource(imageTable.get(state.deck.get(
@@ -202,12 +206,12 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             }
         }
         else if (v.getId() == R.id.playerCard2) {
-            if(buttonCardMap.get(R.id.playerCard1) == CARDTYPE.MELON ||
-                    buttonCardMap.get(R.id.playerCard1) == CARDTYPE.BEARD ||
-                    buttonCardMap.get(R.id.playerCard1) == CARDTYPE.POTATO ||
-                    buttonCardMap.get(R.id.playerCard1) == CARDTYPE.TACO){
+            if(buttonCardMap.get(R.id.playerCard2) == CARDTYPE.MELON ||
+                    buttonCardMap.get(R.id.playerCard2) == CARDTYPE.BEARD ||
+                    buttonCardMap.get(R.id.playerCard2) == CARDTYPE.POTATO ||
+                    buttonCardMap.get(R.id.playerCard2) == CARDTYPE.TACO){
                 state.deck.get(state.playerTurn).get(currIdx+1).isSelected = true;
-                logView.setText("Player " + state.playerTurn + " selected a " + state.deck.get(state.playerTurn).get(currIdx).getType().name());
+                logView.setText("Player " + state.playerTurn + " selected a " + state.deck.get(state.playerTurn).get(currIdx+1).getType().name());
             }else {
                 CARDTYPE type = buttonCardMap.get(R.id.playerCard2);
                 EKPlayCardAction action = new EKPlayCardAction(this, type);
@@ -217,12 +221,12 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             }
         }
         else if (v.getId() == R.id.playerCard3) {
-            if(buttonCardMap.get(R.id.playerCard1) == CARDTYPE.MELON ||
-                    buttonCardMap.get(R.id.playerCard1) == CARDTYPE.BEARD ||
-                    buttonCardMap.get(R.id.playerCard1) == CARDTYPE.POTATO ||
-                    buttonCardMap.get(R.id.playerCard1) == CARDTYPE.TACO){
+            if(buttonCardMap.get(R.id.playerCard3) == CARDTYPE.MELON ||
+                    buttonCardMap.get(R.id.playerCard3) == CARDTYPE.BEARD ||
+                    buttonCardMap.get(R.id.playerCard3) == CARDTYPE.POTATO ||
+                    buttonCardMap.get(R.id.playerCard3) == CARDTYPE.TACO){
                 state.deck.get(state.playerTurn).get(currIdx+2).isSelected = true;
-                logView.setText("Player " + state.playerTurn + " selected a " + state.deck.get(state.playerTurn).get(currIdx).getType().name());
+                logView.setText("Player " + state.playerTurn + " selected a " + state.deck.get(state.playerTurn).get(currIdx+2).getType().name());
             }else {
                 CARDTYPE type = buttonCardMap.get(R.id.playerCard3);
                 EKPlayCardAction action = new EKPlayCardAction(this, type);
@@ -232,12 +236,12 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             }
         }
         else if (v.getId() == R.id.playerCard4) {
-            if(buttonCardMap.get(R.id.playerCard1) == CARDTYPE.MELON ||
-                    buttonCardMap.get(R.id.playerCard1) == CARDTYPE.BEARD ||
-                    buttonCardMap.get(R.id.playerCard1) == CARDTYPE.POTATO ||
-                    buttonCardMap.get(R.id.playerCard1) == CARDTYPE.TACO){
+            if(buttonCardMap.get(R.id.playerCard4) == CARDTYPE.MELON ||
+                    buttonCardMap.get(R.id.playerCard4) == CARDTYPE.BEARD ||
+                    buttonCardMap.get(R.id.playerCard4) == CARDTYPE.POTATO ||
+                    buttonCardMap.get(R.id.playerCard4) == CARDTYPE.TACO){
                 state.deck.get(state.playerTurn).get(currIdx+3).isSelected = true;
-                logView.setText("Player " + state.playerTurn + " selected a " + state.deck.get(state.playerTurn).get(currIdx).getType().name());
+                logView.setText("Player " + state.playerTurn + " selected a " + state.deck.get(state.playerTurn).get(currIdx+3).getType().name());
             }else {
                 CARDTYPE type = buttonCardMap.get(R.id.playerCard4);
                 EKPlayCardAction action = new EKPlayCardAction(this, type);
@@ -247,12 +251,12 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             }
         }
         else if (v.getId() == R.id.playerCard5) {
-            if(buttonCardMap.get(R.id.playerCard1) == CARDTYPE.MELON ||
-                    buttonCardMap.get(R.id.playerCard1) == CARDTYPE.BEARD ||
-                    buttonCardMap.get(R.id.playerCard1) == CARDTYPE.POTATO ||
-                    buttonCardMap.get(R.id.playerCard1) == CARDTYPE.TACO){
+            if(buttonCardMap.get(R.id.playerCard5) == CARDTYPE.MELON ||
+                    buttonCardMap.get(R.id.playerCard5) == CARDTYPE.BEARD ||
+                    buttonCardMap.get(R.id.playerCard5) == CARDTYPE.POTATO ||
+                    buttonCardMap.get(R.id.playerCard5) == CARDTYPE.TACO){
                 state.deck.get(state.playerTurn).get(currIdx+4).isSelected = true;
-                logView.setText("Player " + state.playerTurn + " selected a " + state.deck.get(state.playerTurn).get(currIdx).getType().name());
+                logView.setText("Player " + state.playerTurn + " selected a " + state.deck.get(state.playerTurn).get(currIdx+4).getType().name());
             }else {
                 CARDTYPE type = buttonCardMap.get(R.id.playerCard5);
                 EKPlayCardAction action = new EKPlayCardAction(this, type);
@@ -281,7 +285,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             }
             receiveInfo(state);
         }
-
+        receiveInfo(state);
     }
 
     @Override
