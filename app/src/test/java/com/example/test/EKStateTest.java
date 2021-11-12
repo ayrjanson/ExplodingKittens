@@ -34,7 +34,7 @@ public class EKStateTest {
         if(!test.deck.get(test.playerTurn).contains(new Card(CARDTYPE.SKIP))) {
             test.deck.get(test.playerTurn).add(new Card(CARDTYPE.SKIP));
         }
-        test.playCard(test.playerTurn,CARDTYPE.SKIP,test.deck.get(test.playerTurn),test.discard);
+        test.playCard(test.playerTurn,CARDTYPE.SKIP,test.deck.get(test.playerTurn));
         assertEquals(false,test.deck.get(test.playerTurn).contains(new Card(CARDTYPE.SKIP)));
 
 

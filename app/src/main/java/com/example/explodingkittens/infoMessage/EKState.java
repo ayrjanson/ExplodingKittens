@@ -1,5 +1,7 @@
 package com.example.explodingkittens.infoMessage;
 
+import android.widget.TextView;
+
 import com.example.gameframework.infoMessage.GameState;
 
 import java.util.ArrayList;
@@ -32,6 +34,8 @@ public class EKState extends GameState {
     public STATE gameState;
     public static final int NUM_PLAYERS = 4;
     public int playerTurn;
+    public boolean justPlayedSeeFuture;
+
     public static final int DRAWCARD = 4000;
     public static final int SKIPTURN = 4001;
     public static final int ATTACKPLAYER = 4002;
@@ -48,6 +52,7 @@ public class EKState extends GameState {
         this.discard = new ArrayList<>(52);
         this.playerTurn = 0;
         this.playerStatus = new boolean[] {true, true, true, true};
+        justPlayedSeeFuture = false;
         for(int i = 0; i< size; i++){
             this.deck.add(new ArrayList<>(7));
         }
@@ -83,6 +88,7 @@ public class EKState extends GameState {
             }
         }
         this.gameState = state.gameState;
+        this.justPlayedSeeFuture = state.justPlayedSeeFuture;
         this.playerStatus = new boolean[state.playerStatus.length];
         for (int i = 0; i < state.playerStatus.length; i++) {
             playerStatus[i] = state.playerStatus[i];
@@ -106,16 +112,18 @@ public class EKState extends GameState {
                 draw.remove(0);
 
                 if(temp == CARDTYPE.EXPLODE){
-                    playCard(playerTurn, CARDTYPE.DEFUSE, deck.get(playerTurn) ,discard);
+                    playCard(playerTurn, CARDTYPE.DEFUSE, deck.get(playerTurn));
                 }
                 for(Card card: deck.get(playerTurn)) {
                     card.isPlayable = false;
+                    card.isSelected = false;
                 }
-                this.nextPlayer(playerTurn);
+                this.nextPlayer(this.playerTurn);
                 break;
             case SKIPTURN:
                 for( Card card: deck.get(playerTurn)){
                     card.isPlayable = false;
+                    card.isSelected = false;
                 }
                 this.nextPlayer(this.playerTurn);
                 break;
@@ -183,24 +191,17 @@ public class EKState extends GameState {
      * @param playerTurn - the index of the player who is playing the card
      * @param card - the card being played
      * @param src - the source array for the card being played
-     * @param dest - the desination array for the card being played
      * @return boolean - whether play card executed or nor
      */
     //TODO test each playcard
-    public boolean playCard(int playerTurn, CARDTYPE card, ArrayList<Card> src, ArrayList<Card> dest){
+    public boolean playCard(int playerTurn, CARDTYPE card, ArrayList<Card> src){
         switch(card){
             case MELON:
-                if (src.equals(draw)) {
-                    Card moveCardMelon = getCard(CARDTYPE.MELON, src);
-                    //dest.add(moveCardMelon);
-                    //src.remove(moveCardMelon);
-                    endTurn(playerTurn, DRAWCARD);
-                    return true;
-                }
-                else if (src.equals(deck.get(playerTurn))) {
+                if (src.equals(deck.get(playerTurn))) {
                     int moveMelon = getCardIndex(CARDTYPE.MELON, deck.get(playerTurn));
                     Card moveCardMelon = getCard(CARDTYPE.MELON, deck.get(playerTurn));
                     if (moveMelon != -1) {
+                        moveCardMelon.isSelected = false;
                         discard.add(moveCardMelon);
                         deck.get(playerTurn).remove(moveMelon);
                         return true;
@@ -208,18 +209,11 @@ public class EKState extends GameState {
                 }
                 break;
             case BEARD:
-                if (src.equals(draw)) {
-                    Card moveCardAttack = getCard(CARDTYPE.BEARD, src);
-                    //est.add(moveCardAttack);
-                    //src.remove(moveCardAttack);
-                    endTurn(playerTurn, DRAWCARD);
-
-                    return true;
-                }
-                else if (src.equals(deck.get(playerTurn))) {
+                if (src.equals(deck.get(playerTurn))) {
                     int moveBeard = getCardIndex(CARDTYPE.BEARD, deck.get(playerTurn));
                     Card moveCardBeard = getCard(CARDTYPE.BEARD, deck.get(playerTurn));
                     if (moveBeard != -1) {
+                        moveCardBeard.isSelected = false;
                         discard.add(moveCardBeard);
                         deck.get(playerTurn).remove(moveBeard);
                         return true;
@@ -227,17 +221,11 @@ public class EKState extends GameState {
                 }
                 break;
             case POTATO:
-                if (src.equals(draw)) {
-                    Card moveCardAttack = getCard(CARDTYPE.POTATO, src);
-                    //dest.add(moveCardAttack);
-                    //src.remove(moveCardAttack);
-                    endTurn(playerTurn, DRAWCARD);
-                    return true;
-                }
-                else if (src.equals(deck.get(playerTurn))) {
+                if (src.equals(deck.get(playerTurn))) {
                     int movePotato = getCardIndex(CARDTYPE.POTATO, deck.get(playerTurn));
                     Card moveCardPotato = getCard(CARDTYPE.POTATO, deck.get(playerTurn));
                     if (movePotato != -1) {
+                        moveCardPotato.isSelected = false;
                         discard.add(moveCardPotato);
                         deck.get(playerTurn).remove(movePotato);
                         return true;
@@ -245,17 +233,11 @@ public class EKState extends GameState {
                 }
                 break;
             case TACO:
-                if (src.equals(draw)) {
-                    Card moveCardAttack = getCard(CARDTYPE.ATTACK, src);
-                    //dest.add(moveCardAttack);
-                    //src.remove(moveCardAttack);
-                    endTurn(playerTurn, DRAWCARD);
-                    return true;
-                }
-                else if (src.equals(deck.get(playerTurn))) {
+                if (src.equals(deck.get(playerTurn))) {
                     int moveTaco = getCardIndex(CARDTYPE.TACO, deck.get(playerTurn));
                     Card moveCardTaco = getCard(CARDTYPE.TACO, deck.get(playerTurn));
                     if (moveTaco != -1) {
+                        moveCardTaco.isSelected = false;
                         discard.add(moveCardTaco);
                         deck.get(playerTurn).remove(moveTaco);
                         return true;
@@ -263,14 +245,7 @@ public class EKState extends GameState {
                 }
                 break;
             case ATTACK:
-                if (src.equals(draw)) {
-                    Card moveCardAttack = getCard(CARDTYPE.ATTACK, src);
-                    //dest.add(moveCardAttack);
-                    //src.remove(moveCardAttack);
-                    endTurn(playerTurn, DRAWCARD);
-                    return true;
-                }
-                else if (src.equals(deck.get(playerTurn))) {
+                if (src.equals(deck.get(playerTurn))) {
                     int moveAttack = getCardIndex(CARDTYPE.ATTACK, deck.get(playerTurn));
                     Card moveCardAttack = getCard(CARDTYPE.ATTACK, deck.get(playerTurn));
                     if (moveAttack != -1) {
@@ -282,14 +257,7 @@ public class EKState extends GameState {
                 }
                 break;
             case SHUFFLE:
-                if (src.equals(draw)) {
-                    Card moveCardAttack = getCard(CARDTYPE.SHUFFLE, src);
-                    //dest.add(moveCardAttack);
-                    //src.remove(moveCardAttack);
-                    endTurn(playerTurn, DRAWCARD);
-                    return true;
-                }
-                else if(src.equals(deck.get(playerTurn))) {
+                if(src.equals(deck.get(playerTurn))) {
                     int moveShuffle = getCardIndex(CARDTYPE.SHUFFLE, deck.get(playerTurn));
                     Card moveCardShuffle = getCard(CARDTYPE.SHUFFLE, deck.get(playerTurn));
                     if (moveShuffle != -1) {
@@ -301,14 +269,7 @@ public class EKState extends GameState {
                 }
                 break;
             case FAVOR:
-                if (src.equals(draw)) {
-                    Card moveCardAttack = getCard(CARDTYPE.FAVOR, src);
-                    //dest.add(moveCardAttack);
-                    //src.remove(moveCardAttack);
-                    endTurn(playerTurn, DRAWCARD);
-                    return true;
-                }
-                else if(src.equals(deck.get(playerTurn))) {
+                if(src.equals(deck.get(playerTurn))) {
                     int moveFavor = getCardIndex(CARDTYPE.FAVOR, deck.get(playerTurn));
                     Card moveCardFavor = getCard(CARDTYPE.FAVOR, deck.get(playerTurn));
                     if (moveFavor != -1) {
@@ -338,6 +299,7 @@ public class EKState extends GameState {
                     if (moveSeeFuture != -1) {
                         discard.add(moveCardSeeFuture);
                         deck.get(playerTurn).remove(moveSeeFuture);
+                        justPlayedSeeFuture = true;
                         return true;
                     }
                 }
@@ -508,6 +470,11 @@ public class EKState extends GameState {
                     moveStart(this.draw.get(j), this.draw, this.deck.get(i));
                 }
             }
+            this.deck.get(0).add(new Card(CARDTYPE.TACO));
+            this.deck.get(0).add(new Card(CARDTYPE.TACO));
+            this.deck.get(0).add(new Card(CARDTYPE.TACO));
+
+
 
             this.draw.add(new Card(CARDTYPE.EXPLODE));
             this.draw.add(new Card(CARDTYPE.EXPLODE));
@@ -555,7 +522,6 @@ public class EKState extends GameState {
             this.draw.add(new Card(CARDTYPE.DEFUSE));
             this.draw.add(new Card(CARDTYPE.NOPE));
             this.draw.add(new Card(CARDTYPE.SEEFUTURE));
-
             gameState = STATE.INIT_OBJECTS;
             return true;
         }

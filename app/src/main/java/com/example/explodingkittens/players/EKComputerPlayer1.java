@@ -18,6 +18,7 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
     // constructor
     public EKComputerPlayer1(String name) { super(name); }
 
+    //FIXME make the computer not play badly
     /**
      * callback method--game's state has changed
      * @param info
@@ -28,7 +29,6 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
         if(!(info instanceof EKState)) return;
         //logView = myActivity.findViewById(R.id.logView);
         EKState receive = new EKState((EKState) info);
-        int turn = receive.getPlayerTurn();
         if (receive.getPlayerTurn() == playerNum) {
             Logger.log("CP", "Turn: " + playerNum);
             //if played card, then just send end turn action

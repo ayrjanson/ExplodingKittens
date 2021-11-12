@@ -1,5 +1,6 @@
 package com.example.explodingkittens;
 
+import com.example.explodingkittens.infoMessage.EKState;
 import com.example.explodingkittens.players.EKComputerPlayer1;
 import com.example.explodingkittens.players.EKHumanPlayer1;
 import com.example.gameframework.GameMainActivity;
