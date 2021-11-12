@@ -14,7 +14,7 @@ import com.example.gameframework.utilities.Logger;
 public class EKComputerPlayer1 extends GameComputerPlayer {
 
     private boolean playedCard = false;
-    public TextView logView;
+    //public TextView logView;
     // constructor
     public EKComputerPlayer1(String name) { super(name); }
 

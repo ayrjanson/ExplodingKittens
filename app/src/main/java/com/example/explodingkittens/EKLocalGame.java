@@ -1,6 +1,7 @@
 package com.example.explodingkittens;
 
 import android.util.Log;
+import android.widget.TextView;
 
 
 import com.example.explodingkittens.ekActionMessage.EKPlayCardAction;
@@ -18,7 +19,7 @@ public class EKLocalGame extends LocalGame {
     //public EKState state;
     //private EKState previousState;
     //private GameAction action;
-
+    public TextView logView = null;
 
     // BASIC CONSTRUCTOR
 

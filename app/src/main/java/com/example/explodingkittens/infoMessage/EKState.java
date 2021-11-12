@@ -120,6 +120,7 @@ public class EKState extends GameState {
                 this.nextPlayer(this.playerTurn);
                 break;
             case ATTACKPLAYER:
+
                 break;
             case LOST:
                 // Can have assistance moving the individual cards
