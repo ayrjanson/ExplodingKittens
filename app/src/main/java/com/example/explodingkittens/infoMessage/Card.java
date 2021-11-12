@@ -15,7 +15,7 @@ import java.util.Hashtable;
 public class Card {
 
     //enum to track the card type of each obj
-    private CARDTYPE cardType;
+    public CARDTYPE cardType;
 
     //hashtable to trach the
     static Hashtable<CARDTYPE,String> ht1 = new Hashtable()

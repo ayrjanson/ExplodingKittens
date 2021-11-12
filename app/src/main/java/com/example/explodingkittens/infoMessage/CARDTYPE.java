@@ -25,5 +25,9 @@ public enum CARDTYPE{
     DEFUSE,
     EXPLODE,
     ENDTURN,
-    DRAW
+    DRAW,
+    MELON_SELECTED,
+    BEARD_SELECTED,
+    POTATO_SELECTED,
+    TACO_SELECTED
 }
