@@ -130,7 +130,7 @@ public class EKLocalGame extends LocalGame {
                 case SEEFUTURE:
                     if (currentState.playCard(currentState.playerTurn, CARDTYPE.SEEFUTURE, currentState.deck.get(currentState.playerTurn))) {
                         Logger.log("LocalGame", "Playing a SeeFuture Card");
-
+                        //this.sendUpdatedStateTo(players[((EKState) state).playerTurn]);
                         return true;
                     }
                     break;

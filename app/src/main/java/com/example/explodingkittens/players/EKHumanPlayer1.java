@@ -1,5 +1,6 @@
 package com.example.explodingkittens.players;
 
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -131,40 +132,51 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
              numCardsDisplay = playerCards.size();
 
             //DISPLAY SEE FUTURE
-            //FIXME: see future doenst disappear from deck?
-            /*
-            if(state.justPlayedSeeFuture == true){
+            /*FIXME: see future doesnt display sometimes, only seems to call if the player tabs all the
+            way to the right, idk why, the thread may call recursively unintentionally because
+            it kept trying to "update cards for seefuture" so maybe it isnt updating
+            FIXME also doesnt stop displaying first three cards, and crashes if i click how do i delay without ruining
+*/
+            //Code to display seefuture
+            if(state.justPlayedSeeFuture){
+                logView.setText("Updating card images for seefuture");
+                state.justPlayedSeeFuture = false;
                 if(state.draw.size() >= 3) {
-                    playerCard1.setImageResource(R.drawable.back);
-                    playerCard2.setImageResource(imageTable.get(state.draw.get(0).cardType));
-                    playerCard2.setImageResource(imageTable.get(state.draw.get(1).cardType));
-                    playerCard2.setImageResource(imageTable.get(state.draw.get(2).cardType));
-                    playerCard5.setImageResource(R.drawable.back);
+
+                    playerCards.get(0).setImageResource(R.drawable.back);
+                    playerCards.get(1).setImageResource(imageTable.get(state.draw.get(0).cardType));
+                    playerCards.get(2).setImageResource(imageTable.get(state.draw.get(1).cardType));
+                    playerCards.get(3).setImageResource(imageTable.get(state.draw.get(2).cardType));
+                    playerCards.get(4).setImageResource(R.drawable.back);
                     state.justPlayedSeeFuture = false;
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    receiveInfo(state);
-                }else{
+                    //delay???
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                        }
+                    }, 5000);
+                    state.justPlayedSeeFuture = false;
+                    }else{
+                    state.justPlayedSeeFuture = false;
                     playerCard1.setImageResource(R.drawable.back);
                     playerCard5.setImageResource(R.drawable.back);
                     for(int i = 0; i < state.draw.size(); i ++){
                         playerCards.get(i+1).setImageResource(imageTable.get(state.draw.get(i).cardType));
                     }
                     state.justPlayedSeeFuture = false;
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    receiveInfo(state);
+                    //delay???
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                        }
+                    }, 5000);
+
                 }
             }
 
-             */
-            if(currIdx >= 0 && (currIdx+numCardsDisplay) <= state.deck.get(myPlayerNum).size())
+           if(currIdx >= 0 && (currIdx+numCardsDisplay) <= state.deck.get(myPlayerNum).size())
                 for (int i = 0; i < numCardsDisplay; i++) {
                     if(state.deck.get(myPlayerNum).get(i+currIdx).isSelected == true ){
                         CARDTYPE type = state.deck.get(myPlayerNum).get(i+currIdx).getType();
@@ -262,9 +274,10 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
                 logView.setText("Player " + state.playerTurn + " selected a " + state.deck.get(state.playerTurn).get(currIdx).getType().name());
             }else {
                 CARDTYPE type = buttonCardMap.get(R.id.playerCard1);
-                EKPlayCardAction action = new EKPlayCardAction(this, type);
-                game.sendAction(action);
-                logView.setText("Player " + state.playerTurn + " played a " + type.name() + " card.");
+                    EKPlayCardAction action = new EKPlayCardAction(this, type);
+                    game.sendAction(action);
+                    logView.setText("Player " + state.playerTurn + " played a " + type.name() + " card.");
+
             }
         }
         else if (v.getId() == R.id.playerCard2) {
@@ -355,7 +368,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             receiveInfo(state);
         }
         else if (v.getId() == R.id.handRight) {
-            if(currIdx >= 0 && (currIdx+numCardsDisplay) <= state.deck.get(myPlayerNum).size()){
+            if(currIdx >= 0 && (currIdx+numCardsDisplay) < state.deck.get(myPlayerNum).size()){
                 currIdx++;
                 logView.setText("Tab Right");
             }else{
@@ -363,6 +376,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             }
             receiveInfo(state);
         }
+        state.justPlayedSeeFuture = false;
         receiveInfo(state);
     }
 

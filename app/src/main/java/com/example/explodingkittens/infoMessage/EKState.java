@@ -299,7 +299,8 @@ public class EKState extends GameState {
                     if (moveSeeFuture != -1) {
                         discard.add(moveCardSeeFuture);
                         deck.get(playerTurn).remove(moveSeeFuture);
-                        justPlayedSeeFuture = true;
+                        this.justPlayedSeeFuture = true;
+
                         return true;
                     }
                 }
@@ -470,9 +471,8 @@ public class EKState extends GameState {
                     moveStart(this.draw.get(j), this.draw, this.deck.get(i));
                 }
             }
-            this.deck.get(0).add(new Card(CARDTYPE.TACO));
-            this.deck.get(0).add(new Card(CARDTYPE.TACO));
-            this.deck.get(0).add(new Card(CARDTYPE.TACO));
+            this.deck.get(0).add(new Card(CARDTYPE.SEEFUTURE));
+
 
 
 
