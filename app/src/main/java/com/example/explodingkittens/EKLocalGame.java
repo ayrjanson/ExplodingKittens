@@ -19,13 +19,14 @@ public class EKLocalGame extends LocalGame {
     //public EKState state;
     //private EKState previousState;
     //private GameAction action;
-    public TextView logView = null;
+    //public TextView logView = null;
 
     // BASIC CONSTRUCTOR
 
     public EKLocalGame() {
         super();
         super.state = new EKState(4); //game with 4 players
+
         //state = (EKState) super.state;
         //this.previousState = null;
     }
@@ -78,6 +79,7 @@ public class EKLocalGame extends LocalGame {
             EKPlayCardAction at = (EKPlayCardAction) action;
             CARDTYPE type = at.type;
             EKState currentState = (EKState) state;
+            currentState.lastMessage = ("Player " + currentState.playerTurn + " played a " + type.name() + " card." );
             switch (type) {
                 case MELON:
                     if (currentState.playCard(currentState.playerTurn, CARDTYPE.MELON, currentState.deck.get(currentState.playerTurn))) {
@@ -167,14 +169,12 @@ public class EKLocalGame extends LocalGame {
                         return true;
                     }
                     break;
-                default:
-                    Log.d("Invalid Action",
-                            "Action provided was an invalid action");
-                    return false;
-            }
 
+            }
+        currentState.lastMessage = "Move was invalid";
 
         }
+
         return false;
     }
 }

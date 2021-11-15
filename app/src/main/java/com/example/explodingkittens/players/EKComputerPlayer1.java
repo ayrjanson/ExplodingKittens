@@ -16,7 +16,12 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
     private boolean playedCard = false;
     //public TextView logView;
     // constructor
-    public EKComputerPlayer1(String name) { super(name); }
+
+    public EKComputerPlayer1(String name) {
+        super(name);
+
+
+    }
 
     //FIXME make the computer not play badly
     /**
@@ -27,6 +32,7 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
     @Override
     protected void receiveInfo(GameInfo info) {
         if(!(info instanceof EKState)) return;
+        //logView.setId(R.id.logView);
         //logView = myActivity.findViewById(R.id.logView);
         EKState receive = new EKState((EKState) info);
         if (receive.getPlayerTurn() == playerNum) {
@@ -85,7 +91,7 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
                         }
                         playedCard = true;
                         game.sendAction(action);
-                        //logView.setText("Player " + playerNum + " played a " + type.name() + " card." );
+                        ((EKState) info).lastMessage = ("Player " + playerNum + " played a " + type.name() + " card." );
                         return;
                 }
             }
@@ -93,7 +99,8 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
                 EKPlayCardAction end = new EKPlayCardAction(this,CARDTYPE.ENDTURN);
                 playedCard = false;
                 game.sendAction(end);
-                //logView.setText("Player " + playerNum + " ended their turn by drawing a card.");
+                ((EKState) info).lastMessage = ("Player " + playerNum + " ended their turn by drawing a card.");
+
                 return;
             }
             playedCard = false;

@@ -90,6 +90,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
     public EKHumanPlayer1(String name, int layoutId) {
         super(name);
         this.layoutId = layoutId;
+        //logView = myActivity.findViewById(R.id.logView);
     }
 
     @Override
@@ -114,7 +115,10 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
         else {
             //Update every image button to match what is in the gamestate
             this.state = new EKState((EKState) info);
-
+            logView.setText(this.state.lastMessage);
+            if(state.lastMessage.length() == 0){
+                logView.setText("No Message");
+            }
             myPlayerNum = ((LocalGame) game).getPlayerIdx(this);
 
 
@@ -138,6 +142,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             FIXME also doesnt stop displaying first three cards, and crashes if i click how do i delay without ruining
 */
             //Code to display seefuture
+
             if(state.justPlayedSeeFuture){
                 logView.setText("Updating card images for seefuture");
                 state.justPlayedSeeFuture = false;
@@ -148,6 +153,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
                     playerCards.get(2).setImageResource(imageTable.get(state.draw.get(1).cardType));
                     playerCards.get(3).setImageResource(imageTable.get(state.draw.get(2).cardType));
                     playerCards.get(4).setImageResource(R.drawable.back);
+                    /*
                     state.justPlayedSeeFuture = false;
                     //delay???
                     Handler handler = new Handler();
@@ -157,13 +163,19 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
                         }
                     }, 5000);
                     state.justPlayedSeeFuture = false;
+
+                     */
                     }else{
-                    state.justPlayedSeeFuture = false;
+                    //state.justPlayedSeeFuture = false;
                     playerCard1.setImageResource(R.drawable.back);
                     playerCard5.setImageResource(R.drawable.back);
                     for(int i = 0; i < state.draw.size(); i ++){
                         playerCards.get(i+1).setImageResource(imageTable.get(state.draw.get(i).cardType));
                     }
+                    for(int i = state.draw.size()+1; i < 5; i++){
+                        playerCards.get(i).setImageResource(R.drawable.back);
+                    }
+                    /*
                     state.justPlayedSeeFuture = false;
                     //delay???
                     Handler handler = new Handler();
@@ -173,10 +185,10 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
                         }
                     }, 5000);
 
-                }
-            }
+                     */
 
-           if(currIdx >= 0 && (currIdx+numCardsDisplay) <= state.deck.get(myPlayerNum).size())
+                }
+            } else if(currIdx >= 0 && (currIdx+numCardsDisplay) <= state.deck.get(myPlayerNum).size())
                 for (int i = 0; i < numCardsDisplay; i++) {
                     if(state.deck.get(myPlayerNum).get(i+currIdx).isSelected == true ){
                         CARDTYPE type = state.deck.get(myPlayerNum).get(i+currIdx).getType();
@@ -204,8 +216,10 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             for (int i = state.deck.get(myPlayerNum).size(); i < playerCards.size(); i++) {
                 playerCards.get(i).setImageResource(R.drawable.back);
             }
+
            Logger.log(TAG, "receiving");
         }
+
     }
 
 
@@ -213,6 +227,9 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
     public void onClick(View v) {
         // Checks if the id matches the object
         // TODO: Move to this way if others don't work
+        if(state.justPlayedSeeFuture){
+            return;
+        }
         if (v.getId() == R.id.player1) {
             // Determine if an action was selected that allows that user to be included
         }

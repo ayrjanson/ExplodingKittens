@@ -2,6 +2,7 @@ package com.example.test;
 
 import static org.junit.Assert.*;
 
+import com.example.explodingkittens.EKLocalGame;
 import com.example.explodingkittens.infoMessage.CARDTYPE;
 import com.example.explodingkittens.infoMessage.Card;
 import com.example.explodingkittens.infoMessage.EKState;
@@ -61,6 +62,12 @@ public class EKStateTest {
 
     @Test
     public void playCard() {
+        EKLocalGame test = new EKLocalGame();
+        EKState stateTest = (EKState) test.getGameState();
+        
+        stateTest.playCard(stateTest.playerTurn,CARDTYPE.ATTACK,stateTest.deck.get(stateTest.playerTurn));
+        assertEquals(1,stateTest.playerTurn);
+        //assertEquals();
     }
 
     @Test

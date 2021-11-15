@@ -22,7 +22,6 @@ import java.util.Collections;
 public class EKState extends GameState {
 
 
-    //TODO button linker
     /*
     Create an arrayList of imageButtons, (in what class?) that can link to every button in the gui
     set a static image for back of card, that we can use to "hide" a card value for draw, discard etc
@@ -35,6 +34,7 @@ public class EKState extends GameState {
     public static final int NUM_PLAYERS = 4;
     public int playerTurn;
     public boolean justPlayedSeeFuture;
+    public String lastMessage;
 
     public static final int DRAWCARD = 4000;
     public static final int SKIPTURN = 4001;
@@ -57,6 +57,7 @@ public class EKState extends GameState {
             this.deck.add(new ArrayList<>(7));
         }
         gameState = STATE.INIT_ARRAYS;
+        lastMessage = "";
         this.prepareGame();
 
     }
@@ -88,6 +89,7 @@ public class EKState extends GameState {
             }
         }
         this.gameState = state.gameState;
+        this.lastMessage = state.lastMessage;
         this.justPlayedSeeFuture = state.justPlayedSeeFuture;
         this.playerStatus = new boolean[state.playerStatus.length];
         for (int i = 0; i < state.playerStatus.length; i++) {
@@ -128,7 +130,18 @@ public class EKState extends GameState {
                 this.nextPlayer(this.playerTurn);
                 break;
             case ATTACKPLAYER:
+                this.nextPlayer(this.playerTurn);
+                CARDTYPE temp2 = draw.get(0).getType();
+                this.deck.get(this.getPlayerTurn()).add(takeFromDraw());
+                draw.remove(0);
 
+                if(temp2 == CARDTYPE.EXPLODE){
+                    playCard(playerTurn, CARDTYPE.DEFUSE, deck.get(playerTurn));
+                }
+                for(Card card: deck.get(playerTurn)) {
+                    card.isPlayable = false;
+                    card.isSelected = false;
+                }
                 break;
             case LOST:
                 // Can have assistance moving the individual cards
@@ -194,6 +207,7 @@ public class EKState extends GameState {
      * @return boolean - whether play card executed or nor
      */
     //TODO test each playcard
+    //FIXME playing a defuse makes you instalose still
     public boolean playCard(int playerTurn, CARDTYPE card, ArrayList<Card> src){
         switch(card){
             case MELON:
@@ -321,21 +335,13 @@ public class EKState extends GameState {
                 int moveDefuse = getCardIndex(CARDTYPE.DEFUSE, deck.get(playerTurn));
                 Card moveCardExplode = getCard(CARDTYPE.EXPLODE, deck.get(playerTurn));
                 Card moveCardDefuse = getCard(CARDTYPE.DEFUSE, deck.get(playerTurn));
-                boolean containsDefuse = deck.get(playerTurn).contains(card);
-                boolean containsExplode = !hasExplode(deck.get(playerTurn));
                 if(moveExplode != -1 && moveDefuse != -1){
                     discard.add(moveCardExplode);
                     discard.add(moveCardDefuse);
                     deck.get(playerTurn).remove(moveExplode);
                     deck.get(playerTurn).remove(moveDefuse);
-                    ArrayList<Card> reference = deck.get(playerTurn);
                     return true;
                 }
-                else if(card.equals(CARDTYPE.DEFUSE) && src.equals(draw) && !hasExplode(deck.get(playerTurn))) {
-                   endTurn(playerTurn, DRAWCARD);
-                   return true;
-                }
-
                 // This condition would ideally identify that the player wants to play the defuse card
                 else if(moveDefuse != -1 && moveExplode == -1) {
                     return false;
@@ -357,6 +363,8 @@ public class EKState extends GameState {
                     deck.get(playerTurn).remove(moveDefuse);
                     ArrayList<Card> reference = deck.get(playerTurn);
                     return true;
+                }else{
+                    endTurn(playerTurn,LOST);
                 }
                 break;
             default:
