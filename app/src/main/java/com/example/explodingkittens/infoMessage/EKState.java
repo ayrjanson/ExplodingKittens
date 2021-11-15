@@ -321,6 +321,8 @@ public class EKState extends GameState {
                 int moveDefuse = getCardIndex(CARDTYPE.DEFUSE, deck.get(playerTurn));
                 Card moveCardExplode = getCard(CARDTYPE.EXPLODE, deck.get(playerTurn));
                 Card moveCardDefuse = getCard(CARDTYPE.DEFUSE, deck.get(playerTurn));
+                boolean containsDefuse = deck.get(playerTurn).contains(card);
+                boolean containsExplode = !hasExplode(deck.get(playerTurn));
                 if(moveExplode != -1 && moveDefuse != -1){
                     discard.add(moveCardExplode);
                     discard.add(moveCardDefuse);
@@ -334,7 +336,8 @@ public class EKState extends GameState {
                    return true;
                 }
 
-                else if(deck.get(playerTurn).contains(card) && !hasExplode(deck.get(playerTurn))) {
+                // This condition would ideally identify that the player wants to play the defuse card
+                else if(moveDefuse != -1 && moveExplode == -1) {
                     return false;
                 }
                 //FIXME playing a defuse makes this else look execute????
