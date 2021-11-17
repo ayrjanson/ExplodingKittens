@@ -195,11 +195,12 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        // Checks if the id matches the object
-        // TODO: Move to this way if others don't work
-        if(state.justPlayedSeeFuture){
-            return;
-        }
+        if (state.playerTurn == this.myPlayerNum) {
+            // Checks if the id matches the object
+            // TODO: Move to this way if others don't work
+            if (state.justPlayedSeeFuture) {
+                return;
+            }
 
             if (v.getId() == R.id.player1) {
                 //state.stealFromPlayer = 1;
@@ -210,161 +211,153 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
                 //state.stealFromPlayer = 3;
                 // Determine if an action was selected that allows that user to be included
             }
-        //if stops working add back in else below
-         else if (v.getId() == R.id.discardPile) {
-            ArrayList<Card> selectedCards = findSelected(state.deck.get(state.playerTurn));
-            int numCardsToPlay = selectedMatching(selectedCards);
-            switch(numCardsToPlay){
-                case 1:
-                    state.playCard(state.playerTurn,selectedCards.get(0).getType(),state.deck.get(state.playerTurn));
-                    logView.setText("Player " + state.playerTurn + " played one " + selectedCards.get(0).cardType.name() + " card");
+            //if stops working add back in else below
+            else if (v.getId() == R.id.discardPile) {
+                ArrayList<Card> selectedCards = findSelected(state.deck.get(state.playerTurn));
+                int numCardsToPlay = selectedMatching(selectedCards);
+                switch (numCardsToPlay) {
+                    case 1:
+                        state.playCard(state.playerTurn, selectedCards.get(0).getType(), state.deck.get(state.playerTurn));
+                        logView.setText("Player " + state.playerTurn + " played one " + selectedCards.get(0).cardType.name() + " card");
 
-                case 2:
-                    state.playCard(state.playerTurn,selectedCards.get(0).getType(),state.deck.get(state.playerTurn));
-                    state.playCard(state.playerTurn,selectedCards.get(0).getType(),state.deck.get(state.playerTurn));
-                    logView.setText("Player " + state.playerTurn + " played two of a kind.");
-                    //PICK CARD
-                    break;
-                case 3:
-                    state.playCard(state.playerTurn,selectedCards.get(0).getType(),state.deck.get(state.playerTurn));
-                    state.playCard(state.playerTurn,selectedCards.get(0).getType(),state.deck.get(state.playerTurn));
-                    state.playCard(state.playerTurn,selectedCards.get(0).getType(),state.deck.get(state.playerTurn));
-                    logView.setText("Player " + state.playerTurn + " played three of a kind.");
-                    //ASK FOR CARD
-                    break;
-                case -1:
-                    logView.setText("Selected card types are not the same. Move cancelled");
-                    break;
-                default:
-                    logView.setText("Invalid number of cards selected.");
-                    break;
-            }
-        }
-        else if (v.getId() == R.id.drawPile) {
+                    case 2:
+                        state.playCard(state.playerTurn, selectedCards.get(0).getType(), state.deck.get(state.playerTurn));
+                        state.playCard(state.playerTurn, selectedCards.get(0).getType(), state.deck.get(state.playerTurn));
+                        logView.setText("Player " + state.playerTurn + " played two of a kind.");
+                        //PICK CARD
+                        break;
+                    case 3:
+                        state.playCard(state.playerTurn, selectedCards.get(0).getType(), state.deck.get(state.playerTurn));
+                        state.playCard(state.playerTurn, selectedCards.get(0).getType(), state.deck.get(state.playerTurn));
+                        state.playCard(state.playerTurn, selectedCards.get(0).getType(), state.deck.get(state.playerTurn));
+                        logView.setText("Player " + state.playerTurn + " played three of a kind.");
+                        //ASK FOR CARD
+                        break;
+                    case -1:
+                        logView.setText("Selected card types are not the same. Move cancelled");
+                        break;
+                    default:
+                        logView.setText("Invalid number of cards selected.");
+                        break;
+                }
+            } else if (v.getId() == R.id.drawPile) {
                 EKPlayCardAction draw = new EKPlayCardAction(this, CARDTYPE.DRAW);
                 logView.setText("Player " + state.playerTurn + " drew a card to end their turn.");
                 game.sendAction(draw);
                 receiveInfo(state);
 
-        }
-        else if (v.getId() == R.id.playerCard1) {
-            if(buttonCardMap.get(R.id.playerCard1) == CARDTYPE.MELON ||
-                    buttonCardMap.get(R.id.playerCard1) == CARDTYPE.BEARD ||
-                    buttonCardMap.get(R.id.playerCard1) == CARDTYPE.POTATO ||
-                    buttonCardMap.get(R.id.playerCard1) == CARDTYPE.TACO){
-                if(state.deck.get(state.playerTurn).get(currIdx).isSelected == true){
-                    state.deck.get(state.playerTurn).get(currIdx).isSelected = false;
-                }else{
-                    state.deck.get(state.playerTurn).get(currIdx).isSelected = true;
-                }
-                logView.setText("Player " + state.playerTurn + " selected a " + state.deck.get(state.playerTurn).get(currIdx).getType().name());
-            }else {
-                CARDTYPE type = buttonCardMap.get(R.id.playerCard1);
+            } else if (v.getId() == R.id.playerCard1) {
+                if (buttonCardMap.get(R.id.playerCard1) == CARDTYPE.MELON ||
+                        buttonCardMap.get(R.id.playerCard1) == CARDTYPE.BEARD ||
+                        buttonCardMap.get(R.id.playerCard1) == CARDTYPE.POTATO ||
+                        buttonCardMap.get(R.id.playerCard1) == CARDTYPE.TACO) {
+                    if (state.deck.get(state.playerTurn).get(currIdx).isSelected == true) {
+                        state.deck.get(state.playerTurn).get(currIdx).isSelected = false;
+                    } else {
+                        state.deck.get(state.playerTurn).get(currIdx).isSelected = true;
+                    }
+                    logView.setText("Player " + state.playerTurn + " selected a " + state.deck.get(state.playerTurn).get(currIdx).getType().name());
+                } else {
+                    CARDTYPE type = buttonCardMap.get(R.id.playerCard1);
                     EKPlayCardAction action = new EKPlayCardAction(this, type);
                     game.sendAction(action);
                     logView.setText("Player " + state.playerTurn + " played a " + type.name() + " card.");
 
-            }
-        }
-        else if (v.getId() == R.id.playerCard2) {
-            if(buttonCardMap.get(R.id.playerCard2) == CARDTYPE.MELON ||
-                    buttonCardMap.get(R.id.playerCard2) == CARDTYPE.BEARD ||
-                    buttonCardMap.get(R.id.playerCard2) == CARDTYPE.POTATO ||
-                    buttonCardMap.get(R.id.playerCard2) == CARDTYPE.TACO){
-                if(state.deck.get(state.playerTurn).get(currIdx+1).isSelected == true){
-                    state.deck.get(state.playerTurn).get(currIdx+1).isSelected = false;
-                }else{
-                    state.deck.get(state.playerTurn).get(currIdx+1).isSelected = true;
                 }
-                logView.setText("Player " + state.playerTurn + " selected a " + state.deck.get(state.playerTurn).get(currIdx+1).getType().name());
-            }else {
-                CARDTYPE type = buttonCardMap.get(R.id.playerCard2);
-                EKPlayCardAction action = new EKPlayCardAction(this, type);
-                game.sendAction(action);
-                logView.setText("Player " + state.playerTurn + " played a " + type.name() + " card.");
-                // Determine which action was called
-            }
-        }
-        else if (v.getId() == R.id.playerCard3) {
-            if(buttonCardMap.get(R.id.playerCard3) == CARDTYPE.MELON ||
-                    buttonCardMap.get(R.id.playerCard3) == CARDTYPE.BEARD ||
-                    buttonCardMap.get(R.id.playerCard3) == CARDTYPE.POTATO ||
-                    buttonCardMap.get(R.id.playerCard3) == CARDTYPE.TACO){
-                if(state.deck.get(state.playerTurn).get(currIdx+2).isSelected == true){
-                    state.deck.get(state.playerTurn).get(currIdx+2).isSelected = false;
-                }else{
-                    state.deck.get(state.playerTurn).get(currIdx+2).isSelected = true;
+            } else if (v.getId() == R.id.playerCard2) {
+                if (buttonCardMap.get(R.id.playerCard2) == CARDTYPE.MELON ||
+                        buttonCardMap.get(R.id.playerCard2) == CARDTYPE.BEARD ||
+                        buttonCardMap.get(R.id.playerCard2) == CARDTYPE.POTATO ||
+                        buttonCardMap.get(R.id.playerCard2) == CARDTYPE.TACO) {
+                    if (state.deck.get(state.playerTurn).get(currIdx + 1).isSelected == true) {
+                        state.deck.get(state.playerTurn).get(currIdx + 1).isSelected = false;
+                    } else {
+                        state.deck.get(state.playerTurn).get(currIdx + 1).isSelected = true;
+                    }
+                    logView.setText("Player " + state.playerTurn + " selected a " + state.deck.get(state.playerTurn).get(currIdx + 1).getType().name());
+                } else {
+                    CARDTYPE type = buttonCardMap.get(R.id.playerCard2);
+                    EKPlayCardAction action = new EKPlayCardAction(this, type);
+                    game.sendAction(action);
+                    logView.setText("Player " + state.playerTurn + " played a " + type.name() + " card.");
+                    // Determine which action was called
                 }
-                logView.setText("Player " + state.playerTurn + " selected a " + state.deck.get(state.playerTurn).get(currIdx+2).getType().name());
-            }else {
-                CARDTYPE type = buttonCardMap.get(R.id.playerCard3);
-                EKPlayCardAction action = new EKPlayCardAction(this, type);
-                game.sendAction(action);
-                logView.setText("Player " + state.playerTurn + " played a " + type.name() + " card.");
-                // Determine which action was called
-            }
-        }
-        else if (v.getId() == R.id.playerCard4) {
-            if(buttonCardMap.get(R.id.playerCard4) == CARDTYPE.MELON ||
-                    buttonCardMap.get(R.id.playerCard4) == CARDTYPE.BEARD ||
-                    buttonCardMap.get(R.id.playerCard4) == CARDTYPE.POTATO ||
-                    buttonCardMap.get(R.id.playerCard4) == CARDTYPE.TACO){
-                if(state.deck.get(state.playerTurn).get(currIdx+3).isSelected == true){
-                    state.deck.get(state.playerTurn).get(currIdx+3).isSelected = false;
-                }else{
-                    state.deck.get(state.playerTurn).get(currIdx+3).isSelected = true;
+            } else if (v.getId() == R.id.playerCard3) {
+                if (buttonCardMap.get(R.id.playerCard3) == CARDTYPE.MELON ||
+                        buttonCardMap.get(R.id.playerCard3) == CARDTYPE.BEARD ||
+                        buttonCardMap.get(R.id.playerCard3) == CARDTYPE.POTATO ||
+                        buttonCardMap.get(R.id.playerCard3) == CARDTYPE.TACO) {
+                    if (state.deck.get(state.playerTurn).get(currIdx + 2).isSelected == true) {
+                        state.deck.get(state.playerTurn).get(currIdx + 2).isSelected = false;
+                    } else {
+                        state.deck.get(state.playerTurn).get(currIdx + 2).isSelected = true;
+                    }
+                    logView.setText("Player " + state.playerTurn + " selected a " + state.deck.get(state.playerTurn).get(currIdx + 2).getType().name());
+                } else {
+                    CARDTYPE type = buttonCardMap.get(R.id.playerCard3);
+                    EKPlayCardAction action = new EKPlayCardAction(this, type);
+                    game.sendAction(action);
+                    logView.setText("Player " + state.playerTurn + " played a " + type.name() + " card.");
+                    // Determine which action was called
                 }
-                logView.setText("Player " + state.playerTurn + " selected a " + state.deck.get(state.playerTurn).get(currIdx+3).getType().name());
-            }else {
-                CARDTYPE type = buttonCardMap.get(R.id.playerCard4);
-                EKPlayCardAction action = new EKPlayCardAction(this, type);
-                game.sendAction(action);
-                logView.setText("Player " + state.playerTurn + " played a " + type.name() + " card.");
-                // Determine which action was called
-            }
-        }
-        else if (v.getId() == R.id.playerCard5) {
-            if(buttonCardMap.get(R.id.playerCard5) == CARDTYPE.MELON ||
-                    buttonCardMap.get(R.id.playerCard5) == CARDTYPE.BEARD ||
-                    buttonCardMap.get(R.id.playerCard5) == CARDTYPE.POTATO ||
-                    buttonCardMap.get(R.id.playerCard5) == CARDTYPE.TACO){
-                if(state.deck.get(state.playerTurn).get(currIdx+4).isSelected == true){
-                    state.deck.get(state.playerTurn).get(currIdx+4).isSelected = false;
-                }else{
-                    state.deck.get(state.playerTurn).get(currIdx+4).isSelected = true;
+            } else if (v.getId() == R.id.playerCard4) {
+                if (buttonCardMap.get(R.id.playerCard4) == CARDTYPE.MELON ||
+                        buttonCardMap.get(R.id.playerCard4) == CARDTYPE.BEARD ||
+                        buttonCardMap.get(R.id.playerCard4) == CARDTYPE.POTATO ||
+                        buttonCardMap.get(R.id.playerCard4) == CARDTYPE.TACO) {
+                    if (state.deck.get(state.playerTurn).get(currIdx + 3).isSelected == true) {
+                        state.deck.get(state.playerTurn).get(currIdx + 3).isSelected = false;
+                    } else {
+                        state.deck.get(state.playerTurn).get(currIdx + 3).isSelected = true;
+                    }
+                    logView.setText("Player " + state.playerTurn + " selected a " + state.deck.get(state.playerTurn).get(currIdx + 3).getType().name());
+                } else {
+                    CARDTYPE type = buttonCardMap.get(R.id.playerCard4);
+                    EKPlayCardAction action = new EKPlayCardAction(this, type);
+                    game.sendAction(action);
+                    logView.setText("Player " + state.playerTurn + " played a " + type.name() + " card.");
+                    // Determine which action was called
                 }
-                logView.setText("Player " + state.playerTurn + " selected a " + state.deck.get(state.playerTurn).get(currIdx+4).getType().name());
-            }else {
-                CARDTYPE type = buttonCardMap.get(R.id.playerCard5);
-                EKPlayCardAction action = new EKPlayCardAction(this, type);
-                game.sendAction(action);
-                logView.setText("Player " + state.playerTurn + " played a " + type.name() + " card.");
-                // Determine which action was called
+            } else if (v.getId() == R.id.playerCard5) {
+                if (buttonCardMap.get(R.id.playerCard5) == CARDTYPE.MELON ||
+                        buttonCardMap.get(R.id.playerCard5) == CARDTYPE.BEARD ||
+                        buttonCardMap.get(R.id.playerCard5) == CARDTYPE.POTATO ||
+                        buttonCardMap.get(R.id.playerCard5) == CARDTYPE.TACO) {
+                    if (state.deck.get(state.playerTurn).get(currIdx + 4).isSelected == true) {
+                        state.deck.get(state.playerTurn).get(currIdx + 4).isSelected = false;
+                    } else {
+                        state.deck.get(state.playerTurn).get(currIdx + 4).isSelected = true;
+                    }
+                    logView.setText("Player " + state.playerTurn + " selected a " + state.deck.get(state.playerTurn).get(currIdx + 4).getType().name());
+                } else {
+                    CARDTYPE type = buttonCardMap.get(R.id.playerCard5);
+                    EKPlayCardAction action = new EKPlayCardAction(this, type);
+                    game.sendAction(action);
+                    logView.setText("Player " + state.playerTurn + " played a " + type.name() + " card.");
+                    // Determine which action was called
+                }
+            } else if (v.getId() == R.id.handLeft) {
+                //bounds checking, increments currIdx, calls recieve info to redraw
+                if (currIdx - 1 >= 0 && ((currIdx - 1) + numCardsDisplay) <= state.deck.get(myPlayerNum).size()) {
+                    currIdx--;
+                    logView.setText("Tab Left.");
+                } else {
+                    logView.setText("Cannot tab left, already at beginning.");
+                }
+                receiveInfo(state);
+            } else if (v.getId() == R.id.handRight) {
+                if (currIdx >= 0 && (currIdx + numCardsDisplay) < state.deck.get(myPlayerNum).size()) {
+                    currIdx++;
+                    logView.setText("Tab Right");
+                } else {
+                    logView.setText("Cannot tab right, already at beginning.");
+                }
+                receiveInfo(state);
             }
-        }
-
-        else if (v.getId() == R.id.handLeft) {
-            //bounds checking, increments currIdx, calls recieve info to redraw
-            if(currIdx-1 >= 0 && ((currIdx-1)+numCardsDisplay) <= state.deck.get(myPlayerNum).size()){
-                currIdx--;
-                logView.setText("Tab Left.");
-            }else{
-                logView.setText("Cannot tab left, already at beginning.");
-            }
+            state.justPlayedSeeFuture = false;
+            state.justDemandedACard = false;
             receiveInfo(state);
         }
-        else if (v.getId() == R.id.handRight) {
-            if(currIdx >= 0 && (currIdx+numCardsDisplay) < state.deck.get(myPlayerNum).size()){
-                currIdx++;
-                logView.setText("Tab Right");
-            }else{
-                logView.setText("Cannot tab right, already at beginning.");
-            }
-            receiveInfo(state);
-        }
-        state.justPlayedSeeFuture = false;
-        state.justDemandedACard = false;
-        receiveInfo(state);
     }
 
     @Override
