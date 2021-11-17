@@ -1,12 +1,9 @@
 package com.example.explodingkittens.players;
 
-import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import com.example.explodingkittens.ekActionMessage.EKDrawAction;
 import com.example.explodingkittens.ekActionMessage.EKPlayCardAction;
 import com.example.explodingkittens.infoMessage.CARDTYPE;
 import com.example.explodingkittens.infoMessage.Card;
@@ -19,7 +16,6 @@ import com.example.gameframework.infoMessage.IllegalMoveInfo;
 import com.example.gameframework.infoMessage.NotYourTurnInfo;
 import com.example.gameframework.players.GameHumanPlayer;
 import com.example.gameframework.utilities.Logger;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -131,18 +127,13 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             } else {
                 discardPile.setImageResource(R.drawable.back);
             }
-
-
-             numCardsDisplay = playerCards.size();
-
+            numCardsDisplay = playerCards.size();
             //DISPLAY SEE FUTURE
             /*FIXME: see future doesnt display sometimes, only seems to call if the player tabs all the
             way to the right, idk why, the thread may call recursively unintentionally because
             it kept trying to "update cards for seefuture" so maybe it isnt updating
             FIXME also doesnt stop displaying first three cards, and crashes if i click how do i delay without ruining
 */
-            //Code to display seefuture
-
             if(state.justPlayedSeeFuture){
                 logView.setText("Updating card images for seefuture");
                 state.justPlayedSeeFuture = false;
@@ -153,18 +144,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
                     playerCards.get(2).setImageResource(imageTable.get(state.draw.get(1).cardType));
                     playerCards.get(3).setImageResource(imageTable.get(state.draw.get(2).cardType));
                     playerCards.get(4).setImageResource(R.drawable.back);
-                    /*
-                    state.justPlayedSeeFuture = false;
-                    //delay???
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                        }
-                    }, 5000);
-                    state.justPlayedSeeFuture = false;
 
-                     */
                     }else{
                     //state.justPlayedSeeFuture = false;
                     playerCard1.setImageResource(R.drawable.back);
@@ -175,18 +155,6 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
                     for(int i = state.draw.size()+1; i < 5; i++){
                         playerCards.get(i).setImageResource(R.drawable.back);
                     }
-                    /*
-                    state.justPlayedSeeFuture = false;
-                    //delay???
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                        }
-                    }, 5000);
-
-                     */
-
                 }
             } else if(currIdx >= 0 && (currIdx+numCardsDisplay) <= state.deck.get(myPlayerNum).size())
                 for (int i = 0; i < numCardsDisplay; i++) {
@@ -216,7 +184,6 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             for (int i = state.deck.get(myPlayerNum).size(); i < playerCards.size(); i++) {
                 playerCards.get(i).setImageResource(R.drawable.back);
             }
-
            Logger.log(TAG, "receiving");
         }
 
@@ -269,9 +236,6 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             }
         }
         else if (v.getId() == R.id.drawPile) {
-            //EKDrawAction draw = new EKDrawAction(this);
-            //game.sendAction(draw);
-
                 EKPlayCardAction draw = new EKPlayCardAction(this, CARDTYPE.DRAW);
                 logView.setText("Player " + state.playerTurn + " drew a card to end their turn.");
                 game.sendAction(draw);
@@ -435,7 +399,6 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
         for (ImageButton playerCard : playerCards) {
             playerCard.setOnClickListener(this);
         }
-
         handLeft.setOnClickListener(this);
         handRight.setOnClickListener(this);
     }

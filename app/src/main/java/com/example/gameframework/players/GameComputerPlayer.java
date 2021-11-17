@@ -28,7 +28,7 @@ import android.os.Looper;
  * @version July 2013
  */
 public abstract class GameComputerPlayer implements GamePlayer, Tickable {
-    //Tag for logging
+
     private static final String TAG = "GameComputerPlayer";
     /**
      * the current game state

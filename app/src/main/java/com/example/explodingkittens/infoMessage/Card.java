@@ -1,7 +1,6 @@
 package com.example.explodingkittens.infoMessage;
 
 import com.example.gameframework.R;
-
 import java.util.Hashtable;
 
 /**
@@ -96,7 +95,6 @@ public class Card {
     //set card info in this constructor
     public Card(CARDTYPE type) {
         super();
-
         cardType = type;
         description = ht1.get(cardType);
         image = imageTable.get(cardType);
@@ -127,7 +125,6 @@ public class Card {
      * @return - string of just the card's name
      */
     public String toString(){
-        //return "Type: " + cardType.name() + " Is catCard: "+ isCatCard + "\n";
         return cardType.name() + " p: " + isPlayable + " s: " + isSelected + " cc: " + isCatCard;
     }
 

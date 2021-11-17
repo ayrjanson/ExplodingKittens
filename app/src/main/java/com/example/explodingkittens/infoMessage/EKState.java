@@ -1,14 +1,9 @@
 package com.example.explodingkittens.infoMessage;
 
-import android.widget.TextView;
 
 import com.example.gameframework.infoMessage.GameState;
-
 import java.util.ArrayList;
 import java.util.Collections;
-//TODO link old gui and humanplayerclass
-//TODO: override equals method it is dogwater
-//TODO: ask to write iterate through arryaylist fucntion - recursive
 
 /**
  * ExplodingKittensGameState: Creates the decks and assigns and moves cards according to player
@@ -105,7 +100,6 @@ public class EKState extends GameState {
      * @param reason - calls in static variables to represent all the manners in which a player can
      *               end their turn, such as drawing a card, playing a skip, attack, or losing
      */
-    //TODO finish attack player button
     public void endTurn(int playerTurn, int reason){
         switch(reason){
             case DRAWCARD:
@@ -144,12 +138,8 @@ public class EKState extends GameState {
                 }
                 break;
             case LOST:
-                // Can have assistance moving the individual cards
                 if(deck.get(playerTurn)!=null) {
-                    //deck.get(playerTurn).addAll(discard); //Not moving the individual card
-                    //deck.get(playerTurn).clear();
                     moveToDiscard(deck.get(playerTurn), discard);
-
                 }
                 playerStatus[this.playerTurn] = false;
                 this.nextPlayer(this.playerTurn);
@@ -331,6 +321,7 @@ public class EKState extends GameState {
                 }
                 break;
             case DEFUSE:
+                //TODO check indexes for behavior
                 int moveExplode = getCardIndex(CARDTYPE.EXPLODE, deck.get(playerTurn));
                 int moveDefuse = getCardIndex(CARDTYPE.DEFUSE, deck.get(playerTurn));
                 Card moveCardExplode = getCard(CARDTYPE.EXPLODE, deck.get(playerTurn));
@@ -372,20 +363,6 @@ public class EKState extends GameState {
         }
         return false;
     }
-
-
-    /**
-     * boolean to determine if a arrayLIst has an explode card
-     * @param src- source arrayList to search
-     * @return - true if the deck has an explode card, false if it doesn't
-     */
-    public boolean hasExplode(ArrayList<Card> src){
-        if(getCard(CARDTYPE.EXPLODE, src) != null) {
-            return true;
-        }
-        return false;
-    }
-
 
     /**
      * getter method to get the index of a card in an arrayList
@@ -446,15 +423,6 @@ public class EKState extends GameState {
     }
 
     /**
-     * returns the state of the game, NOT THE EKGAMESTATE object
-     * @return - a string message indicating what point the game is in
-     */
-    public String gameStatetoString(){
-        String gstring = "Game State:" + gameState.name() + "\n\n";
-        return gstring;
-    }
-
-    /**
      * Creats a string of the big info about the EKgamestate, like current player, the contents of
      * all the ArrayList<Card>,
      * @return - String - the info string
@@ -482,6 +450,8 @@ public class EKState extends GameState {
                     moveStart(this.draw.get(j), this.draw, this.deck.get(i));
                 }
             }
+            //for testing comment out
+            this.deck.get(0).add(new Card(CARDTYPE.SEEFUTURE));
             this.deck.get(0).add(new Card(CARDTYPE.SEEFUTURE));
 
 
@@ -537,29 +507,6 @@ public class EKState extends GameState {
             return true;
         }
         return false;
-    }
-
-    /**
-     * sets a player's deck to playable
-     * @param playerTurn - index of current player
-     * @return - true if it did the actions
-     * TODO: implement some checking to make sure the right player is being called
-     * TODO: make sure player is not out
-     */
-    public boolean takeTurn(int playerTurn){
-        for(Card card: deck.get(playerTurn)){
-            card.isPlayable = true;
-            card.isSelected = false;
-        }
-        return true;
-    }
-
-    /**
-     * sets the gameState to MAIN_PLAY
-     * todo: check to checking to make sure this cannot be done out of order
-     */
-    public void startGame(){
-        gameState = STATE.MAIN_PLAY;
     }
 
     /**

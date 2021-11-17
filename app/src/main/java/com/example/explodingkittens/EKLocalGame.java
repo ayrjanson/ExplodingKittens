@@ -1,41 +1,34 @@
 package com.example.explodingkittens;
 
-import android.util.Log;
-import android.widget.TextView;
-
-
 import com.example.explodingkittens.ekActionMessage.EKPlayCardAction;
 import com.example.explodingkittens.infoMessage.CARDTYPE;
 import com.example.explodingkittens.infoMessage.Card;
 import com.example.explodingkittens.infoMessage.EKState;
+import com.example.explodingkittens.players.EKComputerPlayer1;
 import com.example.gameframework.LocalGame;
 import com.example.gameframework.actionMessage.GameAction;
 import com.example.gameframework.players.GamePlayer;
+import com.example.gameframework.utilities.GameTimer;
 import com.example.gameframework.utilities.Logger;
 
 
 public class EKLocalGame extends LocalGame {
-    // instance vars for current and previous states
-    //public EKState state;
-    //private EKState previousState;
-    //private GameAction action;
-    //public TextView logView = null;
 
-    // BASIC CONSTRUCTOR
+    private GameTimer timer;
 
     public EKLocalGame() {
         super();
-        super.state = new EKState(4); //game with 4 players
+        super.state = new EKState(4);
+        timer = this.getTimer();
 
-        //state = (EKState) super.state;
-        //this.previousState = null;
     }
 
     // CONSTRUCTOR WITH LOADED EK GAME STATE
     public EKLocalGame(EKState ekgamestate) {
         super();
         super.state = new EKState(ekgamestate);
-        //state = (EKState) super.state;
+        timer = this.getTimer();
+
     }
 
     //send updated state to player
@@ -55,14 +48,6 @@ public class EKLocalGame extends LocalGame {
     //checks if game has ended
     @Override
     protected String checkIfGameOver() {
-        // Do a check for all computer players
-        // Have the computer players continue playing each other
-
-        //Change 1: The state to say which player remains, if only one remains - in EKState
-            // Returns the int of the player that remains (0-3), -1 if the game isn't over
-        //Change 2: Look up the player name based on which player remains - string
-        //Change 3: Print out the specific player name that won
-        int outPlayers = 0;
         for (int i = 0; i < players.length; i++) {
             if (((EKState) state).gameOver() != -1) {
                 return "Player " + ((EKState) state).gameOver() + " wins!";
@@ -75,11 +60,14 @@ public class EKLocalGame extends LocalGame {
     @Override
     protected boolean makeMove(GameAction action) {
         int turn = ((EKState) state).playerTurn;
+
         if (action instanceof EKPlayCardAction) {
+
             EKPlayCardAction at = (EKPlayCardAction) action;
             CARDTYPE type = at.type;
             EKState currentState = (EKState) state;
             currentState.lastMessage = ("Player " + currentState.playerTurn + " played a " + type.name() + " card." );
+
             switch (type) {
                 case MELON:
                     if (currentState.playCard(currentState.playerTurn, CARDTYPE.MELON, currentState.deck.get(currentState.playerTurn))) {
@@ -130,9 +118,13 @@ public class EKLocalGame extends LocalGame {
                     }
                     break;
                 case SEEFUTURE:
+                    if(players[currentState.playerTurn] instanceof EKComputerPlayer1){
+                        return false;
+                    }
                     if (currentState.playCard(currentState.playerTurn, CARDTYPE.SEEFUTURE, currentState.deck.get(currentState.playerTurn))) {
                         Logger.log("LocalGame", "Playing a SeeFuture Card");
-                        //this.sendUpdatedStateTo(players[((EKState) state).playerTurn]);
+                        timer.setInterval(5000);
+                        timer.start();
                         return true;
                     }
                     break;
@@ -171,12 +163,17 @@ public class EKLocalGame extends LocalGame {
                     break;
 
             }
-        currentState.lastMessage = "Move was invalid";
-
         }
-
         return false;
     }
+
+    @Override
+    protected void timerTicked(){
+        ((EKState) state).justPlayedSeeFuture = false;
+        this.sendAllUpdatedState();
+        timer.stop();
+    }
+
 }
 
 
