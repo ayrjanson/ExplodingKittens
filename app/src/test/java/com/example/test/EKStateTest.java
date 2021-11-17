@@ -15,6 +15,15 @@ import java.util.ArrayList;
 public class EKStateTest {
 //WRITTEN BY ALEX
 //TODO ADD IN TEST FOR ATTACK
+
+    //To Implement
+    @Test
+    public void EKState() {
+        EKState original = new EKState(4);
+        EKState copy = new EKState(original);
+
+    }
+
     @Test
     public void endTurn() {
         //THE DRAW CARD PART
@@ -37,8 +46,6 @@ public class EKStateTest {
         }
         test.playCard(test.playerTurn,CARDTYPE.SKIP,test.deck.get(test.playerTurn));
         assertEquals(false,test.deck.get(test.playerTurn).contains(new Card(CARDTYPE.SKIP)));
-
-
     }
 
     @Test
@@ -60,9 +67,10 @@ public class EKStateTest {
     //Audrey
     public void takeFromDraw() {
         EKState state = new EKState(4);
-        state.prepareGame();
-        Card compare = state.draw.get(0);
-        assertEquals(state.takeFromDraw(), compare);
+        for (int i = 0; i < state.draw.size(); i++) {
+            Card compare = state.draw.get(0);
+            assertEquals(state.takeFromDraw(), compare);
+        }
     }
 
     @Test
@@ -78,11 +86,6 @@ public class EKStateTest {
         assertEquals(stateTest.playerTurn, (x+1)); // see if players turn is incremented
         assertEquals(sameDeck,stateTest.draw);// checking to see if the draw pile stays the same
                                               // after ATTACK card is played
-
-    }
-
-    @Test
-    public void hasExplode() {
 
     }
 
@@ -122,10 +125,12 @@ public class EKStateTest {
     }
 
     @Test
-    // Anna Implemented
+    // Anna To Implement
     public void nextPlayer() {
         EKState state = new EKState(4);
-
+        [true, true, true, true]
+        [true, true, true, true]
+        []
     }
 
     @Test
@@ -160,7 +165,6 @@ public class EKStateTest {
     @Test
     public void prepareGame() {
         EKState state = new EKState(4);
-        state.prepareGame();
         for (int i = 0; i < state.deck.size(); i++) {
             assertEquals(7, state.deck.get(i).size());
         }
@@ -182,9 +186,9 @@ public class EKStateTest {
     }
 
     @Test
+    //WRITTEN BY ANNA
     public void endGame() {
         EKState state = new EKState(4);
-        state.prepareGame();
         boolean[] playerStatus1 = state.getPlayerStatus();
         boolean[] playerStatus2 = new boolean[] {true, true, true, false};
         boolean[] playerStatus3 = new boolean[] {true, true, false, false};
@@ -209,7 +213,8 @@ public class EKStateTest {
     @Test
     public void testEquals() {
     }
-//WRITTEN BY ALEX
+
+//WRITTEN BY ALEX & ANNA
     @Test
     public void equals(){
         EKState firstInstance = new EKState(4);

@@ -544,24 +544,38 @@ public class EKState extends GameState {
 
     //TODO card equals overload
     public boolean equals(EKState state){
-        if(this.playerStatus.equals(state.playerStatus)){
-            if(this.gameState == state.gameState){
-                if(this.playerTurn == state.playerTurn){
-                    /*
-                    if(this.draw.equals(state.draw)){
-                        if(this.discard.equals(state.discard)){
-                            if(this.deck.equals(state.deck)){
-                                return true;
-                            }
-                        }
-                    }
+        if(!(this.justPlayedSeeFuture == state.justPlayedSeeFuture)) return false;
 
-                     */
-                    return true;
-                }
+        if(!(this.lastMessage.equals(state.lastMessage))) return false;
+
+        //Check the STATE gameState variables
+        if (!(this.gameState == state.gameState)) return false;
+
+        //Checks the player turn
+        if (!(this.playerTurn == state.playerTurn)) return false;
+
+        //Check the player status arrays to determine eligible players
+        for (int i = 0; i < this.playerStatus.length; i++) {
+            if (!(this.playerStatus[i] == state.playerStatus[i])) return false;
+        }
+
+        //Checks the draw pile
+        for (int i = 0; i < this.draw.size(); i++) {
+            if(!(this.draw.get(i).equals(state.draw.get(i)))) return false;
+        }
+
+        //Checks the discard pile
+        for (int i = 0; i < this.discard.size(); i++) {
+            if(!(this.discard.get(i).equals(state.discard.get(i)))) return false;
+        }
+
+        //Checks the player hands
+        for (int i = 0; i < this.deck.size(); i++) {
+            for (int j = 0; j < this.deck.get(i).size(); j++) {
+                if(!(this.deck.get(i).get(j).equals(state.deck.get(i).get(j)))) return false;
             }
         }
-        return false;
+        return true;
     }
 }
 
