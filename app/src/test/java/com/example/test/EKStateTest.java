@@ -57,17 +57,28 @@ public class EKStateTest {
     }
 
     @Test
+    //Audrey
     public void takeFromDraw() {
+        EKState state = new EKState(4);
+        state.prepareGame();
+        Card compare = state.draw.get(0);
+        assertEquals(state.takeFromDraw(), compare);
     }
 
     @Test
+    //Audrey
     public void playCard() {
         EKLocalGame test = new EKLocalGame();
         EKState stateTest = (EKState) test.getGameState();
-        
+        stateTest.prepareGame();
+        ArrayList<Card> sameDeck = (ArrayList<Card>)stateTest.draw.clone();
+
+        int x = stateTest.playerTurn;
         stateTest.playCard(stateTest.playerTurn,CARDTYPE.ATTACK,stateTest.deck.get(stateTest.playerTurn));
-        assertEquals(1,stateTest.playerTurn);
-        //assertEquals();
+        assertEquals(stateTest.playerTurn, (x+1)); // see if players turn is incremented
+        assertEquals(sameDeck,stateTest.draw);// checking to see if the draw pile stays the same
+                                              // after ATTACK card is played
+
     }
 
     @Test
@@ -76,7 +87,21 @@ public class EKStateTest {
     }
 
     @Test
+    //Audrey
     public void getCardIndex() {
+        EKState state = new EKState(4);
+        ArrayList<Card> testCardArray = new ArrayList<>();
+
+        CARDTYPE[] cardTypes = {CARDTYPE.MELON, CARDTYPE.BEARD, CARDTYPE.POTATO, CARDTYPE.TACO,
+                CARDTYPE.ATTACK, CARDTYPE.SHUFFLE, CARDTYPE.FAVOR, CARDTYPE.SKIP, CARDTYPE.SEEFUTURE,
+                CARDTYPE.NOPE, CARDTYPE.DEFUSE, CARDTYPE.EXPLODE};
+        for (int i = 0; i < cardTypes.length; i++) {
+            Card toAdd = new Card(cardTypes[i]);
+            testCardArray.add(toAdd);
+        }
+        for (int i = 0; i < testCardArray.size(); i++) {
+            assertEquals(state.getCardIndex(cardTypes[i], testCardArray), i);
+        }
     }
 
     @Test
