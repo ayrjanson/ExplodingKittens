@@ -3,6 +3,7 @@ package com.example.explodingkittens.players;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import com.example.explodingkittens.ekActionMessage.EKPlayCardAction;
 import com.example.explodingkittens.infoMessage.CARDTYPE;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 
-public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListener {
+public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
     private ImageButton player1 = null;
     private ImageButton player2 = null;
     private ImageButton player3 = null;
@@ -34,7 +35,9 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
     private ArrayList<ImageButton> playerCards;
     private Button handLeft = null;
     private Button handRight = null;
-    TextView logView = null;
+    private TextView logView = null;
+    private SeekBar cardSelector = null;
+    private Button enterButton = null;
 
     private static final String TAG = "EKHumanPlayer1";
 
@@ -197,16 +200,18 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
         if(state.justPlayedSeeFuture){
             return;
         }
-        if (v.getId() == R.id.player1) {
-            // Determine if an action was selected that allows that user to be included
-        }
-        else if (v.getId() == R.id.player2) {
-            // Determine if an action was selected that allows that user to be included
-        }
-        else if (v.getId() == R.id.player3) {
-            // Determine if an action was selected that allows that user to be included
-        }
-        else if (v.getId() == R.id.discardPile) {
+
+            if (v.getId() == R.id.player1) {
+                //state.stealFromPlayer = 1;
+            } else if (v.getId() == R.id.player2) {
+                //state.stealFromPlayer = 2;
+                // Determine if an action was selected that allows that user to be included
+            } else if (v.getId() == R.id.player3) {
+                //state.stealFromPlayer = 3;
+                // Determine if an action was selected that allows that user to be included
+            }
+        //if stops working add back in else below
+         else if (v.getId() == R.id.discardPile) {
             ArrayList<Card> selectedCards = findSelected(state.deck.get(state.playerTurn));
             int numCardsToPlay = selectedMatching(selectedCards);
             switch(numCardsToPlay){
@@ -358,6 +363,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             receiveInfo(state);
         }
         state.justPlayedSeeFuture = false;
+        state.justDemandedACard = false;
         receiveInfo(state);
     }
 
@@ -382,6 +388,8 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
         this.handLeft = (Button)activity.findViewById(R.id.handLeft);
         this.handRight = (Button)activity.findViewById(R.id.handRight);
         this.logView = (TextView)activity.findViewById(R.id.logView);
+        //this.cardSelector = (SeekBar)activity.findViewById(R.id.seekBar);
+        //this.enterButton = (Button)activity.findViewById(R.id.enterButton);
         playerCards = new ArrayList<>();
         playerCards.add(playerCard1);
         playerCards.add(playerCard2);
@@ -395,7 +403,8 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
         player3.setOnClickListener(this);
         discardPile.setOnClickListener(this);
         drawPile.setOnClickListener(this);
-
+        //cardSelector.setOnSeekBarChangeListener(this);
+        //enterButton.setOnClickListener(this);
         for (ImageButton playerCard : playerCards) {
             playerCard.setOnClickListener(this);
         }
@@ -426,4 +435,18 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
         return matchNumber;
     }
 
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
 }

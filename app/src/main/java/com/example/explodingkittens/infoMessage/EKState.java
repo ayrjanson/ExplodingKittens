@@ -29,7 +29,9 @@ public class EKState extends GameState {
     public static final int NUM_PLAYERS = 4;
     public int playerTurn;
     public boolean justPlayedSeeFuture;
+    public boolean justDemandedACard;
     public String lastMessage;
+    public int stealFromPlayer = -1;
 
     public static final int DRAWCARD = 4000;
     public static final int SKIPTURN = 4001;
@@ -108,7 +110,7 @@ public class EKState extends GameState {
                 draw.remove(0);
 
                 if(temp == CARDTYPE.EXPLODE){
-                    playCard(playerTurn, CARDTYPE.DEFUSE, deck.get(playerTurn));
+                    playCard(playerTurn, CARDTYPE.DEFUSE, this.deck.get(playerTurn));
                 }
                 for(Card card: deck.get(playerTurn)) {
                     card.isPlayable = false;
@@ -145,6 +147,7 @@ public class EKState extends GameState {
                 this.nextPlayer(this.playerTurn);
                 break;
         }
+        this.lastMessage = "It is now Player " + this.playerTurn + "'s turn.";
     }
 
     /**
@@ -197,7 +200,6 @@ public class EKState extends GameState {
      * @return boolean - whether play card executed or nor
      */
     //TODO test each playcard
-    //FIXME playing a defuse makes you instalose still
     public boolean playCard(int playerTurn, CARDTYPE card, ArrayList<Card> src){
         switch(card){
             case MELON:
@@ -280,6 +282,8 @@ public class EKState extends GameState {
                         //TODO: Make so able to take another player's card
                         discard.add(moveCardFavor);
                         deck.get(playerTurn).remove(moveFavor);
+                        //this.justDemandedACard = true;
+                        stealACard((int)(Math.random()* 3));
                         return true;
                     }
                 }
@@ -451,12 +455,8 @@ public class EKState extends GameState {
                 }
             }
             //for testing comment out
-            this.deck.get(0).add(new Card(CARDTYPE.SEEFUTURE));
-            this.deck.get(0).add(new Card(CARDTYPE.SEEFUTURE));
-
-
-
-
+            //this.deck.get(0).add(new Card(CARDTYPE.SEEFUTURE));
+            //this.deck.get(0).add(new Card(CARDTYPE.SEEFUTURE));
             this.draw.add(new Card(CARDTYPE.EXPLODE));
             this.draw.add(new Card(CARDTYPE.EXPLODE));
             this.draw.add(new Card(CARDTYPE.EXPLODE));
@@ -562,6 +562,14 @@ public class EKState extends GameState {
             }
         }
         return false;
+    }
+
+    public void stealACard(int playerIdx){
+        int targetSize = deck.get(playerIdx).size();
+        int stealIdx = (int) (Math.random()*targetSize);
+        Card stolenCard = deck.get(playerIdx).get(stealIdx);
+        deck.get(playerIdx).remove(stealIdx);
+        deck.get(playerTurn).add(stolenCard);
     }
 }
 

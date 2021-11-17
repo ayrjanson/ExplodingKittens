@@ -152,16 +152,8 @@ public class EKLocalGame extends LocalGame {
                     Logger.log("makeMove", "Ended Turn, current player now is" + ((EKState) state).playerTurn);
                     return true;
                 case DRAW:
-                    Card drawn = ((EKState) state).takeFromDraw();
-                    Logger.log("LocalGame", "Drawing a Card");
-                    if (((EKState) state).playCard(((EKState) state).playerTurn, drawn.getType(), ((EKState) state).draw)) {
-                        //This turn is a draw card turn
-                        //End turn using the draw card excuse - resume play as normal
-                        ((EKState) state).nextPlayer(((EKState) state).getPlayerTurn());
-                        return true;
-                    }
-                    break;
-
+                    ((EKState) state).endTurn(((EKState) state).playerTurn,((EKState) state).DRAWCARD);
+                    return true;
             }
         }
         return false;
