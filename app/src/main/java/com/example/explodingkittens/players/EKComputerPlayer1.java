@@ -1,26 +1,17 @@
 package com.example.explodingkittens.players;
 
-
-import android.widget.TextView;
-
 import com.example.explodingkittens.ekActionMessage.EKPlayCardAction;
 import com.example.explodingkittens.infoMessage.CARDTYPE;
 import com.example.explodingkittens.infoMessage.EKState;
-import com.example.gameframework.R;
 import com.example.gameframework.infoMessage.GameInfo;
 import com.example.gameframework.players.GameComputerPlayer;
 import com.example.gameframework.utilities.Logger;
 
 public class EKComputerPlayer1 extends GameComputerPlayer {
-
     private boolean playedCard = false;
-    //public TextView logView;
-    // constructor
 
     public EKComputerPlayer1(String name) {
         super(name);
-
-
     }
 
     //FIXME make the computer not play badly
@@ -32,21 +23,16 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
     @Override
     protected void receiveInfo(GameInfo info) {
         if(!(info instanceof EKState)) return;
-        //logView.setId(R.id.logView);
-        //logView = myActivity.findViewById(R.id.logView);
         EKState receive = new EKState((EKState) info);
         if (receive.getPlayerTurn() == playerNum) {
             Logger.log("CP", "Turn: " + playerNum);
-            //if played card, then just send end turn action
-            //for
-            // pick ith card in hand, try to play
-            // if it works, set played & send
             if(playedCard != true) {
                 sleep(1);
                 for(int i = 0; i < receive.deck.get(receive.getPlayerTurn()).size(); i++) {
                     CARDTYPE type = receive.deck.get(playerNum).get(i).getType();
                     EKPlayCardAction action;
-                        switch(type){
+
+                    switch(type){
                             case MELON:
                                 action = new EKPlayCardAction(this,CARDTYPE.MELON);
                                 break;
@@ -100,7 +86,6 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
                 playedCard = false;
                 game.sendAction(end);
                 ((EKState) info).lastMessage = ("Player " + playerNum + " ended their turn by drawing a card.");
-
                 return;
             }
             playedCard = false;

@@ -1,7 +1,8 @@
 package com.example.test;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
+
+import androidx.annotation.NonNull;
 
 import com.example.explodingkittens.EKLocalGame;
 import com.example.explodingkittens.infoMessage.CARDTYPE;
@@ -11,12 +12,11 @@ import com.example.explodingkittens.infoMessage.STATE;
 
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class EKStateTest {
-//WRITTEN BY ALEX
-//TODO ADD IN TEST FOR ATTACK
+
+    //WRITTEN BY ALEX
     @Test
     public void endTurn() {
         //THE DRAW CARD PART
@@ -40,6 +40,16 @@ public class EKStateTest {
         test.playCard(test.playerTurn,CARDTYPE.SKIP,test.deck.get(test.playerTurn));
         assertEquals(false,test.deck.get(test.playerTurn).contains(new Card(CARDTYPE.SKIP)));
 
+        //ATTACK Part
+        if(!test.deck.get(test.playerTurn).contains(new Card(CARDTYPE.ATTACK))){
+            test.deck.get(test.playerTurn).add(new Card(CARDTYPE.ATTACK));
+        }
+        int oldTurnNum = test.playerTurn;
+        int oldHandSize = test.deck.get(oldTurnNum).size();
+
+        test.playCard(test.playerTurn,CARDTYPE.ATTACK,test.deck.get(test.playerTurn));
+        assertEquals((oldHandSize-1),test.deck.get(oldTurnNum).size());
+        assertEquals(handSize+2,test.deck.get(test.playerTurn).size());
 
     }
 
@@ -55,48 +65,31 @@ public class EKStateTest {
     }
 
     @Test
-    public void moveStart() {
-    }
-
-    @Test
     //Audrey
     public void takeFromDraw() {
         EKState state = new EKState(4);
+        state.prepareGame();
         Card compare = state.draw.get(0);
         assertEquals(state.takeFromDraw(), compare);
     }
 
     @Test
-    //Audrey
+//Audrey
     public void playCard() {
         EKLocalGame test = new EKLocalGame();
         EKState stateTest = (EKState) test.getGameState();
         int x = stateTest.playerTurn;
-
         stateTest.playCard(stateTest.playerTurn,CARDTYPE.ATTACK,stateTest.deck.get(stateTest.playerTurn));
         assertEquals(x+1,stateTest.playerTurn); // see if players turn is incremented
         assertEquals(false, stateTest.compareArray(stateTest.draw));// checking to see if the draw pile stays the same
-                                              // after ATTACK card is played
-
+        // after ATTACK card is played
         stateTest.playCard(stateTest.playerTurn,CARDTYPE.SHUFFLE,stateTest.deck.get(stateTest.playerTurn));
         assertEquals(false,stateTest.compareList(stateTest.draw, stateTest.deck.get(stateTest.playerTurn)));
-
-        stateTest.playCard(stateTest.playerTurn,CARDTYPE.TACO,stateTest.deck.get(stateTest.playerTurn));
-        
-        assertEquals(stateTest.discard, stateTest.deck.get(stateTest.playerTurn));
-
-
-
-
         stateTest.playCard(stateTest.playerTurn,CARDTYPE.SKIP,stateTest.deck.get(stateTest.playerTurn));
         assertEquals(2, stateTest.playerTurn);
 
     }
 
-    @Test
-    public void hasExplode() {
-
-    }
 
     @Test
     //Audrey
@@ -140,33 +133,13 @@ public class EKStateTest {
 
     }
 
-    @Test
-    // Anna Implemented
-    // THIS METHOD DOESN'T WORK - Arrays are never set to null, only 0
-    public void checkIfValid() {
-        /*
-        EKState state = new EKState(4);
-        state.prepareGame();
-
-        for (int i = 0; i < 4; i++) {
-            assertEquals(true, state.checkIfValid(i));
-        }
-
-
-        for (int i = 0; i < 4; i++) {
-            ArrayList<Card> hand = new ArrayList<Card>();
-            state.endTurn(i, EKState.LOST);
-            assertTrue(state.checkIfValid(i) == false);
-        }
-        */
-    }
-
-    @Test
-    public void gameStatetoString() {
-    }
-
+    //ALEX
     @Test
     public void testToString() {
+        EKState test = new EKState(4);
+        String testToString = test.toString();
+        EKState test2 = new EKState(test);
+        assertEquals(true,testToString.equals(test2.toString()));
     }
 
     @Test
@@ -181,18 +154,24 @@ public class EKStateTest {
         assertEquals(STATE.GAME_SETUP, state.gameState);
     }
 
+    //ALEX
     @Test
     public void createCards() {
+        EKState test = null;
+        assertNull(test);
+        //assertEquals(0, test.draw.size());
+        test = new EKState(4);
+        test.gameState = STATE.PROGRAM_LAUNCHED;
+
+        assertEquals(false,test.createCards());
+        test.gameState = STATE.INIT_ARRAYS;
+
+        assertEquals(true,test.createCards());
+        assertEquals(false,test.draw.isEmpty());
+
     }
 
-    @Test
-    public void takeTurn() {
-    }
-
-    @Test
-    public void startGame() {
-    }
-
+    //Anna
     @Test
     public void endGame() {
         EKState state = new EKState(4);
@@ -210,17 +189,25 @@ public class EKStateTest {
         assertEquals(-1, state.endGame(playerStatus5));
     }
 
+    //ALEX
     @Test
     public void getPlayerTurn() {
+        EKState test = new EKState(4);
+        assertEquals(0,test.getPlayerTurn());
+
+        test.nextPlayer(0);
+        assertEquals(1,test.getPlayerTurn());
+
+        test.nextPlayer(1);
+        assertEquals(2,test.getPlayerTurn());
+
+        test.nextPlayer(2);
+        assertEquals(3,test.getPlayerTurn());
+
+        test.nextPlayer(3);
+        assertEquals(0,test.getPlayerTurn());
     }
 
-    @Test
-    public void gameOver() {
-    }
-
-    @Test
-    public void testEquals() {
-    }
 //WRITTEN BY ALEX
     @Test
     public void equals(){

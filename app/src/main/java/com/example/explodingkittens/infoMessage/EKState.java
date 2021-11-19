@@ -1,14 +1,9 @@
 package com.example.explodingkittens.infoMessage;
 
-import android.widget.TextView;
 
 import com.example.gameframework.infoMessage.GameState;
-
 import java.util.ArrayList;
 import java.util.Collections;
-//TODO link old gui and humanplayerclass
-//TODO: override equals method it is dogwater
-//TODO: ask to write iterate through arryaylist fucntion - recursive
 
 /**
  * ExplodingKittensGameState: Creates the decks and assigns and moves cards according to player
@@ -34,7 +29,9 @@ public class EKState extends GameState {
     public static final int NUM_PLAYERS = 4;
     public int playerTurn;
     public boolean justPlayedSeeFuture;
+    public boolean justDemandedACard;
     public String lastMessage;
+    public int stealFromPlayer = -1;
 
     public static final int DRAWCARD = 4000;
     public static final int SKIPTURN = 4001;
@@ -105,25 +102,28 @@ public class EKState extends GameState {
      * @param reason - calls in static variables to represent all the manners in which a player can
      *               end their turn, such as drawing a card, playing a skip, attack, or losing
      */
-    //TODO finish attack player button
+
     public void endTurn(int playerTurn, int reason){
         switch(reason){
             case DRAWCARD:
-                CARDTYPE temp = draw.get(0).getType();
-                this.deck.get(this.getPlayerTurn()).add(takeFromDraw());
-                draw.remove(0);
-
-                if(temp == CARDTYPE.EXPLODE){
-                    playCard(playerTurn, CARDTYPE.DEFUSE, deck.get(playerTurn));
+                try {
+                    CARDTYPE temp = this.draw.get(0).cardType;
+                    this.deck.get(this.getPlayerTurn()).add(takeFromDraw());
+                    this.draw.remove(0);
+                    if(temp == CARDTYPE.EXPLODE){
+                        playCard(playerTurn, CARDTYPE.DEFUSE, this.deck.get(playerTurn));
+                    }
+                    for(Card card: deck.get(playerTurn)) {
+                        card.isPlayable = false;
+                        card.isSelected = false;
+                    }
+                    this.nextPlayer(this.playerTurn);
+                } catch (IndexOutOfBoundsException e) {
+                    return;
                 }
-                for(Card card: deck.get(playerTurn)) {
-                    card.isPlayable = false;
-                    card.isSelected = false;
-                }
-                this.nextPlayer(this.playerTurn);
                 break;
             case SKIPTURN:
-                for( Card card: deck.get(playerTurn)){
+                for( Card card: this.deck.get(playerTurn)){
                     card.isPlayable = false;
                     card.isSelected = false;
                 }
@@ -144,17 +144,14 @@ public class EKState extends GameState {
                 }
                 break;
             case LOST:
-                // Can have assistance moving the individual cards
                 if(deck.get(playerTurn)!=null) {
-                    //deck.get(playerTurn).addAll(discard); //Not moving the individual card
-                    //deck.get(playerTurn).clear();
                     moveToDiscard(deck.get(playerTurn), discard);
-
                 }
                 playerStatus[this.playerTurn] = false;
                 this.nextPlayer(this.playerTurn);
                 break;
         }
+        this.lastMessage = "It is now Player " + this.playerTurn + "'s turn.";
     }
 
     /**
@@ -207,7 +204,6 @@ public class EKState extends GameState {
      * @return boolean - whether play card executed or nor
      */
     //TODO test each playcard
-    //FIXME playing a defuse makes you instalose still
     public boolean playCard(int playerTurn, CARDTYPE card, ArrayList<Card> src){
         switch(card){
             case MELON:
@@ -290,6 +286,8 @@ public class EKState extends GameState {
                         //TODO: Make so able to take another player's card
                         discard.add(moveCardFavor);
                         deck.get(playerTurn).remove(moveFavor);
+                        //this.justDemandedACard = true;
+                        stealACard((int)(Math.random()* 3));
                         return true;
                     }
                 }
@@ -331,6 +329,7 @@ public class EKState extends GameState {
                 }
                 break;
             case DEFUSE:
+                //TODO check indexes for behavior
                 int moveExplode = getCardIndex(CARDTYPE.EXPLODE, deck.get(playerTurn));
                 int moveDefuse = getCardIndex(CARDTYPE.DEFUSE, deck.get(playerTurn));
                 Card moveCardExplode = getCard(CARDTYPE.EXPLODE, deck.get(playerTurn));
@@ -373,20 +372,6 @@ public class EKState extends GameState {
         return false;
     }
 
-
-    /**
-     * boolean to determine if a arrayLIst has an explode card
-     * @param src- source arrayList to search
-     * @return - true if the deck has an explode card, false if it doesn't
-     */
-    public boolean hasExplode(ArrayList<Card> src){
-        if(getCard(CARDTYPE.EXPLODE, src) != null) {
-            return true;
-        }
-        return false;
-    }
-
-
     /**
      * getter method to get the index of a card in an arrayList
      * @param type - the cardtype in mind to search for an object for
@@ -423,16 +408,19 @@ public class EKState extends GameState {
      * @return - returns the integer of the next player that is in the game still
      */
     public int nextPlayer(int currentPlayer) {
-        if (currentPlayer > 2) {
-            currentPlayer = 0;
-        }
-        else currentPlayer++;
+        if(endGame(this.playerStatus) == -1) {
+            if (currentPlayer > 2) {
+                currentPlayer = 0;
+            } else currentPlayer++;
 
-        if (checkIfValid(currentPlayer)) {
-            playerTurn = currentPlayer;
-            return currentPlayer;
-        }
-        else return nextPlayer(currentPlayer);
+            if (playerStatus[currentPlayer] != false) {
+                playerTurn = currentPlayer;
+                return currentPlayer;
+            } else return nextPlayer(currentPlayer);
+        }else{
+            lastMessage = "Player " + gameOver() + " has won.";
+           }
+        return currentPlayer;
     }
 
     /**
@@ -443,15 +431,6 @@ public class EKState extends GameState {
     public boolean checkIfValid(int currentPlayer) {
         if (deck.get(currentPlayer) != null) return true;
         else return false;
-    }
-
-    /**
-     * returns the state of the game, NOT THE EKGAMESTATE object
-     * @return - a string message indicating what point the game is in
-     */
-    public String gameStatetoString(){
-        String gstring = "Game State:" + gameState.name() + "\n\n";
-        return gstring;
     }
 
     /**
@@ -482,11 +461,9 @@ public class EKState extends GameState {
                     moveStart(this.draw.get(j), this.draw, this.deck.get(i));
                 }
             }
-            this.deck.get(0).add(new Card(CARDTYPE.SEEFUTURE));
-
-
-
-
+            //for testing comment out
+            //this.deck.get(0).add(new Card(CARDTYPE.SEEFUTURE));
+            //this.deck.get(0).add(new Card(CARDTYPE.SEEFUTURE));
             this.draw.add(new Card(CARDTYPE.EXPLODE));
             this.draw.add(new Card(CARDTYPE.EXPLODE));
             this.draw.add(new Card(CARDTYPE.EXPLODE));
@@ -540,29 +517,6 @@ public class EKState extends GameState {
     }
 
     /**
-     * sets a player's deck to playable
-     * @param playerTurn - index of current player
-     * @return - true if it did the actions
-     * TODO: implement some checking to make sure the right player is being called
-     * TODO: make sure player is not out
-     */
-    public boolean takeTurn(int playerTurn){
-        for(Card card: deck.get(playerTurn)){
-            card.isPlayable = true;
-            card.isSelected = false;
-        }
-        return true;
-    }
-
-    /**
-     * sets the gameState to MAIN_PLAY
-     * todo: check to checking to make sure this cannot be done out of order
-     */
-    public void startGame(){
-        gameState = STATE.MAIN_PLAY;
-    }
-
-    /**
      * Tests if the game is over
      * @param playerStatus - an array indicated which players are in the game (true) and which are
      *                     out (false)
@@ -595,26 +549,73 @@ public class EKState extends GameState {
 
     public boolean[] getPlayerStatus() { return playerStatus; }
 
-    //TODO card equals overload
-    public boolean equals(EKState state){
-        if(this.playerStatus.equals(state.playerStatus)){
-            if(this.gameState == state.gameState){
-                if(this.playerTurn == state.playerTurn){
-                    /*
-                    if(this.draw.equals(state.draw)){
-                        if(this.discard.equals(state.discard)){
-                            if(this.deck.equals(state.deck)){
-                                return true;
-                            }
-                        }
-                    }
 
-                     */
-                    return true;
+    public boolean equals(EKState state){
+        if(!(this.justPlayedSeeFuture == state.justPlayedSeeFuture)) return false;
+
+        if(!(this.lastMessage.equals(state.lastMessage))) return false;
+
+        //Check the STATE gameState variables
+        if (!(this.gameState == state.gameState)) return false;
+
+        //Checks the player turn
+        if (!(this.playerTurn == state.playerTurn)) return false;
+
+        //Check the player status arrays to determine eligible players
+        for (int i = 0; i < this.playerStatus.length; i++) {
+            if (!(this.playerStatus[i] == state.playerStatus[i])) return false;
+        }
+
+        //Checks the draw pile
+        for (int i = 0; i < this.draw.size(); i++) {
+            if(!(this.draw.get(i).equals(state.draw.get(i)))) return false;
+        }
+
+        //Checks the discard pile
+        for (int i = 0; i < this.discard.size(); i++) {
+            if(!(this.discard.get(i).equals(state.discard.get(i)))) return false;
+        }
+
+        //Checks the player hands
+        for (int i = 0; i < this.deck.size(); i++) {
+            for (int j = 0; j < this.deck.get(i).size(); j++) {
+                if(!(this.deck.get(i).get(j).equals(state.deck.get(i).get(j)))) return false;
+            }
+        }
+        return true;
+    }
+
+    public void stealACard(int playerIdx){
+        int targetSize = deck.get(playerIdx).size();
+        int stealIdx = (int) (Math.random()*targetSize);
+        Card stolenCard = deck.get(playerIdx).get(stealIdx);
+        deck.get(playerIdx).remove(stealIdx);
+        deck.get(playerTurn).add(stolenCard);
+    }
+
+    public boolean compareArray (ArrayList<Card> draw){
+        for (int i = 0; i < draw.size()-1; i++) {
+            Card card = draw.get(i);
+            for (int j = i + 1; j < draw.size(); j++) {
+                Card card1 = draw.get(j);
+                if (!card1.equals(card)) {
+                    return false;
                 }
             }
         }
-        return false;
+        return true;
+    }
+    public boolean compareList (ArrayList<Card> draw, ArrayList<Card> shuffle){
+        if(draw.size() != shuffle.size()){
+            return false;
+        }else {
+            for (int i = 0; i < draw.size(); i++) {
+                if(!draw.get(i).equals(shuffle.get(i))) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public boolean compareArray (ArrayList<Card> draw){
