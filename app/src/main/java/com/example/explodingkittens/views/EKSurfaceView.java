@@ -210,7 +210,7 @@ public class EKSurfaceView  extends FlashSurfaceView {
 
 
     //only display X ammounts of cards- one button adds the other subtracts from some varible
-    //that tells you which cards to start drawing 
+    //that tells you which cards to start drawing
 
 
 }

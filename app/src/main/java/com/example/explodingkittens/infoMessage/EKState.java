@@ -270,7 +270,7 @@ public class EKState extends GameState {
                     }
                 }
                 break;
-            case SHUFFLE:
+            case SHUFFLE: //arrays arent equal
                 if(src.equals(deck.get(playerTurn))) {
                     int moveShuffle = getCardIndex(CARDTYPE.SHUFFLE, deck.get(playerTurn));
                     Card moveCardShuffle = getCard(CARDTYPE.SHUFFLE, deck.get(playerTurn));
@@ -282,7 +282,7 @@ public class EKState extends GameState {
                     }
                 }
                 break;
-            case FAVOR:
+            case FAVOR: //loop through decks after see if one increases and one decreases
                 if(src.equals(deck.get(playerTurn))) {
                     int moveFavor = getCardIndex(CARDTYPE.FAVOR, deck.get(playerTurn));
                     Card moveCardFavor = getCard(CARDTYPE.FAVOR, deck.get(playerTurn));
@@ -615,6 +615,32 @@ public class EKState extends GameState {
             }
         }
         return false;
+    }
+
+    public boolean compareArray (ArrayList<Card> draw){
+            for (int i = 0; i < draw.size()-1; i++) {
+                Card card = draw.get(i);
+                for (int j = i + 1; j < draw.size(); j++) {
+                    Card card1 = draw.get(j);
+
+                    if (!card1.equals(card)) {
+                        return false;
+                    }
+                }
+            }
+        return true;
+    }
+    public boolean compareList (ArrayList<Card> draw, ArrayList<Card> shuffle){
+        if(draw.size() != shuffle.size()){
+            return false;
+        }else {
+            for (int i = 0; i < draw.size(); i++) {
+                if(!draw.get(i).equals(shuffle.get(i))) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
 

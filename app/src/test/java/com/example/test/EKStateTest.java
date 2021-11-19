@@ -1,6 +1,7 @@
 package com.example.test;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import com.example.explodingkittens.EKLocalGame;
 import com.example.explodingkittens.infoMessage.CARDTYPE;
@@ -10,6 +11,7 @@ import com.example.explodingkittens.infoMessage.STATE;
 
 import org.junit.Test;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class EKStateTest {
@@ -60,7 +62,6 @@ public class EKStateTest {
     //Audrey
     public void takeFromDraw() {
         EKState state = new EKState(4);
-        state.prepareGame();
         Card compare = state.draw.get(0);
         assertEquals(state.takeFromDraw(), compare);
     }
@@ -70,14 +71,25 @@ public class EKStateTest {
     public void playCard() {
         EKLocalGame test = new EKLocalGame();
         EKState stateTest = (EKState) test.getGameState();
-        stateTest.prepareGame();
-        ArrayList<Card> sameDeck = (ArrayList<Card>)stateTest.draw.clone();
-
         int x = stateTest.playerTurn;
+
         stateTest.playCard(stateTest.playerTurn,CARDTYPE.ATTACK,stateTest.deck.get(stateTest.playerTurn));
-        assertEquals(stateTest.playerTurn, (x+1)); // see if players turn is incremented
-        assertEquals(sameDeck,stateTest.draw);// checking to see if the draw pile stays the same
+        assertEquals(x+1,stateTest.playerTurn); // see if players turn is incremented
+        assertEquals(false, stateTest.compareArray(stateTest.draw));// checking to see if the draw pile stays the same
                                               // after ATTACK card is played
+
+        stateTest.playCard(stateTest.playerTurn,CARDTYPE.SHUFFLE,stateTest.deck.get(stateTest.playerTurn));
+        assertEquals(false,stateTest.compareList(stateTest.draw, stateTest.deck.get(stateTest.playerTurn)));
+
+        stateTest.playCard(stateTest.playerTurn,CARDTYPE.TACO,stateTest.deck.get(stateTest.playerTurn));
+        
+        assertEquals(stateTest.discard, stateTest.deck.get(stateTest.playerTurn));
+
+
+
+
+        stateTest.playCard(stateTest.playerTurn,CARDTYPE.SKIP,stateTest.deck.get(stateTest.playerTurn));
+        assertEquals(2, stateTest.playerTurn);
 
     }
 
