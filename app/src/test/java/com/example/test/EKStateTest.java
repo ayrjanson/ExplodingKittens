@@ -125,13 +125,15 @@ public class EKStateTest {
             assertEquals(state.getCard(cardTypes[i], testArray).getType(), cardTypes[i]);
         }
     }
-
+/*
     @Test
     // Anna Implemented
     public void nextPlayer() {
         EKState state = new EKState(4);
 
     }
+
+ */
 
     //ALEX
     @Test
@@ -214,5 +216,37 @@ public class EKStateTest {
         EKState firstInstance = new EKState(4);
         EKState secondInstance = new EKState(firstInstance);
         assertEquals(true,firstInstance.equals(secondInstance));
+    }
+
+    @Test
+    public void nextPlayer(){
+        EKState test = new EKState(4);
+        //testing it cycles through normally, when all players are in
+        test.nextPlayer(test.playerTurn);
+        assertEquals(1,test.playerTurn);
+
+        test.nextPlayer(test.playerTurn);
+        assertEquals(2,test.playerTurn);
+
+        test.nextPlayer(test.playerTurn);
+        assertEquals(3,test.playerTurn);
+
+        //tests that it will recognize the game is over
+        test.nextPlayer(test.playerTurn);
+        test.playerStatus = new boolean[]{false,true,false,false};
+        assertEquals(false,test.nextPlayer(test.playerTurn));
+
+        //tests that it will skip an out player
+        test.playerStatus = new boolean[]{true,false,true,true};
+        test.nextPlayer(test.playerTurn);
+        assertEquals(2,test.playerTurn);
+
+        //tests that it goes to a next player even if the current player (just got) out.
+        test.playerStatus = new boolean[]{true,false,false,true};
+        assertEquals(true,test.nextPlayer(test.playerTurn));
+
+        //calls end turn to check if the game realizes that all but one player is out
+        test.endTurn(test.playerTurn,EKState.LOST);
+        assertEquals(false,test.nextPlayer(test.playerTurn));
     }
 }

@@ -148,7 +148,7 @@ public class EKLocalGame extends LocalGame {
                     break;
                 case ENDTURN:
                     ((EKState) state).endTurn(turn, ((EKState) state).DRAWCARD);
-                    ((EKState) state).nextPlayer(((EKState) state).getPlayerTurn());
+                    //((EKState) state).nextPlayer(((EKState) state).getPlayerTurn());
                     Logger.log("makeMove", "Ended Turn, current player now is" + ((EKState) state).playerTurn);
                     return true;
                 case DRAW:
@@ -165,6 +165,7 @@ public class EKLocalGame extends LocalGame {
         this.sendAllUpdatedState();
         timer.stop();
     }
+
 
 }
 

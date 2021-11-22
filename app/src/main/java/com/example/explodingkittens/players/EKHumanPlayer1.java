@@ -241,7 +241,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
                         break;
                 }
             } else if (v.getId() == R.id.drawPile) {
-                EKPlayCardAction draw = new EKPlayCardAction(this, CARDTYPE.DRAW);
+                EKPlayCardAction draw = new EKPlayCardAction(this, CARDTYPE.ENDTURN);
                 logView.setText("Player " + state.playerTurn + " drew a card to end their turn.");
                 game.sendAction(draw);
                 receiveInfo(state);

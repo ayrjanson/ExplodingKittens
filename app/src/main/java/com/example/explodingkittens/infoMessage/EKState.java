@@ -40,6 +40,7 @@ public class EKState extends GameState {
 
     /**
      * ExplodingKittensGameState: creates the various decks for the players, draw, and discard piles
+     *
      * @param size: the number of players to declare hands for
      */
     public EKState(int size) {
@@ -96,7 +97,7 @@ public class EKState extends GameState {
     }
 
     /**
-     * Ends the current player's turn, and executes specific commands based on the circumstances
+     * Ends the current player's turn, and executes specific commands based on the circumstances - Written by Alex
      * under which the turn should be ended
      * @param playerTurn - ID of the player whose turn is being ended
      * @param reason - calls in static variables to represent all the manners in which a player can
@@ -131,10 +132,14 @@ public class EKState extends GameState {
                 break;
             case ATTACKPLAYER:
                 this.nextPlayer(this.playerTurn);
-                CARDTYPE temp2 = draw.get(0).getType();
-                this.deck.get(this.getPlayerTurn()).add(takeFromDraw());
-                draw.remove(0);
-
+                CARDTYPE temp2;
+                try {
+                    temp2 = draw.get(0).getType();
+                    this.deck.get(this.getPlayerTurn()).add(takeFromDraw());
+                    draw.remove(0);
+                }catch(IndexOutOfBoundsException e){
+                    return;
+                }
                 if(temp2 == CARDTYPE.EXPLODE){
                     playCard(playerTurn, CARDTYPE.DEFUSE, deck.get(playerTurn));
                 }
@@ -197,7 +202,7 @@ public class EKState extends GameState {
 
 
     /**
-     * playCard:
+     * playCard: computes what type of card was played and executes appropriate actions - Written by Alex
      * @param playerTurn - the index of the player who is playing the card
      * @param card - the card being played
      * @param src - the source array for the card being played
@@ -403,39 +408,46 @@ public class EKState extends GameState {
     }
 
     /**
-     * computes the integer number of the next player in a turn sequence (loops around through NUM PLAYERS
-     * @param currentPlayer - current player index whose turn it is
-     * @return - returns the integer of the next player that is in the game still
+     * computes the integer number of the next player in a turn sequence (loops around through NUM PLAYERS -Written By Alex
+     * @param currentPlayer - current player index whose turn it is, should only pass through playerTurn int in EKState
+     * @return - returns true if a next player was found and set, false if the EKState realized the game is over
      */
-    public int nextPlayer(int currentPlayer) {
-        if(endGame(this.playerStatus) == -1) {
-            if (currentPlayer > 2) {
-                currentPlayer = 0;
-            } else currentPlayer++;
-
-            if (playerStatus[currentPlayer] != false) {
-                playerTurn = currentPlayer;
-                return currentPlayer;
-            } else return nextPlayer(currentPlayer);
-        }else{
-            lastMessage = "Player " + gameOver() + " has won.";
-           }
-        return currentPlayer;
-    }
-
-    /**
-     * Checks if the current player index is valid or not (in the game or out)
-     * @param currentPlayer - index of current player
-     * @return - true if player is still in the game, false if not
-     */
-    public boolean checkIfValid(int currentPlayer) {
-        if (deck.get(currentPlayer) != null) return true;
-        else return false;
+    public boolean nextPlayer(int currentPlayer) {
+        int outCounter = 0;
+        for(boolean status: playerStatus){
+            if(!status){
+                outCounter++;
+            }
+        }
+        if(outCounter == 3) {
+            lastMessage = "Player " + endGame(playerStatus) + " has won the game.";
+            return false;
+        }
+        else{
+            if (currentPlayer + 1 <= 3 && playerStatus[currentPlayer + 1]) {
+                this.playerTurn = currentPlayer + 1;
+                return true;
+            } else {
+                switch(currentPlayer+1){
+                    case 4:
+                        if(playerStatus[0]){
+                            this.playerTurn = 0;
+                        }else{
+                            nextPlayer(0);
+                        }
+                        break;
+                    default:
+                        nextPlayer(currentPlayer+1);
+                        break;
+                }
+            }
+        }
+       return true;
     }
 
     /**
      * Creats a string of the big info about the EKgamestate, like current player, the contents of
-     * all the ArrayList<Card>,
+     * all the ArrayList<Card>, -written by alex
      * @return - String - the info string
      */
     @Override
@@ -449,7 +461,7 @@ public class EKState extends GameState {
     /**
      * PrepareGame: calls createCards(), and then shuffles the draw pile. Iterates through the 4 player hands in
      * deck, and adds the first 6 cards into a player hand iff it isnt an exploding kitten using move()
-     * and finally sets the gameState to GAME_SETUP
+     * and finally sets the gameState to GAME_SETUP - written by alex
      * @return - true if it executed properly, false if gameState is not init_objects, probably
      *           because function was called in incorrect order
      */
@@ -482,7 +494,7 @@ public class EKState extends GameState {
 
     /**
      * createCards: creates a hashtable with the card types and their enum values, creates card
-     * objects for the number of that type of card in the deck for a four-player game
+     * objects for the number of that type of card in the deck for a four-player game -Written by Alex
      * @return - true if actions were executed, false if gamestate is not INIT_ARRAYS,
      *           probs bc it is called out of order
      */
@@ -549,7 +561,7 @@ public class EKState extends GameState {
 
     public boolean[] getPlayerStatus() { return playerStatus; }
 
-
+    //written by alex and anna
     public boolean equals(EKState state){
         if(!(this.justPlayedSeeFuture == state.justPlayedSeeFuture)) return false;
 
@@ -585,6 +597,7 @@ public class EKState extends GameState {
         return true;
     }
 
+    //written by alex
     public void stealACard(int playerIdx){
         int targetSize = deck.get(playerIdx).size();
         int stealIdx = (int) (Math.random()*targetSize);

@@ -14,7 +14,7 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
         super(name);
     }
 
-    //FIXME make the computer not play badly
+    //TODO test this new computer type
     /**
      * callback method--game's state has changed
      * @param info
@@ -28,10 +28,18 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
             Logger.log("CP", "Turn: " + playerNum);
             if(playedCard != true) {
                 sleep(1);
-                for(int i = 0; i < receive.deck.get(receive.getPlayerTurn()).size(); i++) {
-                    CARDTYPE type = receive.deck.get(playerNum).get(i).getType();
+                int handSize = receive.deck.get(receive.playerTurn).size();
+                int numCardsToPlay = (int)(Math.random() * (handSize));
+                //this plays every card in their hand???
+                for(int i = 0; i < numCardsToPlay; i++) {
+                    int randoIdx = (int)(Math.random() * receive.deck.get(receive.playerTurn).size());
+                    CARDTYPE type;
+                    try {
+                        type = receive.deck.get(receive.playerTurn).get(randoIdx).getType();
+                    }catch(IndexOutOfBoundsException e){
+                        type = CARDTYPE.ENDTURN;
+                    }
                     EKPlayCardAction action;
-
                     switch(type){
                             case MELON:
                                 action = new EKPlayCardAction(this,CARDTYPE.MELON);
@@ -81,14 +89,14 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
                         return;
                 }
             }
-            else {
+
                 EKPlayCardAction end = new EKPlayCardAction(this,CARDTYPE.ENDTURN);
                 playedCard = false;
                 game.sendAction(end);
                 ((EKState) info).lastMessage = ("Player " + playerNum + " ended their turn by drawing a card.");
                 return;
-            }
-            playedCard = false;
+
+            //playedCard = false;
         }
     }
 }
