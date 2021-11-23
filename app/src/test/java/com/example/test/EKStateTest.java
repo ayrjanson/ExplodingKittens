@@ -248,5 +248,8 @@ public class EKStateTest {
         //calls end turn to check if the game realizes that all but one player is out
         test.endTurn(test.playerTurn,EKState.LOST);
         assertEquals(false,test.nextPlayer(test.playerTurn));
+
+        test.playerStatus = new boolean[]{true,false,true,false};
+
     }
 }

@@ -120,6 +120,7 @@ public class EKState extends GameState {
                     }
                     this.nextPlayer(this.playerTurn);
                 } catch (IndexOutOfBoundsException e) {
+                    this.nextPlayer(this.playerTurn);
                     return;
                 }
                 break;
