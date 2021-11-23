@@ -89,12 +89,13 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
                         return;
                 }
             }
+            EKPlayCardAction end = new EKPlayCardAction(this,CARDTYPE.ENDTURN);
+            playedCard = false;
+            game.sendAction(end);
+            ((EKState) info).lastMessage = ("Player " + playerNum + " ended their turn by drawing a card.");
+            return;
 
-                EKPlayCardAction end = new EKPlayCardAction(this,CARDTYPE.ENDTURN);
-                playedCard = false;
-                game.sendAction(end);
-                ((EKState) info).lastMessage = ("Player " + playerNum + " ended their turn by drawing a card.");
-                return;
+
 
             //playedCard = false;
         }

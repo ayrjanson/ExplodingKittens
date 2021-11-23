@@ -152,8 +152,9 @@ public class EKState extends GameState {
                 if(deck.get(playerTurn)!=null) {
                     moveToDiscard(deck.get(playerTurn), discard);
                 }
-                playerStatus[this.playerTurn] = false;
                 this.nextPlayer(this.playerTurn);
+                playerStatus[this.playerTurn] = false;
+                lastMessage = "Player " + this.playerTurn + " has just lost.";
                 break;
         }
         this.lastMessage = "It is now Player " + this.playerTurn + "'s turn.";
