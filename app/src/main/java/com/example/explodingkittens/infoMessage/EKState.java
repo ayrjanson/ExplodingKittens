@@ -342,7 +342,8 @@ public class EKState extends GameState {
                 Card moveCardExplode = getCard(CARDTYPE.EXPLODE, deck.get(playerTurn));
                 Card moveCardDefuse = getCard(CARDTYPE.DEFUSE, deck.get(playerTurn));
                 if(moveExplode != -1 && moveDefuse != -1){
-                    discard.add(moveCardExplode);
+                    int randomIdx = (int)(Math.random() * (draw.size()-1));
+                    draw.add(randomIdx, moveCardExplode);
                     discard.add(moveCardDefuse);
                     deck.get(playerTurn).remove(moveExplode);
                     deck.get(playerTurn).remove(moveDefuse);
@@ -373,6 +374,8 @@ public class EKState extends GameState {
                     endTurn(playerTurn,LOST);
                 }
                 break;
+            case STEAL:
+                stealACard((int)(Math.random() *2) +1);
             default:
                 throw new IllegalStateException("Unexpected value: " + card);
         }

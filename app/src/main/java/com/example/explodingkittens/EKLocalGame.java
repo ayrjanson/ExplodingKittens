@@ -50,7 +50,7 @@ public class EKLocalGame extends LocalGame {
     protected String checkIfGameOver() {
         for (int i = 0; i < players.length; i++) {
             if (((EKState) state).gameOver() != -1) {
-                return "Player " + ((EKState) state).gameOver() + " wins!";
+                return "Player " + ((EKState) state).gameOver() + " wins! ";
             }
         }
         return null; // Game not over
