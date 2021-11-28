@@ -223,7 +223,6 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
                     case 2:
                         state.playCard(state.playerTurn, selectedCards.get(0).getType(), state.deck.get(state.playerTurn));
                         state.playCard(state.playerTurn, selectedCards.get(0).getType(), state.deck.get(state.playerTurn));
-                        state.playCard(state.playerTurn,CARDTYPE.STEAL,state.deck.get(state.playerTurn));
                         logView.setText("Player " + state.playerTurn + " played two of a kind.");
                         //PICK CARD
                         break;
@@ -231,7 +230,6 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
                         state.playCard(state.playerTurn, selectedCards.get(0).getType(), state.deck.get(state.playerTurn));
                         state.playCard(state.playerTurn, selectedCards.get(0).getType(), state.deck.get(state.playerTurn));
                         state.playCard(state.playerTurn, selectedCards.get(0).getType(), state.deck.get(state.playerTurn));
-                        state.playCard(state.playerTurn,CARDTYPE.STEAL,state.deck.get(state.playerTurn));
                         logView.setText("Player " + state.playerTurn + " played three of a kind.");
                         //ASK FOR CARD
                         break;

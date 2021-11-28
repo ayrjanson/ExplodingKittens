@@ -177,7 +177,6 @@ public class EKStateTest {
     @Test
     public void endGame() {
         EKState state = new EKState(4);
-        state.prepareGame();
         boolean[] playerStatus1 = state.getPlayerStatus();
         boolean[] playerStatus2 = new boolean[] {true, true, true, false};
         boolean[] playerStatus3 = new boolean[] {true, true, false, false};
@@ -189,6 +188,10 @@ public class EKStateTest {
         assertEquals(-1, state.endGame(playerStatus3));
         assertEquals(0, state.endGame(playerStatus4));
         assertEquals(-1, state.endGame(playerStatus5));
+        //TODO finish testing
+        state.playerStatus = new boolean[] {true,false,false,false};
+        state.playerStatus = new boolean[] {false,true,false,false};
+
     }
 
     //ALEX

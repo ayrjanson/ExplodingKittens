@@ -105,6 +105,10 @@ public class EKState extends GameState {
      */
 
     public void endTurn(int playerTurn, int reason){
+        if(draw.isEmpty()){
+            lastMessage = "The draw pile is empty";
+
+        }
         switch(reason){
             case DRAWCARD:
                 try {
@@ -113,6 +117,7 @@ public class EKState extends GameState {
                     this.draw.remove(0);
                     if(temp == CARDTYPE.EXPLODE){
                         playCard(playerTurn, CARDTYPE.DEFUSE, this.deck.get(playerTurn));
+                        this.lastMessage = "Player " + playerTurn + " has just drawn an exploding kitten." ;
                     }
                     for(Card card: deck.get(playerTurn)) {
                         card.isPlayable = false;
@@ -153,12 +158,12 @@ public class EKState extends GameState {
                 if(deck.get(playerTurn)!=null) {
                     moveToDiscard(deck.get(playerTurn), discard);
                 }
-                this.nextPlayer(this.playerTurn);
                 playerStatus[this.playerTurn] = false;
-                lastMessage = "Player " + this.playerTurn + " has just lost.";
+                lastMessage = "Player " + this.playerTurn + " has just lost. ";
+                this.nextPlayer(this.playerTurn);
                 break;
         }
-        this.lastMessage = "It is now Player " + this.playerTurn + "'s turn.";
+        this.lastMessage+= "\nIt is now Player " + this.playerTurn + "'s turn.";
     }
 
     /**
@@ -375,6 +380,7 @@ public class EKState extends GameState {
                 }
                 break;
             case STEAL:
+                //FIXME: crashes
                 stealACard((int)(Math.random() *2) +1);
             default:
                 throw new IllegalStateException("Unexpected value: " + card);
