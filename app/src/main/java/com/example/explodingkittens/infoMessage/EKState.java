@@ -354,20 +354,11 @@ public class EKState extends GameState {
                     deck.get(playerTurn).remove(moveDefuse);
                     return true;
                 }
-                // This condition would ideally identify that the player wants to play the defuse card
-                else if(moveDefuse != -1 && moveExplode == -1) {
-                    return false;
-                }
-                //FIXME playing a defuse makes this else look execute????
-                else{
-                    endTurn(playerTurn, LOST);
-                    return false;
-                }
-            case EXPLODE:
-                moveExplode = getCardIndex(CARDTYPE.EXPLODE, deck.get(playerTurn));
-                moveDefuse = getCardIndex(CARDTYPE.DEFUSE, deck.get(playerTurn));
-                moveCardExplode = getCard(CARDTYPE.EXPLODE, deck.get(playerTurn));
-                moveCardDefuse = getCard(CARDTYPE.DEFUSE, deck.get(playerTurn));
+                case EXPLODE:
+                    moveExplode = getCardIndex(CARDTYPE.EXPLODE, deck.get(playerTurn));
+                    moveDefuse = getCardIndex(CARDTYPE.DEFUSE, deck.get(playerTurn));
+                    moveCardExplode = getCard(CARDTYPE.EXPLODE, deck.get(playerTurn));
+                    moveCardDefuse = getCard(CARDTYPE.DEFUSE, deck.get(playerTurn));
                 if(moveExplode != -1 && moveDefuse != -1) {
                     discard.add(moveCardExplode);
                     discard.add(moveCardDefuse);
@@ -610,6 +601,9 @@ public class EKState extends GameState {
 
     //written by alex
     public void stealACard(int playerIdx){
+        if(playerStatus[playerIdx] = false){
+            return;
+        }
         int targetSize = deck.get(playerIdx).size();
         int stealIdx = (int) (Math.random()*targetSize);
         Card stolenCard = deck.get(playerIdx).get(stealIdx);

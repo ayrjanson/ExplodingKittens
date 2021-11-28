@@ -154,6 +154,10 @@ public class EKLocalGame extends LocalGame {
                 case DRAW:
                     ((EKState) state).endTurn(((EKState) state).playerTurn,((EKState) state).DRAWCARD);
                     return true;
+                case STEAL:
+                    if(currentState.playCard(currentState.playerTurn, CARDTYPE.STEAL, currentState.deck.get(currentState.playerTurn))){
+                        return true;
+                    }
             }
         }
         return false;

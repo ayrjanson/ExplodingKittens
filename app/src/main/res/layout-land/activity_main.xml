@@ -17,47 +17,10 @@
         tools:layout_editor_absoluteY="16dp">
 
         <LinearLayout
-            android:id="@+id/topLL"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#314723"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/player1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="4"
-                android:background="#9E0909"
-                android:scaleType="fitCenter"
-                android:src="@drawable/cat_player1" />
-
-            <ImageButton
-                android:id="@+id/player2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="4"
-                android:background="#9E0909"
-                android:scaleType="fitCenter"
-                android:src="@drawable/cat_player2" />
-
-            <ImageButton
-                android:id="@+id/player3"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="4"
-                android:background="#9E0909"
-                android:scaleType="fitCenter"
-                android:src="@drawable/cat_player3" />
-
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/topLowerLL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1.5"
             android:background="#314723"
             android:orientation="horizontal">
 
@@ -140,14 +103,14 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1.4"
+            android:layout_weight="2"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/handLeft"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#314723"
+                android:background="#472323"
                 android:padding="30dp"
                 android:text="Tab Left" />
 
@@ -155,23 +118,15 @@
                 android:id="@+id/handRight"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#314723"
+                android:background="#472323"
                 android:padding="30dp"
                 android:text="Tab Right" />
-
-            <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:background="@drawable/gear"
-                android:backgroundTintMode="src_atop"
-                android:gravity="right" />
 
             <TextView
                 android:id="@+id/logView"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
+                android:background="#878787"
                 android:text="TextView" />
 
         </LinearLayout>

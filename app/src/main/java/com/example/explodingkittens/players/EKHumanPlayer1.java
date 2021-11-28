@@ -368,9 +368,9 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
         activity.setContentView(R.layout.activity_main); //May cause issue with layoutId above
 
         //Create the buttons that are in the GUI
-        this.player1 = (ImageButton)activity.findViewById(R.id.player1);
-        this.player2 = (ImageButton)activity.findViewById(R.id.player2);
-        this.player3 = (ImageButton)activity.findViewById(R.id.player3);
+        //this.player1 = (ImageButton)activity.findViewById(R.id.player1);
+        //this.player2 = (ImageButton)activity.findViewById(R.id.player2);
+        //this.player3 = (ImageButton)activity.findViewById(R.id.player3);
         this.discardPile = (ImageButton)activity.findViewById(R.id.discardPile);
         this.drawPile = (ImageButton)activity.findViewById(R.id.drawPile);
         this.playerCard1 = (ImageButton)activity.findViewById(R.id.playerCard1);
@@ -391,9 +391,9 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
         playerCards.add(playerCard5);
 
         //Create Button Listeners
-        player1.setOnClickListener(this);
-        player2.setOnClickListener(this);
-        player3.setOnClickListener(this);
+        //player1.setOnClickListener(this);
+        //player2.setOnClickListener(this);
+        //player3.setOnClickListener(this);
         discardPile.setOnClickListener(this);
         drawPile.setOnClickListener(this);
         //cardSelector.setOnSeekBarChangeListener(this);
