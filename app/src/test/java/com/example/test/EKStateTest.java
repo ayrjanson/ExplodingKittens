@@ -177,21 +177,36 @@ public class EKStateTest {
     @Test
     public void endGame() {
         EKState state = new EKState(4);
-        boolean[] playerStatus1 = state.getPlayerStatus();
-        boolean[] playerStatus2 = new boolean[] {true, true, true, false};
-        boolean[] playerStatus3 = new boolean[] {true, true, false, false};
-        boolean[] playerStatus4 = new boolean[] {true, false, false, false};
-        boolean[] playerStatus5 = new boolean[] {false, false, false, false};
 
-        assertEquals(-1, state.endGame(playerStatus1));
-        assertEquals(-1, state.endGame(playerStatus2));
-        assertEquals(-1, state.endGame(playerStatus3));
-        assertEquals(0, state.endGame(playerStatus4));
-        assertEquals(-1, state.endGame(playerStatus5));
         //TODO finish testing
-        state.playerStatus = new boolean[] {true,false,false,false};
-        state.playerStatus = new boolean[] {false,true,false,false};
-
+        state.playerStatus = new boolean[] {false, false, false, false}; //0 0 0 0
+        assertEquals(-1, state.endGame(state.playerStatus));
+        state.playerStatus = new boolean[] {true, false, false, false}; //1 0 0 0
+        assertEquals(0, state.endGame(state.playerStatus));
+        state.playerStatus = new boolean[] {false, true, false, false}; //0 1 0 0
+        assertEquals(1, state.endGame(state.playerStatus));
+        state.playerStatus = new boolean[] {false, false, true, false}; //0 0 1 0
+        assertEquals(2, state.endGame(state.playerStatus));
+        state.playerStatus = new boolean[] {false, false, false, true}; //0 0 0 1
+        assertEquals(3, state.endGame(state.playerStatus));
+        state.playerStatus = new boolean[] {true, true, false, false}; //1 1 0 0
+        assertEquals(-1, state.endGame(state.playerStatus));
+        state.playerStatus = new boolean[] {true, false, true, false}; //1 0 1 0
+        assertEquals(-1, state.endGame(state.playerStatus));
+        state.playerStatus = new boolean[] {true, false, false, true}; //1 0 0 1
+        assertEquals(-1, state.endGame(state.playerStatus));
+        state.playerStatus = new boolean[] {false, true, true, false}; //0 1 1 0
+        assertEquals(-1, state.endGame(state.playerStatus));
+        state.playerStatus = new boolean[] {false, true, false, true}; //0 1 0 1
+        assertEquals(-1, state.endGame(state.playerStatus));
+        state.playerStatus = new boolean[] {false, false, true, true}; //0 0 1 1
+        assertEquals(-1, state.endGame(state.playerStatus));
+        state.playerStatus = new boolean[] {true, true, true, false}; //1 1 1 0
+        assertEquals(-1, state.endGame(state.playerStatus));
+        state.playerStatus = new boolean[] {false, true, true, true}; //0 1 1 1
+        assertEquals(-1, state.endGame(state.playerStatus));
+        state.playerStatus = new boolean[] {true, true, true, true}; //1 1 1 1
+        assertEquals(-1, state.endGame(state.playerStatus));
     }
 
     //ALEX
