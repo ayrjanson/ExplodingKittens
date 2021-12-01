@@ -1,5 +1,6 @@
 package com.example.explodingkittens.players;
 
+import com.example.explodingkittens.EKLocalGame;
 import com.example.explodingkittens.ekActionMessage.EKPlayCardAction;
 import com.example.explodingkittens.infoMessage.CARDTYPE;
 import com.example.explodingkittens.infoMessage.EKState;
@@ -9,6 +10,7 @@ import com.example.gameframework.utilities.Logger;
 
 public class EKComputerPlayer1 extends GameComputerPlayer {
     private boolean playedCard = false;
+
 
     public EKComputerPlayer1(String name) {
         super(name);
@@ -81,11 +83,12 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
                                 action = new EKPlayCardAction(this,CARDTYPE.ENDTURN);
                                 break;
                             default:
-                                throw new IllegalStateException("Unexpected value: " + type);
+                                action = new EKPlayCardAction(this,CARDTYPE.ENDTURN);
                         }
                         playedCard = true;
                         game.sendAction(action);
-                        ((EKState) info).lastMessage = ("Player " + playerNum + " played a " + type.name() + " card." );
+
+                        //((EKState) info).lastMessage = ("Player " + playerNum + " played a " + type.name() + " card." );
                         return;
                 }
             }
@@ -94,10 +97,6 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
             game.sendAction(end);
             ((EKState) info).lastMessage = ("Player " + playerNum + " ended their turn by drawing a card.");
             return;
-
-
-
-            //playedCard = false;
         }
     }
 }

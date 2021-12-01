@@ -352,7 +352,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
                 } else {
                     logView.setText("Cannot tab right, already at beginning.");
                 }
-                receiveInfo(state);
+                //receiveInfo(state);
             }
             state.justPlayedSeeFuture = false;
             state.justDemandedACard = false;

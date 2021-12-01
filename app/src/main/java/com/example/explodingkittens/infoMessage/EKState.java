@@ -1,6 +1,8 @@
 package com.example.explodingkittens.infoMessage;
 
 
+import android.util.Log;
+
 import com.example.gameframework.infoMessage.GameState;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -107,7 +109,6 @@ public class EKState extends GameState {
     public void endTurn(int playerTurn, int reason){
         if(draw.isEmpty()){
             lastMessage = "The draw pile is empty";
-
         }
         switch(reason){
             case DRAWCARD:
@@ -143,11 +144,11 @@ public class EKState extends GameState {
                     temp2 = draw.get(0).getType();
                     this.deck.get(this.getPlayerTurn()).add(takeFromDraw());
                     draw.remove(0);
+                    if(temp2 == CARDTYPE.EXPLODE){
+                        playCard(playerTurn, CARDTYPE.DEFUSE, deck.get(playerTurn));
+                    }
                 }catch(IndexOutOfBoundsException e){
-                    return;
-                }
-                if(temp2 == CARDTYPE.EXPLODE){
-                    playCard(playerTurn, CARDTYPE.DEFUSE, deck.get(playerTurn));
+                    break;
                 }
                 for(Card card: deck.get(playerTurn)) {
                     card.isPlayable = false;
@@ -324,7 +325,6 @@ public class EKState extends GameState {
                         discard.add(moveCardSeeFuture);
                         deck.get(playerTurn).remove(moveSeeFuture);
                         this.justPlayedSeeFuture = true;
-
                         return true;
                     }
                 }
@@ -374,7 +374,7 @@ public class EKState extends GameState {
                 //FIXME: crashes
                 stealACard((int)(Math.random() *2) +1);
             default:
-                throw new IllegalStateException("Unexpected value: " + card);
+                endTurn(playerTurn,DRAWCARD);
         }
         return false;
     }
@@ -415,9 +415,11 @@ public class EKState extends GameState {
      * @return - returns true if a next player was found and set, false if the EKState realized the game is over
      */
     public boolean nextPlayer(int currentPlayer) {
+
         int outCounter = 0;
-        for(boolean status: playerStatus){
-            if(!status){
+        for(int i = 0; i < playerStatus.length; i++){
+            //Log.i("MSG", "Player + " + i + " " + playerStatus[i]);
+            if(!playerStatus[i]){
                 outCounter++;
             }
         }
@@ -426,14 +428,24 @@ public class EKState extends GameState {
             return false;
         }
         else{
+            int next = (currentPlayer+1)%4;
+            while(playerStatus[next] == false){
+                next = (next+1)%4;
+                Log.i("MSG"," "+ next);
+            }
+            this.playerTurn = next;
+            return true;
+            /*
             if (currentPlayer + 1 <= 3 && playerStatus[currentPlayer + 1]) {
                 this.playerTurn = currentPlayer + 1;
+                Log.i("MSG", playerTurn + "\n");
                 return true;
             } else {
                 switch(currentPlayer+1){
                     case 4:
                         if(playerStatus[0]){
                             this.playerTurn = 0;
+                            Log.i("MSG", playerTurn + "\n");
                         }else{
                             nextPlayer(0);
                         }
@@ -443,8 +455,9 @@ public class EKState extends GameState {
                         break;
                 }
             }
+            */
+
         }
-       return true;
     }
 
     /**
@@ -503,13 +516,14 @@ public class EKState extends GameState {
     public boolean createCards() {
         //sets the hash table keys and strings to the card description, and the card ID.
         if (gameState == STATE.INIT_ARRAYS){
-            for (int i = 0; i < 4; i++) {
-                this.draw.add(new Card(CARDTYPE.ATTACK));
-                this.draw.add(new Card(CARDTYPE.FAVOR));
-                this.draw.add(new Card(CARDTYPE.NOPE));
-                this.draw.add(new Card(CARDTYPE.SHUFFLE));
-                this.draw.add(new Card(CARDTYPE.SKIP));
-                this.draw.add(new Card(CARDTYPE.SEEFUTURE));
+            //FIXME: CHANGE TO 4
+            for (int i = 0; i < 10; i++) {
+                //this.draw.add(new Card(CARDTYPE.ATTACK));
+                //this.draw.add(new Card(CARDTYPE.FAVOR));
+                //this.draw.add(new Card(CARDTYPE.NOPE));
+                //this.draw.add(new Card(CARDTYPE.SHUFFLE));
+                //this.draw.add(new Card(CARDTYPE.SKIP));
+                //this.draw.add(new Card(CARDTYPE.SEEFUTURE));
                 this.draw.add(new Card(CARDTYPE.MELON));
                 this.draw.add(new Card(CARDTYPE.BEARD));
                 this.draw.add(new Card(CARDTYPE.TACO));
@@ -522,8 +536,8 @@ public class EKState extends GameState {
 
             this.draw.add(new Card(CARDTYPE.DEFUSE));
             this.draw.add(new Card(CARDTYPE.DEFUSE));
-            this.draw.add(new Card(CARDTYPE.NOPE));
-            this.draw.add(new Card(CARDTYPE.SEEFUTURE));
+            //this.draw.add(new Card(CARDTYPE.NOPE));
+            //this.draw.add(new Card(CARDTYPE.SEEFUTURE));
             gameState = STATE.INIT_OBJECTS;
             return true;
         }
@@ -601,7 +615,7 @@ public class EKState extends GameState {
 
     //written by alex
     public void stealACard(int playerIdx){
-        if(playerStatus[playerIdx] = false){
+        if(!playerStatus[playerIdx]){
             return;
         }
         int targetSize = deck.get(playerIdx).size();
