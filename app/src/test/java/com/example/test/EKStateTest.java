@@ -79,14 +79,28 @@ public class EKStateTest {
         EKLocalGame test = new EKLocalGame();
         EKState stateTest = (EKState) test.getGameState();
         int x = stateTest.playerTurn;
-        stateTest.playCard(stateTest.playerTurn,CARDTYPE.ATTACK,stateTest.deck.get(stateTest.playerTurn));
+        stateTest.playCard(stateTest.playerTurn,CARDTYPE.ATTACK,stateTest.deck.get(stateTest.playerTurn));//Attack
         assertEquals(x+1,stateTest.playerTurn); // see if players turn is incremented
         assertEquals(false, stateTest.compareArray(stateTest.draw));// checking to see if the draw pile stays the same
         // after ATTACK card is played
-        stateTest.playCard(stateTest.playerTurn,CARDTYPE.SHUFFLE,stateTest.deck.get(stateTest.playerTurn));
+        stateTest.playCard(stateTest.playerTurn,CARDTYPE.SHUFFLE,stateTest.deck.get(stateTest.playerTurn));//Shuffle
         assertEquals(false,stateTest.compareList(stateTest.draw, stateTest.deck.get(stateTest.playerTurn)));
-        stateTest.playCard(stateTest.playerTurn,CARDTYPE.SKIP,stateTest.deck.get(stateTest.playerTurn));
+        stateTest.playCard(stateTest.playerTurn,CARDTYPE.SKIP,stateTest.deck.get(stateTest.playerTurn));//Skip
         assertEquals(2, stateTest.playerTurn);
+        stateTest.playCard(stateTest.playerTurn,CARDTYPE.TACO,stateTest.deck.get(stateTest.playerTurn));//Taco
+        assertEquals(false,stateTest.compareDecks(stateTest.draw, stateTest.deck.get(stateTest.playerTurn)));
+        stateTest.playCard(stateTest.playerTurn,CARDTYPE.BEARD,stateTest.deck.get(stateTest.playerTurn));//beard
+        assertEquals(false,stateTest.compareDecks(stateTest.draw, stateTest.deck.get(stateTest.playerTurn)));
+        stateTest.playCard(stateTest.playerTurn,CARDTYPE.POTATO,stateTest.deck.get(stateTest.playerTurn));//Potato
+        assertEquals(false,stateTest.compareDecks(stateTest.draw, stateTest.deck.get(stateTest.playerTurn)));
+        stateTest.playCard(stateTest.playerTurn,CARDTYPE.MELON,stateTest.deck.get(stateTest.playerTurn));//Melon
+        assertEquals(false,stateTest.compareDecks(stateTest.draw, stateTest.deck.get(stateTest.playerTurn)));
+        stateTest.playCard(stateTest.playerTurn,CARDTYPE.DEFUSE,stateTest.deck.get(stateTest.playerTurn));//Defuse
+        assertEquals(false,stateTest.compareList(stateTest.draw, stateTest.deck.get(stateTest.playerTurn)));
+
+
+
+
 
     }
 

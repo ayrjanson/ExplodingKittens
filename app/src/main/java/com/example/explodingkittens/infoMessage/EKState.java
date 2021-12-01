@@ -605,7 +605,8 @@ public class EKState extends GameState {
         }
         return true;
     }
-    public boolean compareList (ArrayList<Card> draw, ArrayList<Card> shuffle){
+
+        public boolean compareList (ArrayList<Card> draw, ArrayList<Card> shuffle){
         if(draw.size() != shuffle.size()){
             return false;
         }else {
@@ -618,30 +619,31 @@ public class EKState extends GameState {
         return true;
     }
 
-    public boolean compareArray (ArrayList<Card> draw){
-            for (int i = 0; i < draw.size()-1; i++) {
-                Card card = draw.get(i);
-                for (int j = i + 1; j < draw.size(); j++) {
-                    Card card1 = draw.get(j);
-
-                    if (!card1.equals(card)) {
-                        return false;
-                    }
-                }
-            }
-        return true;
-    }
-    public boolean compareList (ArrayList<Card> draw, ArrayList<Card> shuffle){
-        if(draw.size() != shuffle.size()){
+    public boolean compareDecks (ArrayList<Card> draw, ArrayList<Card> discard){
+        if(draw.size() != discard.size()){
             return false;
         }else {
             for (int i = 0; i < draw.size(); i++) {
-                if(!draw.get(i).equals(shuffle.get(i))) {
+                if(!draw.get(i).equals(discard.get(i))) {
                     return false;
                 }
             }
         }
         return true;
+    }
+
+    /**
+     * getter method to get the amount of exploding kittens in the deck
+     * @return
+     */
+    public int getEKCount(){
+        int count = 0;
+        for(int i = 0; i < this.draw().size(); i++){
+            if(this.draw().get(i).getCardType() == 0){
+                count++;
+            }
+        }
+        return count;
     }
 }
 
