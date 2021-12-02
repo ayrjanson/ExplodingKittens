@@ -123,7 +123,7 @@ public class EKLocalGame extends LocalGame {
                     }
                     if (currentState.playCard(currentState.playerTurn, CARDTYPE.SEEFUTURE, currentState.deck.get(currentState.playerTurn))) {
                         Logger.log("LocalGame", "Playing a SeeFuture Card");
-                        timer.setInterval(5000);
+                        timer.setInterval(2000);
                         timer.start();
                         return true;
                     }

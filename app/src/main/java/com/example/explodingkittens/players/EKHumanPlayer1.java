@@ -214,7 +214,12 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             //if stops working add back in else below
             else if (v.getId() == R.id.discardPile) {
                 ArrayList<Card> selectedCards = findSelected(state.deck.get(state.playerTurn));
-                int numCardsToPlay = selectedMatching(selectedCards);
+                int numCardsToPlay;
+                try {
+                    numCardsToPlay = selectedMatching(selectedCards);
+                }catch(IndexOutOfBoundsException e){
+                    return;
+                }
                 switch (numCardsToPlay) {
                     case 1:
                         state.playCard(state.playerTurn, selectedCards.get(0).getType(), state.deck.get(state.playerTurn));

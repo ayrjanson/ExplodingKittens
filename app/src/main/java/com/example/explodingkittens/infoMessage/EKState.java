@@ -431,9 +431,10 @@ public class EKState extends GameState {
             int next = (currentPlayer+1)%4;
             while(playerStatus[next] == false){
                 next = (next+1)%4;
-                Log.i("MSG"," "+ next);
             }
             this.playerTurn = next;
+            Log.i("MSG"," "+ playerTurn + " " + playerStatus[playerTurn]);
+
             return true;
             /*
             if (currentPlayer + 1 <= 3 && playerStatus[currentPlayer + 1]) {
@@ -523,7 +524,7 @@ public class EKState extends GameState {
                 //this.draw.add(new Card(CARDTYPE.NOPE));
                 //this.draw.add(new Card(CARDTYPE.SHUFFLE));
                 //this.draw.add(new Card(CARDTYPE.SKIP));
-                //this.draw.add(new Card(CARDTYPE.SEEFUTURE));
+                this.draw.add(new Card(CARDTYPE.SEEFUTURE));
                 this.draw.add(new Card(CARDTYPE.MELON));
                 this.draw.add(new Card(CARDTYPE.BEARD));
                 this.draw.add(new Card(CARDTYPE.TACO));
