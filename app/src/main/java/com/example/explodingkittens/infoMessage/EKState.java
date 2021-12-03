@@ -562,15 +562,34 @@ public class EKState extends GameState {
         return -1;
     }
 
+    /**
+     * getPlayerTurn
+     * @return the index of the player whose turn is going
+     */
     public int getPlayerTurn() { return playerTurn; }
 
+    /**
+     * gameOver - determines if the game is over
+     * @return index of winning player, -1 if play is ongoing
+     */
     public int gameOver() {
         return endGame(playerStatus);
     }
 
+    /**
+     * getPlayerStatus
+     * @return the playerStatus boolean array
+     */
     public boolean[] getPlayerStatus() { return playerStatus; }
 
     //written by alex and anna
+
+    /**
+     * equals - takes in a state as a parameter and compares to the state that the method is
+     * referenced to
+     * @param state - the current game state
+     * @return whether the two states are equal
+     */
     public boolean equals(EKState state){
         if(!(this.justPlayedSeeFuture == state.justPlayedSeeFuture)) return false;
 
@@ -606,7 +625,10 @@ public class EKState extends GameState {
         return true;
     }
 
-    //written by alex
+    /**
+     * stealACard - used to steal a card from a selected player's deck to the current player's deck
+     * @param playerIdx - the player selected to steal from
+     */
     public void stealACard(int playerIdx){
         if(!playerStatus[playerIdx]){
             return;
@@ -617,6 +639,12 @@ public class EKState extends GameState {
         deck.get(playerIdx).remove(stealIdx);
         deck.get(playerTurn).add(stolenCard);
     }
+
+    /**
+     * compareArray - determines if a card was moved out of the draw pile
+     * @param draw - the draw deck
+     * @return boolean if a card was moved out
+     */
 
     public boolean compareArray (ArrayList<Card> draw){
         for (int i = 0; i < draw.size()-1; i++) {
@@ -630,6 +658,15 @@ public class EKState extends GameState {
         }
         return true;
     }
+
+    /**
+     * compareList - compares the draw to the shuffled deck and determines that the two AREN'T in
+     * the same order of cards
+     * @param draw - the draw deck
+     * @param shuffle - the shuffled deck
+     * @return boolean if the decks are in the same order of card types
+     */
+
     public boolean compareList (ArrayList<Card> draw, ArrayList<Card> shuffle){
         if(draw.size() != shuffle.size()){
             return false;
