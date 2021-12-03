@@ -1,16 +1,12 @@
 package com.example.explodingkittens.infoMessage;
-import com.example.explodingkittens.ekActionMessage.EKPlayCardAction;
-import com.example.explodingkittens.infoMessage.CARDTYPE;
-import com.example.explodingkittens.infoMessage.EKState;
 import com.example.gameframework.infoMessage.GameInfo;
 import com.example.gameframework.players.GameComputerPlayer;
-import com.example.gameframework.utilities.Logger;
 
-*
+/*
         *An Exploding Kittens Smart Computer Player Class
         *Computer acts based on probability, available cards, and previous player
         * actions
-        *
+        */
 
 public class EKComputerPlayer2 extends GameComputerPlayer {
 
@@ -26,7 +22,7 @@ public class EKComputerPlayer2 extends GameComputerPlayer {
      * Initializes all instance variables
      * @param name the player's name (e.g., "John")*/
 
-    public EKSmartComputerPlayer(String name) {
+    public void EKSmartComputerPlayer(String name) {
         super(name);
         this.probability = 0;
         this.random = 0;
