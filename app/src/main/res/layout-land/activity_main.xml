@@ -123,6 +123,13 @@
                 android:text="Tab Right" />
 
             <TextView
+                android:id="@+id/playersIn"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:background="#FFFFFF"
+                android:text="TextView" />
+
+            <TextView
                 android:id="@+id/logView"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"

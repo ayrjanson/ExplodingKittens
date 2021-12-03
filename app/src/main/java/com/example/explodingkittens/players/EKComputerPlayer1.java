@@ -46,7 +46,7 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
             int numCardsToPlay = (int) (Math.random() * (handSize));
 
             //Runs this loop for the number of cards in the player's hand
-            for (int i = 0; i < numCardsToPlay; i++) {
+            //for (int i = 0; i < numCardsToPlay; i++) {
                 sleep(.5);
                 //Selects a random index in the hand to play as a card
                 int randoIdx = (int) (Math.random() * receive.deck.get(receive.playerTurn).size());
@@ -92,14 +92,8 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
                         case NOPE:
                             action = new EKPlayCardAction(this, CARDTYPE.NOPE);
                             break;
-                        case DEFUSE:
-                            action = new EKPlayCardAction(this, CARDTYPE.DEFUSE);
-                            break;
                         case EXPLODE:
                             action = new EKPlayCardAction(this, CARDTYPE.EXPLODE);
-                            break;
-                        case ENDTURN:
-                            action = new EKPlayCardAction(this, CARDTYPE.ENDTURN);
                             break;
                         default:
                             action = new EKPlayCardAction(this, CARDTYPE.ENDTURN);
@@ -111,7 +105,7 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
                         return;
                     }
                     game.sendAction(action);
-                }
+                //} for loop
             }
         //Ensures that the turn always ends for the computer player
         EKPlayCardAction end = new EKPlayCardAction(this, CARDTYPE.ENDTURN);

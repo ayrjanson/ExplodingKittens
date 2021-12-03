@@ -174,12 +174,13 @@ public class EKLocalGame extends LocalGame {
                     }
                     break;
                 case ENDTURN:
-                    ((EKState) state).endTurn(turn, ((EKState) state).DRAWCARD);
-                    //((EKState) state).nextPlayer(((EKState) state).getPlayerTurn());
-                    Logger.log("makeMove", "Ended Turn, current player now is" + ((EKState) state).playerTurn);
-                    return true;
+                    if (currentState.playCard(currentState.playerTurn, CARDTYPE.ENDTURN, currentState.deck.get(currentState.playerTurn))) {
+                        Logger.log("LocalGame", "Ended turn");
+                        return true;
+                    }
+                    break;
                 case DRAW:
-                    ((EKState) state).endTurn(((EKState) state).playerTurn,((EKState) state).DRAWCARD);
+                    ((EKState) state).endTurn(((EKState) state).playerTurn, EKState.DRAWCARD);
                     return true;
                 case STEAL:
                     if(currentState.playCard(currentState.playerTurn, CARDTYPE.STEAL, currentState.deck.get(currentState.playerTurn))){

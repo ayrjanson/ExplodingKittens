@@ -350,17 +350,46 @@ public class EKState extends GameState {
                 int moveDefuse = getCardIndex(CARDTYPE.DEFUSE, deck.get(playerTurn));
                 Card moveCardExplode = getCard(CARDTYPE.EXPLODE, deck.get(playerTurn));
                 Card moveCardDefuse = getCard(CARDTYPE.DEFUSE, deck.get(playerTurn));
-                if(moveExplode != -1 && moveDefuse != -1) {
-                    int randomIdx = (int) (Math.random() * (draw.size()));
-                    draw.add(randomIdx, moveCardExplode);
-                    discard.add(moveCardDefuse);
-                    if (deck.get(playerTurn).remove(moveCardExplode) && deck.get(playerTurn).remove(moveCardDefuse)){
-                        return true;
-                    }else{
-                        endTurn(this.playerTurn,LOST);
+                if(moveDefuse != -1) {
+                    if(moveExplode != -1){
+                        int randomIdx = (int) (Math.random() * (draw.size()));
+                        draw.add(randomIdx, moveCardExplode);
+                        if (deck.get(playerTurn).remove(moveCardExplode) && deck.get(playerTurn).remove(moveCardDefuse)){
+                            return true;
+                        }else{
+                            endTurn(this.playerTurn,LOST);
+                            return false;
+                        }
                     }
-                }else{
+                    discard.add(moveCardDefuse);
+                    if(deck.get(playerTurn).remove(moveCardDefuse)){
+                        return true;
+                    }
+                }else if(moveExplode != -1){
                     endTurn(this.playerTurn,LOST);
+                }
+                break;
+            case EXPLODE:
+                //TODO check indexes for behavior
+                int moveExplode1 = getCardIndex(CARDTYPE.EXPLODE, deck.get(playerTurn));
+                int moveDefuse1 = getCardIndex(CARDTYPE.DEFUSE, deck.get(playerTurn));
+                Card moveCardExplode1 = getCard(CARDTYPE.EXPLODE, deck.get(playerTurn));
+                Card moveCardDefuse1 = getCard(CARDTYPE.DEFUSE, deck.get(playerTurn));
+                if(moveDefuse1 != -1) {
+                    if(moveExplode1 != -1){
+                        int randomIdx = (int) (Math.random() * (draw.size()));
+                        draw.add(randomIdx, moveCardExplode1);
+                        if (deck.get(playerTurn).remove(moveCardExplode1) && deck.get(playerTurn).remove(moveCardDefuse1)){
+                            return true;
+                        }else{
+                            endTurn(this.playerTurn,LOST);
+                            return false;
+                        }
+                    }
+                    discard.add(moveCardDefuse1);
+                    if(deck.get(playerTurn).remove(moveCardDefuse1)){
+                        return true;
+                    }
                 }
                 break;
             case STEAL:
@@ -370,7 +399,7 @@ public class EKState extends GameState {
                 return true;
             default:
                 endTurn(playerTurn,DRAWCARD);
-                break;
+                return true;
         }
         return false;
     }

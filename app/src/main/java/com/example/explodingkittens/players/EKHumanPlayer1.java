@@ -41,6 +41,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
     private Button handLeft = null;
     private Button handRight = null;
     private TextView logView = null;
+    private TextView playersIn = null;
 
     private static final String TAG = "EKHumanPlayer1";
 
@@ -124,6 +125,9 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
         else {
             //Update every image button to match what is in the gamestate
             this.state = new EKState((EKState) info);
+            playersIn.setText("Who is in?\n" + "Player 0: " + state.playerStatus[0] +
+                    "\nPlayer 1: " + state.playerStatus[1] + "\nPlayer 2: " + state.playerStatus[2]
+                    + "\nPlayer 3: " + state.playerStatus[3]);
             logView.setText(this.state.lastMessage);
             if(state.lastMessage.length() == 0){
                 logView.setText("No Message");
@@ -382,7 +386,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
         this.handLeft = (Button)activity.findViewById(R.id.handLeft);
         this.handRight = (Button)activity.findViewById(R.id.handRight);
         this.logView = (TextView)activity.findViewById(R.id.logView);
-
+        this.playersIn = (TextView)activity.findViewById(R.id.playersIn);
         playerCards = new ArrayList<>();
         playerCards.add(playerCard1);
         playerCards.add(playerCard2);
