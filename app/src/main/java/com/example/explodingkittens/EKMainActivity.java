@@ -1,6 +1,7 @@
 package com.example.explodingkittens;
 
 import com.example.explodingkittens.players.EKComputerPlayer1;
+import com.example.explodingkittens.players.EKComputerPlayer2;
 import com.example.explodingkittens.players.EKHumanPlayer1;
 import com.example.gameframework.GameMainActivity;
 import com.example.gameframework.LocalGame;
@@ -51,6 +52,11 @@ public class EKMainActivity extends GameMainActivity {
         playerTypes.add(new GamePlayerType("Dumb Computer Player") {
             public GamePlayer createPlayer(String name) {
                 return new EKComputerPlayer1(name);
+            }
+        });
+        playerTypes.add(new GamePlayerType("Smart Computer Player") {
+            public GamePlayer createPlayer(String name) {
+                return new EKComputerPlayer2(name);
             }
         });
         GameConfig defaultConfig = new GameConfig(playerTypes, 4, 4, "Exploding Kittens", PORT_NUMBER);

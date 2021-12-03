@@ -5,6 +5,7 @@ import com.example.explodingkittens.infoMessage.CARDTYPE;
 import com.example.explodingkittens.infoMessage.Card;
 import com.example.explodingkittens.infoMessage.EKState;
 import com.example.explodingkittens.players.EKComputerPlayer1;
+import com.example.explodingkittens.players.EKComputerPlayer2;
 import com.example.gameframework.LocalGame;
 import com.example.gameframework.actionMessage.GameAction;
 import com.example.gameframework.players.GamePlayer;
@@ -151,7 +152,7 @@ public class EKLocalGame extends LocalGame {
                     }
                     break;
                 case SEEFUTURE:
-                    if(players[currentState.playerTurn] instanceof EKComputerPlayer1){
+                    if(players[currentState.playerTurn] instanceof EKComputerPlayer1 || players[currentState.playerTurn] instanceof EKComputerPlayer2){
                         return false;
                     }
                     if (currentState.playCard(currentState.playerTurn, CARDTYPE.SEEFUTURE, currentState.deck.get(currentState.playerTurn))) {
