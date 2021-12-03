@@ -636,7 +636,7 @@ public class EKState extends GameState {
      * getter method to get the amount of exploding kittens in the deck
      * @return
      */
-    public int getEKCount(){
+   /* public int getEKCount(){
         int count = 0;
         for(int i = 0; i < this.draw().size(); i++){
             if(this.draw().get(i).getCardType() == 0){
@@ -645,6 +645,8 @@ public class EKState extends GameState {
         }
         return count;
     }
+    */
+
 }
 
 
