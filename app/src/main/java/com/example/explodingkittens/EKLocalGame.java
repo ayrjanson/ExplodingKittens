@@ -173,12 +173,6 @@ public class EKLocalGame extends LocalGame {
                         return true;
                     }
                     break;
-                case EXPLODE:
-                    if (currentState.playCard(currentState.playerTurn, CARDTYPE.EXPLODE, currentState.deck.get(currentState.playerTurn))) {
-                        Logger.log("LocalGame", "Playing a Explode Card - this shouldn't be a thing");
-                        return true;
-                    }
-                    break;
                 case ENDTURN:
                     ((EKState) state).endTurn(turn, ((EKState) state).DRAWCARD);
                     //((EKState) state).nextPlayer(((EKState) state).getPlayerTurn());
@@ -190,7 +184,7 @@ public class EKLocalGame extends LocalGame {
                 case STEAL:
                     if(currentState.playCard(currentState.playerTurn, CARDTYPE.STEAL, currentState.deck.get(currentState.playerTurn))){
                         return true;
-                    }
+                }
             }
         }
         return false;

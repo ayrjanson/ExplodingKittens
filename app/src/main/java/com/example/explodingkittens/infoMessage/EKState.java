@@ -122,7 +122,6 @@ public class EKState extends GameState {
                     this.nextPlayer(this.playerTurn);
                 } catch (IndexOutOfBoundsException e) {
                     this.nextPlayer(this.playerTurn);
-                    return;
                 }
                 break;
             case SKIPTURN:
@@ -355,27 +354,13 @@ public class EKState extends GameState {
                     int randomIdx = (int) (Math.random() * (draw.size()));
                     draw.add(randomIdx, moveCardExplode);
                     discard.add(moveCardDefuse);
-                    //check if need to change back
                     if (deck.get(playerTurn).remove(moveCardExplode) && deck.get(playerTurn).remove(moveCardDefuse)){
                         return true;
                     }else{
                         endTurn(this.playerTurn,LOST);
                     }
-                }
-                break;
-                case EXPLODE:
-                    moveExplode = getCardIndex(CARDTYPE.EXPLODE, deck.get(playerTurn));
-                    moveDefuse = getCardIndex(CARDTYPE.DEFUSE, deck.get(playerTurn));
-                    moveCardExplode = getCard(CARDTYPE.EXPLODE, deck.get(playerTurn));
-                    moveCardDefuse = getCard(CARDTYPE.DEFUSE, deck.get(playerTurn));
-                if(moveExplode != -1 && moveDefuse != -1) {
-                    discard.add(moveCardExplode);
-                    discard.add(moveCardDefuse);
-                    deck.get(playerTurn).remove(moveExplode);
-                    deck.get(playerTurn).remove(moveDefuse);
-                    return true;
                 }else{
-                    endTurn(playerTurn,LOST);
+                    endTurn(this.playerTurn,LOST);
                 }
                 break;
             case STEAL:
@@ -510,11 +495,11 @@ public class EKState extends GameState {
         //sets the hash table keys and strings to the card description, and the card ID.
         if (gameState == STATE.INIT_ARRAYS){
             //FIXME: CHANGE TO 4
-            for (int i = 0; i < 8; i++) {
+            for (int i = 0; i < 4; i++) {
                 //this.draw.add(new Card(CARDTYPE.ATTACK));
-                //this.draw.add(new Card(CARDTYPE.FAVOR));
-                //this.draw.add(new Card(CARDTYPE.NOPE));
-                //this.draw.add(new Card(CARDTYPE.SHUFFLE));
+                this.draw.add(new Card(CARDTYPE.FAVOR));
+                this.draw.add(new Card(CARDTYPE.NOPE));
+                this.draw.add(new Card(CARDTYPE.SHUFFLE));
                 this.draw.add(new Card(CARDTYPE.SKIP));
                 this.draw.add(new Card(CARDTYPE.SEEFUTURE));
                 this.draw.add(new Card(CARDTYPE.MELON));
@@ -638,6 +623,10 @@ public class EKState extends GameState {
         Card stolenCard = deck.get(playerIdx).get(stealIdx);
         deck.get(playerIdx).remove(stealIdx);
         deck.get(playerTurn).add(stolenCard);
+        if(stolenCard.getType() == CARDTYPE.EXPLODE){
+            this.lastMessage += "Player " + playerTurn + " has just drawn an exploding kitten.\n" ;
+            playCard(playerTurn, CARDTYPE.DEFUSE, this.deck.get(playerTurn));
+            }
     }
 
     /**

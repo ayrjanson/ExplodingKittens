@@ -34,7 +34,9 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
     @Override
     protected void receiveInfo(GameInfo info) {
         //If info isn't an instance of EKState, stop processing
-        if(!(info instanceof EKState)) return;
+        if(!(info instanceof EKState)){
+            return;
+        }
         EKState receive = new EKState((EKState) info);
 
         //If it is this player's turn and this player is still in the game, continue
