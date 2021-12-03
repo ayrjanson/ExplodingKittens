@@ -11,11 +11,21 @@ import com.example.gameframework.players.GamePlayer;
 import com.example.gameframework.utilities.GameTimer;
 import com.example.gameframework.utilities.Logger;
 
+/**
+ * EKLocalGame - the local game that determines the legality of moves from the various players and
+ * changes the gameState accordingly
+ * @author Alex Nastase
+ * @author Anna Yrjanson
+ * @author Audrey Sauter
+ */
 
 public class EKLocalGame extends LocalGame {
 
     private GameTimer timer;
 
+    /**
+     * EKLocalGame - creates the state and creates a timer for specific actions
+     */
     public EKLocalGame() {
         super();
         super.state = new EKState(4);
@@ -23,6 +33,11 @@ public class EKLocalGame extends LocalGame {
 
     }
 
+    /**
+     * EKLocalGame - copy constructor that takes in an already existing gameState to then be
+     * assigned as a new game state in a new local game, this also assigns a timer
+     * @param ekgamestate
+     */
     // CONSTRUCTOR WITH LOADED EK GAME STATE
     public EKLocalGame(EKState ekgamestate) {
         super();
@@ -31,6 +46,10 @@ public class EKLocalGame extends LocalGame {
 
     }
 
+    /**
+     * sendUpdatedStateTo - sends an updated state to a specific player
+     * @param p - the player that the state gets sent to
+     */
     //send updated state to player
     @Override
     protected void sendUpdatedStateTo(GamePlayer p) {
@@ -38,14 +57,23 @@ public class EKLocalGame extends LocalGame {
         p.sendInfo(gameCopy);
     }
 
-    //checks if player can play card
+    /**
+     * canMove - determines that the player turn assigned in the state is the same as the one
+     * given as the player's player-number
+     * @param playerIdx - the player's player-number (ID)
+     * @return whether the values between the ID and playerTurn value
+     */
     @Override
     protected boolean canMove(int playerIdx) {
         if (((EKState) state).getPlayerTurn() == playerIdx) return true;
         return false;
     }
 
-    //checks if game has ended
+    /**
+     * checkIfGameOver - checks if one player remains to end the game, continues if not
+     * @return string if only one player remains with a message displaying which player won, returns
+     * null if no player is selected
+     */
     @Override
     protected String checkIfGameOver() {
         for (int i = 0; i < players.length; i++) {
@@ -56,6 +84,11 @@ public class EKLocalGame extends LocalGame {
         return null; // Game not over
     }
 
+    /**
+     * makeMove - sends the appropriate action to the state if the play is legal
+     * @param action - the move that the player has sent to the game
+     * @return whether the action was executed/legal or not
+     */
 
     @Override
     protected boolean makeMove(GameAction action) {
@@ -163,14 +196,16 @@ public class EKLocalGame extends LocalGame {
         return false;
     }
 
+    /**
+     * timerTicked - ends the timer when the SeeFuture timer is up
+     */
+
     @Override
     protected void timerTicked(){
         ((EKState) state).justPlayedSeeFuture = false;
         this.sendAllUpdatedState();
         timer.stop();
     }
-
-
 }
 
 

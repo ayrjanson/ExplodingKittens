@@ -110,7 +110,6 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
                     }
                     game.sendAction(action);
                 }
-
             }
         //Ensures that the turn always ends for the computer player
         EKPlayCardAction end = new EKPlayCardAction(this, CARDTYPE.ENDTURN);

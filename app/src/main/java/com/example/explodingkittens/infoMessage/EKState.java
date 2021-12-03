@@ -18,11 +18,6 @@ import java.util.Collections;
 
 public class EKState extends GameState {
 
-
-    /*
-    Create an arrayList of imageButtons, (in what class?) that can link to every button in the gui
-    set a static image for back of card, that we can use to "hide" a card value for draw, discard etc
-     */
     public ArrayList<ArrayList<Card>> deck;
     public ArrayList<Card> discard;
     public ArrayList<Card> draw;
@@ -506,7 +501,7 @@ public class EKState extends GameState {
     }
 
     /**
-     * createCards: creates a hashtable with the card types and their enum values, creates card
+     * createCards -  creates a hashtable with the card types and their enum values, creates card
      * objects for the number of that type of card in the deck for a four-player game -Written by Alex
      * @return - true if actions were executed, false if gamestate is not INIT_ARRAYS,
      *           probs bc it is called out of order

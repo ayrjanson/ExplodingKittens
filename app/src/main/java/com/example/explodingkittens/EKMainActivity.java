@@ -11,16 +11,22 @@ import com.example.gameframework.infoMessage.GameState;
 import com.example.gameframework.players.GamePlayer;
 import java.util.ArrayList;
 
+/**
+ * EKMainActivity - hosts the game and allows for the selection of player types locally
+ * @author Anna Yrjanson
+ */
+
 public class EKMainActivity extends GameMainActivity {
 
     private static final String TAG = "EKMainActivity";
     public static final int PORT_NUMBER = 5213;
 
     /**
-     * createLocalGame
+     * createLocalGame - creates a local game for players to interact with locally
      *
      * @param gameState The desired gameState to start at or null for new game
-     * @return EKLocalGame
+     * @return EKLocalGame - returns a local game that then facilitates play between local players
+     * and determines the legality of moves
      */
 
     @Override
@@ -29,9 +35,10 @@ public class EKMainActivity extends GameMainActivity {
     }
 
     /**
-     * createDefaultConfig
-     *
-     * @return GameConfig
+     * createDefaultConfig - creates the defaulted players and determines the types of players
+     * that can be played (dumb computer, smart computer, human, etc.)
+     * @return GameConfig - the types of players that can be played and assigned and the default
+     * player configuration
      */
 
     public GameConfig createDefaultConfig() {
@@ -40,7 +47,6 @@ public class EKMainActivity extends GameMainActivity {
             public GamePlayer createPlayer(String name) {
                 return new EKHumanPlayer1(name, R.layout.activity_main);
             }
-            //TODO: Find how to do the layouts for the players
         });
         playerTypes.add(new GamePlayerType("Dumb Computer Player") {
             public GamePlayer createPlayer(String name) {

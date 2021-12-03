@@ -21,10 +21,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 
-public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
-    private ImageButton player1 = null;
-    private ImageButton player2 = null;
-    private ImageButton player3 = null;
+/**
+ * EKHumanPlayer1 - Updates the GUI based on the game state and sends actions based on human player
+ * interaction
+ * @author Anna Yrjanson
+ * @author Audrey Sauter
+ * @author Alex Nastase
+ */
+
+public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListener {
     private ImageButton discardPile = null;
     private ImageButton drawPile = null;
     private ImageButton playerCard1 = null;
@@ -36,8 +41,6 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
     private Button handLeft = null;
     private Button handRight = null;
     private TextView logView = null;
-    private SeekBar cardSelector = null;
-    private Button enterButton = null;
 
     private static final String TAG = "EKHumanPlayer1";
 
@@ -49,8 +52,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
     int myPlayerNum;
     int numCardsDisplay;
 
-
-
+    //Hashtable of CardType image resources
     static Hashtable<CARDTYPE, Integer> imageTable = new Hashtable()
     {{
         put(CARDTYPE.MELON, R.drawable.melon);
@@ -71,6 +73,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
         put(CARDTYPE.TACO_SELECTED,R.drawable.taco_selected);
     }};
 
+    //HashMap of the human player hand button display
     HashMap<Integer,CARDTYPE> buttonCardMap = new HashMap()
     {{
        put(R.id.playerCard1,null);
@@ -80,16 +83,16 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
        put(R.id.playerCard5,null);
 
     }};
+
     /**
-     * constructor
-     *consistent with TTT
-     * @param name the name of the player
+     * EKHumanPlayer1 - creates a human player object
+     * @param name - the name of the player
+     * @param layoutId - ID of the layout
      */
 
     public EKHumanPlayer1(String name, int layoutId) {
         super(name);
         this.layoutId = layoutId;
-        //logView = myActivity.findViewById(R.id.logView);
     }
 
     @Override
@@ -97,15 +100,22 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
         return null;
     }
 
-
+    /**
+     * receiveInfo - receives the state and takes human GUI input to determine actions to send to
+     * the LocalGame class
+     * @param info - information which contains the game state
+     */
     //FIXME: the recently drawn card does not show up when scrolling through deck
     @Override
     public void receiveInfo(GameInfo info) {
+        //If the GameInfo (and game state) have no info, return
         if(info == null){
         return;
         }
+
+        // if the move was out of turn or otherwise illegal, flash the screen
         else if (info instanceof IllegalMoveInfo || info instanceof NotYourTurnInfo) {
-            // if the move was out of turn or otherwise illegal, flash the screen
+
         }
         else if (!(info instanceof EKState))
             // if we do not have a EKState, ignore
@@ -191,6 +201,11 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
     }
 
 
+    /**
+     * onClick - determines which action to take based on the selected button's display
+     * @param v - the view (button) ID
+     */
+
     @Override
     public void onClick(View v) {
         if (state.playerTurn == this.myPlayerNum) {
@@ -198,16 +213,6 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             // TODO: Move to this way if others don't work
             if (state.justPlayedSeeFuture) {
                 return;
-            }
-
-            if (v.getId() == R.id.player1) {
-                //state.stealFromPlayer = 1;
-            } else if (v.getId() == R.id.player2) {
-                //state.stealFromPlayer = 2;
-                // Determine if an action was selected that allows that user to be included
-            } else if (v.getId() == R.id.player3) {
-                //state.stealFromPlayer = 3;
-                // Determine if an action was selected that allows that user to be included
             }
             //if stops working add back in else below
             else if (v.getId() == R.id.discardPile) {
@@ -221,31 +226,22 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
                 switch (numCardsToPlay) {
                     case 1:
                         state.playCard(state.playerTurn, selectedCards.get(0).getType(), state.deck.get(state.playerTurn));
-                        //logView.setText("Player " + state.playerTurn + " played one " + selectedCards.get(0).cardType.name() + " card");
-
                     case 2:
                         state.playCard(state.playerTurn, selectedCards.get(0).getType(), state.deck.get(state.playerTurn));
                         state.playCard(state.playerTurn, selectedCards.get(0).getType(), state.deck.get(state.playerTurn));
-                        //logView.setText("Player " + state.playerTurn + " played two of a kind.");
-                        //PICK CARD
                         break;
                     case 3:
                         state.playCard(state.playerTurn, selectedCards.get(0).getType(), state.deck.get(state.playerTurn));
                         state.playCard(state.playerTurn, selectedCards.get(0).getType(), state.deck.get(state.playerTurn));
                         state.playCard(state.playerTurn, selectedCards.get(0).getType(), state.deck.get(state.playerTurn));
-                        //logView.setText("Player " + state.playerTurn + " played three of a kind.");
-                        //ASK FOR CARD
                         break;
                     case -1:
-                        //logView.setText("Selected card types are not the same. Move cancelled");
                         break;
                     default:
-                        //logView.setText("Invalid number of cards selected.");
                         break;
                 }
             } else if (v.getId() == R.id.drawPile) {
                 EKPlayCardAction draw = new EKPlayCardAction(this, CARDTYPE.ENDTURN);
-                //logView.setText("Player " + state.playerTurn + " drew a card to end their turn.");
                 game.sendAction(draw);
                 receiveInfo(state);
 
@@ -355,13 +351,18 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
                 } else {
                     logView.setText("Cannot tab right, already at beginning.");
                 }
-                //receiveInfo(state);
             }
             state.justPlayedSeeFuture = false;
             state.justDemandedACard = false;
             receiveInfo(state);
         }
     }
+
+    /**
+     * setAsGui - based on GameState information, display the correct image resources to ImageButton
+     * objects to then be seen by the Human Player
+     * @param activity - the gameActivity
+     */
 
     @Override
     public void setAsGui(GameMainActivity activity) {
@@ -371,9 +372,6 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
         activity.setContentView(R.layout.activity_main); //May cause issue with layoutId above
 
         //Create the buttons that are in the GUI
-        //this.player1 = (ImageButton)activity.findViewById(R.id.player1);
-        //this.player2 = (ImageButton)activity.findViewById(R.id.player2);
-        //this.player3 = (ImageButton)activity.findViewById(R.id.player3);
         this.discardPile = (ImageButton)activity.findViewById(R.id.discardPile);
         this.drawPile = (ImageButton)activity.findViewById(R.id.drawPile);
         this.playerCard1 = (ImageButton)activity.findViewById(R.id.playerCard1);
@@ -384,8 +382,7 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
         this.handLeft = (Button)activity.findViewById(R.id.handLeft);
         this.handRight = (Button)activity.findViewById(R.id.handRight);
         this.logView = (TextView)activity.findViewById(R.id.logView);
-        //this.cardSelector = (SeekBar)activity.findViewById(R.id.seekBar);
-        //this.enterButton = (Button)activity.findViewById(R.id.enterButton);
+
         playerCards = new ArrayList<>();
         playerCards.add(playerCard1);
         playerCards.add(playerCard2);
@@ -393,20 +390,20 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
         playerCards.add(playerCard4);
         playerCards.add(playerCard5);
 
-        //Create Button Listeners
-        //player1.setOnClickListener(this);
-        //player2.setOnClickListener(this);
-        //player3.setOnClickListener(this);
         discardPile.setOnClickListener(this);
         drawPile.setOnClickListener(this);
-        //cardSelector.setOnSeekBarChangeListener(this);
-        //enterButton.setOnClickListener(this);
         for (ImageButton playerCard : playerCards) {
             playerCard.setOnClickListener(this);
         }
         handLeft.setOnClickListener(this);
         handRight.setOnClickListener(this);
     }
+
+    /**
+     * findSelected - find the selected cards and then displays the "selected card" image resource
+     * @param playerHand - the GUI player's hand to then be displayed
+     * @return returns an ArrayList<Card> with the selected cards listed
+     */
 
     public ArrayList<Card> findSelected(ArrayList<Card> playerHand) {
         ArrayList<Card> selectedCards = new ArrayList<>();
@@ -417,6 +414,12 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
         }
         return selectedCards;
     }
+
+    /**
+     * selectedMatching - uses ArrayList<Card> and determines if there are matching card objects
+     * @param selectedCards - the array with the selectedCards
+     * @return the number of matching cards in the matchingCards array
+     */
 
     public int selectedMatching(ArrayList<Card> selectedCards) {
         int matchNumber = 0;
@@ -429,20 +432,5 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             }
         }
         return matchNumber;
-    }
-
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-
-    }
-
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-
     }
 }

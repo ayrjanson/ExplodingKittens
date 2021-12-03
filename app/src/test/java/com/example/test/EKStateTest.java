@@ -14,9 +14,20 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
+/**
+ * EKStateTest - Testing of the game state the various methods that compose it
+ * @author Alex Nastase
+ * @author Anna Yrjanson
+ * @author Audrey Sauter
+ */
+
 public class EKStateTest {
 
-    //WRITTEN BY ALEX
+    /**
+     * endTurn - tests that the various ways a turn can end all work properly: Drawing a card, losing
+     * the game, skipping, attacking, and the catchall
+     * @author Alex Nastase
+     */
     @Test
     public void endTurn() {
         //THE DRAW CARD PART
@@ -53,19 +64,31 @@ public class EKStateTest {
 
     }
 
+    /**
+     * moveToDiscard - tests that all cards in a player's hand are moved to the discard pile
+     * @author Anna Yrjanson
+     */
     @Test
-    // Anna Implemented
     public void moveToDiscard() {
+        //Creates and prepares a game
         EKState state = new EKState(4);
         state.prepareGame();
+
+        //Moves all cards from all player hands to the discard pile
         for (int i = 0; i < 4; i++) {
             state.moveToDiscard(state.deck.get(i), state.discard);
+
+            //Determines that the size of the deck should be zero - indicating an empty array
             assertEquals(0, state.deck.get(i).size());
         }
     }
 
+
+    /**
+     * takeFromDraw - determines that the card in the first index of the draw array is assigned
+     * @author Audrey Sauter
+     */
     @Test
-    //Audrey
     public void takeFromDraw() {
         EKState state = new EKState(4);
         state.prepareGame();
@@ -73,8 +96,12 @@ public class EKStateTest {
         assertEquals(state.takeFromDraw(), compare);
     }
 
+    /**
+     * playCard - determines that the correct conditional statements are followed when playing
+     * specific card types
+     */
+
     @Test
-//Audrey
     public void playCard() {
         EKLocalGame test = new EKLocalGame();
         EKState stateTest = (EKState) test.getGameState();
@@ -90,9 +117,11 @@ public class EKStateTest {
 
     }
 
+    /**
+     * getCardIndex - tests that a specific type of card can be retrieved from a deck
+     */
 
     @Test
-    //Audrey
     public void getCardIndex() {
         EKState state = new EKState(4);
         ArrayList<Card> testCardArray = new ArrayList<>();
@@ -108,6 +137,11 @@ public class EKStateTest {
             assertEquals(state.getCardIndex(cardTypes[i], testCardArray), i);
         }
     }
+
+    /**
+     * getCard - Determines that a specific card object can be retrieved from a deck given the
+     * card type
+     */
 
     @Test
     public void getCard() {
@@ -125,17 +159,13 @@ public class EKStateTest {
             assertEquals(state.getCard(cardTypes[i], testArray).getType(), cardTypes[i]);
         }
     }
-/*
-    @Test
-    // Anna Implemented
-    public void nextPlayer() {
-        EKState state = new EKState(4);
 
-    }
+    /**
+     * testToString - determines that the toString method would return the same string given that
+     * one EKState was made freshly and the second was made using a copy constructor given the first
+     * game state
+     */
 
- */
-
-    //ALEX
     @Test
     public void testToString() {
         EKState test = new EKState(4);
@@ -143,6 +173,11 @@ public class EKStateTest {
         EKState test2 = new EKState(test);
         assertEquals(true,testToString.equals(test2.toString()));
     }
+
+    /**
+     * prepareGame - determines that the correct number of cards are assigned to each deck in
+     * the game state
+     */
 
     @Test
     public void prepareGame() {
@@ -156,7 +191,11 @@ public class EKStateTest {
         assertEquals(STATE.GAME_SETUP, state.gameState);
     }
 
-    //ALEX
+    /**
+     * createCards - determines that if the gameState variable changes to the status INIT_ARRAYS,
+     * the createCards method will be called and execute. Also checks that the arrays aren't empty
+     */
+
     @Test
     public void createCards() {
         EKState test = null;
@@ -173,12 +212,16 @@ public class EKStateTest {
 
     }
 
-    //Anna
+    /**
+     * endGame - determines that any combination of players in and out will return the correct
+     * integer of a winner, or indicate that the gameplay will continue
+     * @author Anna Yrjanson
+     */
+
     @Test
     public void endGame() {
         EKState state = new EKState(4);
 
-        //TODO finish testing
         state.playerStatus = new boolean[] {false, false, false, false}; //0 0 0 0
         assertEquals(-1, state.endGame(state.playerStatus));
         state.playerStatus = new boolean[] {true, false, false, false}; //1 0 0 0
@@ -209,7 +252,12 @@ public class EKStateTest {
         assertEquals(-1, state.endGame(state.playerStatus));
     }
 
-    //ALEX
+    /**
+     * getPlayerTurn - determines that if the nextPlayer method is called at any index, that the
+     * getPlayerTurn method will return the correct player assigned
+     * @author Alex Nastase
+     */
+
     @Test
     public void getPlayerTurn() {
         EKState test = new EKState(4);
@@ -228,13 +276,22 @@ public class EKStateTest {
         assertEquals(0,test.getPlayerTurn());
     }
 
-//WRITTEN BY ALEX
+    /**
+     * equals - determines that two identical gameStates are the same using the regular and copy
+     * constructors
+     */
+
     @Test
     public void equals(){
         EKState firstInstance = new EKState(4);
         EKState secondInstance = new EKState(firstInstance);
         assertEquals(true,firstInstance.equals(secondInstance));
     }
+
+    /**
+     * nextPlayer - determines that the correct next player will be assigned correctly given various
+     * assignments of in and out players
+     */
 
     @Test
     public void nextPlayer(){
