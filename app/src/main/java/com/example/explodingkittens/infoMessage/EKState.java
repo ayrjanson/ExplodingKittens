@@ -525,7 +525,7 @@ public class EKState extends GameState {
         if (gameState == STATE.INIT_ARRAYS){
             //FIXME: CHANGE TO 4
             for (int i = 0; i < 4; i++) {
-                //this.draw.add(new Card(CARDTYPE.ATTACK));
+                this.draw.add(new Card(CARDTYPE.ATTACK));
                 this.draw.add(new Card(CARDTYPE.FAVOR));
                 this.draw.add(new Card(CARDTYPE.NOPE));
                 this.draw.add(new Card(CARDTYPE.SHUFFLE));
@@ -543,8 +543,8 @@ public class EKState extends GameState {
 
             this.draw.add(new Card(CARDTYPE.DEFUSE));
             this.draw.add(new Card(CARDTYPE.DEFUSE));
-            //this.draw.add(new Card(CARDTYPE.NOPE));
-            //this.draw.add(new Card(CARDTYPE.SEEFUTURE));
+            this.draw.add(new Card(CARDTYPE.NOPE));
+            this.draw.add(new Card(CARDTYPE.SEEFUTURE));
             gameState = STATE.INIT_OBJECTS;
             return true;
         }

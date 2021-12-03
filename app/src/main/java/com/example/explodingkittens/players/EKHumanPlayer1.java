@@ -127,7 +127,8 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             this.state = new EKState((EKState) info);
             playersIn.setText("Who is in?\n" + "Player 0: " + state.playerStatus[0] +
                     "\nPlayer 1: " + state.playerStatus[1] + "\nPlayer 2: " + state.playerStatus[2]
-                    + "\nPlayer 3: " + state.playerStatus[3]);
+                    + "\nPlayer 3: " + state.playerStatus[3] + "\n\n (Tip: if the GUI seems to be stuck\n"
+                    + "Clicking tab right/left can refresh the GUI)");
             logView.setText(this.state.lastMessage);
             if(state.lastMessage.length() == 0){
                 logView.setText("No Message");
