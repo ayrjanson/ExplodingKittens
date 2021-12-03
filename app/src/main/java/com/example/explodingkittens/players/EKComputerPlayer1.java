@@ -26,13 +26,13 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
     protected void receiveInfo(GameInfo info) {
         if(!(info instanceof EKState)) return;
         EKState receive = new EKState((EKState) info);
-        if (receive.getPlayerTurn() == playerNum) {
+        if (receive.getPlayerTurn() == playerNum && receive.playerStatus[receive.playerTurn]) {
             Logger.log("CP", "Turn: " + playerNum);
-                int handSize = receive.deck.get(receive.playerTurn).size();
-                int numCardsToPlay = (int) (Math.random() * (handSize));
-            sleep(1);
+            int handSize = receive.deck.get(receive.playerTurn).size();
+            int numCardsToPlay = (int) (Math.random() * (handSize));
             for (int i = 0; i < numCardsToPlay; i++) {
-                    int randoIdx = (int) (Math.random() * receive.deck.get(receive.playerTurn).size());
+                sleep(.5);
+                int randoIdx = (int) (Math.random() * receive.deck.get(receive.playerTurn).size());
                     CARDTYPE type;
                     try {
                         type = receive.deck.get(receive.playerTurn).get(randoIdx).getType();
@@ -82,16 +82,18 @@ public class EKComputerPlayer1 extends GameComputerPlayer {
                             break;
                         default:
                             action = new EKPlayCardAction(this, CARDTYPE.ENDTURN);
+                            break;
                     }
                     if(action.type == CARDTYPE.ENDTURN){
                         game.sendAction(action);
                         return;
                     }
+                    game.sendAction(action);
                 }
-                EKPlayCardAction end = new EKPlayCardAction(this, CARDTYPE.ENDTURN);
-                game.sendAction(end);
-                ((EKState) info).lastMessage = ("Player " + playerNum + " ended their turn by drawing a card.");
-                return;
+
             }
-        }
+        EKPlayCardAction end = new EKPlayCardAction(this, CARDTYPE.ENDTURN);
+        game.sendAction(end);
+        return;
     }
+}

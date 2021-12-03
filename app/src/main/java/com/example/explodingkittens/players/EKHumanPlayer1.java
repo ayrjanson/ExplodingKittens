@@ -120,12 +120,10 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
             }
             myPlayerNum = ((LocalGame) game).getPlayerIdx(this);
 
-
             int lastDiscard = state.discard.size();
-
-            Card discardCard = null;
+            Card discardCard;
             if (lastDiscard > 0) {
-                discardCard = state.discard.get(lastDiscard - 1);
+                discardCard = state.discard.get(lastDiscard-1);
                 discardPile.setImageResource(imageTable.get(discardCard.getType()));
             } else {
                 discardPile.setImageResource(R.drawable.back);
@@ -223,31 +221,31 @@ public class EKHumanPlayer1 extends GameHumanPlayer implements View.OnClickListe
                 switch (numCardsToPlay) {
                     case 1:
                         state.playCard(state.playerTurn, selectedCards.get(0).getType(), state.deck.get(state.playerTurn));
-                        logView.setText("Player " + state.playerTurn + " played one " + selectedCards.get(0).cardType.name() + " card");
+                        //logView.setText("Player " + state.playerTurn + " played one " + selectedCards.get(0).cardType.name() + " card");
 
                     case 2:
                         state.playCard(state.playerTurn, selectedCards.get(0).getType(), state.deck.get(state.playerTurn));
                         state.playCard(state.playerTurn, selectedCards.get(0).getType(), state.deck.get(state.playerTurn));
-                        logView.setText("Player " + state.playerTurn + " played two of a kind.");
+                        //logView.setText("Player " + state.playerTurn + " played two of a kind.");
                         //PICK CARD
                         break;
                     case 3:
                         state.playCard(state.playerTurn, selectedCards.get(0).getType(), state.deck.get(state.playerTurn));
                         state.playCard(state.playerTurn, selectedCards.get(0).getType(), state.deck.get(state.playerTurn));
                         state.playCard(state.playerTurn, selectedCards.get(0).getType(), state.deck.get(state.playerTurn));
-                        logView.setText("Player " + state.playerTurn + " played three of a kind.");
+                        //logView.setText("Player " + state.playerTurn + " played three of a kind.");
                         //ASK FOR CARD
                         break;
                     case -1:
-                        logView.setText("Selected card types are not the same. Move cancelled");
+                        //logView.setText("Selected card types are not the same. Move cancelled");
                         break;
                     default:
-                        logView.setText("Invalid number of cards selected.");
+                        //logView.setText("Invalid number of cards selected.");
                         break;
                 }
             } else if (v.getId() == R.id.drawPile) {
                 EKPlayCardAction draw = new EKPlayCardAction(this, CARDTYPE.ENDTURN);
-                logView.setText("Player " + state.playerTurn + " drew a card to end their turn.");
+                //logView.setText("Player " + state.playerTurn + " drew a card to end their turn.");
                 game.sendAction(draw);
                 receiveInfo(state);
 

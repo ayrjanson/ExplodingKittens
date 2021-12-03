@@ -108,7 +108,7 @@ public class EKState extends GameState {
 
     public void endTurn(int playerTurn, int reason){
         if(draw.isEmpty()){
-            lastMessage = "The draw pile is empty";
+            lastMessage = "The draw pile is empty\n";
         }
         switch(reason){
             case DRAWCARD:
@@ -118,7 +118,7 @@ public class EKState extends GameState {
                     this.draw.remove(0);
                     if(temp == CARDTYPE.EXPLODE){
                         playCard(playerTurn, CARDTYPE.DEFUSE, this.deck.get(playerTurn));
-                        this.lastMessage = "Player " + playerTurn + " has just drawn an exploding kitten." ;
+                        this.lastMessage += "Player " + playerTurn + " has just drawn an exploding kitten.\n" ;
                     }
                     for(Card card: deck.get(playerTurn)) {
                         card.isPlayable = false;
@@ -159,12 +159,12 @@ public class EKState extends GameState {
                 if(deck.get(playerTurn)!=null) {
                     moveToDiscard(deck.get(playerTurn), discard);
                 }
-                playerStatus[this.playerTurn] = false;
-                lastMessage = "Player " + this.playerTurn + " has just lost. ";
+                this.playerStatus[this.playerTurn] = false;
+                lastMessage += "Player " + this.playerTurn + " has just lost. \n";
                 this.nextPlayer(this.playerTurn);
                 break;
         }
-        this.lastMessage+= "\nIt is now Player " + this.playerTurn + "'s turn.";
+        this.lastMessage+= "It is now Player " + this.playerTurn + "'s turn.\n";
     }
 
     /**
@@ -227,6 +227,7 @@ public class EKState extends GameState {
                         moveCardMelon.isSelected = false;
                         discard.add(moveCardMelon);
                         deck.get(playerTurn).remove(moveMelon);
+                        lastMessage += ("Player " + this.playerTurn + " played a " + card.name() + " card.\n" );
                         return true;
                     }
                 }
@@ -239,6 +240,7 @@ public class EKState extends GameState {
                         moveCardBeard.isSelected = false;
                         discard.add(moveCardBeard);
                         deck.get(playerTurn).remove(moveBeard);
+                        lastMessage += ("Player " + this.playerTurn + " played a " + card.name() + " card.\n" );
                         return true;
                     }
                 }
@@ -251,6 +253,7 @@ public class EKState extends GameState {
                         moveCardPotato.isSelected = false;
                         discard.add(moveCardPotato);
                         deck.get(playerTurn).remove(movePotato);
+                        lastMessage += ("Player " + this.playerTurn + " played a " + card.name() + " card.\n" );
                         return true;
                     }
                 }
@@ -263,6 +266,7 @@ public class EKState extends GameState {
                         moveCardTaco.isSelected = false;
                         discard.add(moveCardTaco);
                         deck.get(playerTurn).remove(moveTaco);
+                        lastMessage += ("Player " + this.playerTurn + " played a " + card.name() + " card.\n" );
                         return true;
                     }
                 }
@@ -274,6 +278,7 @@ public class EKState extends GameState {
                     if (moveAttack != -1) {
                         discard.add(moveCardAttack);
                         deck.get(playerTurn).remove(moveAttack);
+                        lastMessage += ("Player " + this.playerTurn + " played a " + card.name() + " card.\n" );
                         endTurn(playerTurn, ATTACKPLAYER);
                         return true;
                     }
@@ -287,6 +292,7 @@ public class EKState extends GameState {
                         discard.add(moveCardShuffle);
                         deck.get(playerTurn).remove(moveShuffle);
                         Collections.shuffle(draw);
+                        lastMessage += ("Player " + this.playerTurn + " played a " + card.name() + " card.\n" );
                         return true;
                     }
                 }
@@ -301,6 +307,7 @@ public class EKState extends GameState {
                         deck.get(playerTurn).remove(moveFavor);
                         //this.justDemandedACard = true;
                         stealACard((int)(Math.random()* 3));
+                        lastMessage += ("Player " + this.playerTurn + " played a " + card.name() + " card.\n" );
                         return true;
                     }
                 }
@@ -312,6 +319,7 @@ public class EKState extends GameState {
                     if (moveSkip != -1) {
                         discard.add(moveCardSkip);
                         deck.get(playerTurn).remove(moveSkip);
+                        lastMessage += ("Player " + this.playerTurn + " played a " + card.name() + " card.\n" );
                         endTurn(playerTurn,SKIPTURN);
                         return true;
                     }
@@ -324,6 +332,7 @@ public class EKState extends GameState {
                     if (moveSeeFuture != -1) {
                         discard.add(moveCardSeeFuture);
                         deck.get(playerTurn).remove(moveSeeFuture);
+                        lastMessage += ("Player " + this.playerTurn + " played a " + card.name() + " card.\n" );
                         this.justPlayedSeeFuture = true;
                         return true;
                     }
@@ -336,6 +345,7 @@ public class EKState extends GameState {
                     if (moveNope != -1) {
                         discard.add(moveCardNope);
                         deck.get(playerTurn).remove(moveNope);
+                        lastMessage += ("Player " + this.playerTurn + " played a " + card.name() + " card.\n" );
                         return true;
                     }
                 }
@@ -346,14 +356,18 @@ public class EKState extends GameState {
                 int moveDefuse = getCardIndex(CARDTYPE.DEFUSE, deck.get(playerTurn));
                 Card moveCardExplode = getCard(CARDTYPE.EXPLODE, deck.get(playerTurn));
                 Card moveCardDefuse = getCard(CARDTYPE.DEFUSE, deck.get(playerTurn));
-                if(moveExplode != -1 && moveDefuse != -1){
-                    int randomIdx = (int)(Math.random() * (draw.size()-1));
+                if(moveExplode != -1 && moveDefuse != -1) {
+                    int randomIdx = (int) (Math.random() * (draw.size()));
                     draw.add(randomIdx, moveCardExplode);
                     discard.add(moveCardDefuse);
-                    deck.get(playerTurn).remove(moveExplode);
-                    deck.get(playerTurn).remove(moveDefuse);
-                    return true;
+                    //check if need to change back
+                    if (deck.get(playerTurn).remove(moveCardExplode) && deck.get(playerTurn).remove(moveCardDefuse)){
+                        return true;
+                    }else{
+                        endTurn(this.playerTurn,LOST);
+                    }
                 }
+                break;
                 case EXPLODE:
                     moveExplode = getCardIndex(CARDTYPE.EXPLODE, deck.get(playerTurn));
                     moveDefuse = getCardIndex(CARDTYPE.DEFUSE, deck.get(playerTurn));
@@ -364,7 +378,6 @@ public class EKState extends GameState {
                     discard.add(moveCardDefuse);
                     deck.get(playerTurn).remove(moveExplode);
                     deck.get(playerTurn).remove(moveDefuse);
-                    ArrayList<Card> reference = deck.get(playerTurn);
                     return true;
                 }else{
                     endTurn(playerTurn,LOST);
@@ -373,8 +386,11 @@ public class EKState extends GameState {
             case STEAL:
                 //FIXME: crashes
                 stealACard((int)(Math.random() *2) +1);
+                lastMessage += ("Player " + this.playerTurn + " has just stolen a card\n");
+                return true;
             default:
                 endTurn(playerTurn,DRAWCARD);
+                break;
         }
         return false;
     }
@@ -431,32 +447,13 @@ public class EKState extends GameState {
             int next = (currentPlayer+1)%4;
             while(playerStatus[next] == false){
                 next = (next+1)%4;
+                Log.i("MSG", next + "\n");
             }
             this.playerTurn = next;
+            lastMessage = "";
             Log.i("MSG"," "+ playerTurn + " " + playerStatus[playerTurn]);
 
             return true;
-            /*
-            if (currentPlayer + 1 <= 3 && playerStatus[currentPlayer + 1]) {
-                this.playerTurn = currentPlayer + 1;
-                Log.i("MSG", playerTurn + "\n");
-                return true;
-            } else {
-                switch(currentPlayer+1){
-                    case 4:
-                        if(playerStatus[0]){
-                            this.playerTurn = 0;
-                            Log.i("MSG", playerTurn + "\n");
-                        }else{
-                            nextPlayer(0);
-                        }
-                        break;
-                    default:
-                        nextPlayer(currentPlayer+1);
-                        break;
-                }
-            }
-            */
 
         }
     }
@@ -518,12 +515,12 @@ public class EKState extends GameState {
         //sets the hash table keys and strings to the card description, and the card ID.
         if (gameState == STATE.INIT_ARRAYS){
             //FIXME: CHANGE TO 4
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 8; i++) {
                 //this.draw.add(new Card(CARDTYPE.ATTACK));
                 //this.draw.add(new Card(CARDTYPE.FAVOR));
                 //this.draw.add(new Card(CARDTYPE.NOPE));
                 //this.draw.add(new Card(CARDTYPE.SHUFFLE));
-                //this.draw.add(new Card(CARDTYPE.SKIP));
+                this.draw.add(new Card(CARDTYPE.SKIP));
                 this.draw.add(new Card(CARDTYPE.SEEFUTURE));
                 this.draw.add(new Card(CARDTYPE.MELON));
                 this.draw.add(new Card(CARDTYPE.BEARD));

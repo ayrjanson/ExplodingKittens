@@ -66,7 +66,7 @@ public class EKLocalGame extends LocalGame {
             EKPlayCardAction at = (EKPlayCardAction) action;
             CARDTYPE type = at.type;
             EKState currentState = (EKState) state;
-            currentState.lastMessage = ("Player " + currentState.playerTurn + " played a " + type.name() + " card." );
+            //currentState.lastMessage += ("Player " + currentState.playerTurn + " played a " + type.name() + " card.\n" );
 
             switch (type) {
                 case MELON:
